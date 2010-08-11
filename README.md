@@ -1,7 +1,7 @@
 Wcf Rest Contrib
 =============
 
-This library enables you to enumerate and communicate with Hid compatible USB devices in .NET. It offers synchronous and asynchronous read and write functionality as well as notification of insertion and removal of a device.
+The WCF REST Contrib library adds functionality to the current WCF REST implementation.
 
 Installation
 ------------
