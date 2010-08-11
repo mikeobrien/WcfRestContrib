@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='Windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+
+	<Product 
+    Name='WCF REST Contrib' 
+    UpgradeCode='2E93ACBC-0DD4-4367-AF7D-559068EB2AC9' 
+    Id='EA6EA4CF-291C-4D26-B3A0-28028217C6B5' 
+    Language='1033' 
+    Manufacturer='Ultraviolet Catastrophe' 
+    Version='1.0'>
+		<Package Keywords='Installer'
+			  Description="WCF REST Contrib Installer"
+			  Comments='WCF REST Contrib' Manufacturer='Ultraviolet Catastrophe'
+			  InstallerVersion='150' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+
+		<Property Id="ALLUSERS">1</Property>
+		
+		<Property Id="NET_FRAMEWORK_INSTALLED">
+			<RegistrySearch Id='b8adf926f6' Type='raw'
+			  Root='HKLM' Key='SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5' Name='Install' />
+		</Property>
+
+    <Condition Message=".NET Framework 3.5 is not installed. Please install it and try again.">
+      Installed OR (NET_FRAMEWORK_INSTALLED = "#1" AND NOT Installed)
+    </Condition>
+
+		<Media Id='1' Cabinet='WCFRESTContrib.cab' EmbedCab='yes' />
+
+		<Directory Id='TARGETDIR' Name='SourceDir'>
+			<Directory Id='ProgramFilesFolder' Name='Program Files'>
+
+					<Directory Id='INSTALLDIR' Name='WCF REST Contrib'>
+
+						<Component Id='Library' Guid='DFC5664A-7DC9-4327-9AAF-F53108CD1898'>
+							<File Id='d4cd11d7b8' Name='WcfRestContrib.dll' DiskId='1' Source='..\WcfRestContrib\bin\Release\WcfRestContrib.dll' Vital='yes'/>
+              <File Id='becc1ccee5' Name='WcfRestContrib.pdb' DiskId='1' Source='..\WcfRestContrib\bin\Release\WcfRestContrib.pdb' Vital='yes'/>
+              <RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\AssemblyFolders\WCF REST Contrib" Value="[INSTALLDIR]" Type="string"/>
+            </Component>
+
+            <Directory Id='SAMPLEDIR' Name='Samples'>
+
+              <Directory Id='b4165f5362' Name='Niels Bohr Library'>
+                
+						    <Component Id='Samples' Guid='2E946E79-754F-4E7D-8D07-57628667B011'>
+							    <File Id='ecc273f7e0' Name='NielsBohrLibrary.sln' DiskId='1' Source='..\NielsBohrLibrary\NielsBohrLibrary.Distrib.sln' Vital='yes'>
+								    <Shortcut Id="da00134443" Directory="ProgramMenuDir" Name="Niels Bohr Library Sample" WorkingDirectory='INSTALLDIR'  />
+							    </File>
+
+                  <File Id='e6fcd93ad0' Name='NielsBohrLibrary.csproj' DiskId='1' Source='..\NielsBohrLibrary\NielsBohrLibrary.Distrib.csproj' Vital='yes' />
+
+                  <File Id='c9935ee541' Name='Books.svc' DiskId='1' Source='..\NielsBohrLibrary\Books.svc' Vital='yes'/>
+                  <File Id='b68d837a4e' Name='Books.svc.cs' DiskId='1' Source='..\NielsBohrLibrary\Books.svc.cs' Vital='yes'/>
+                  <File Id='d0cb890c8f' Name='Content.svc' DiskId='1' Source='..\NielsBohrLibrary\Content.svc' Vital='yes'/>
+                  <File Id='a3137fa7ab' Name='Content.svc.cs' DiskId='1' Source='..\NielsBohrLibrary\Content.svc.cs' Vital='yes'/>
+                  <File Id='c5ac8a3456' Name='IEnumerableExtensions.cs' DiskId='1' Source='..\NielsBohrLibrary\IEnumerableExtensions.cs' Vital='yes'/>
+                  <File Id='c77b06232b' Name='README.TXT' DiskId='1' Source='..\NielsBohrLibrary\README.TXT' Vital='yes'/>
+                  <File Id='a334c805f7' Name='Web.config' DiskId='1' Source='..\NielsBohrLibrary\Web.config' Vital='yes'/>
+
+						    </Component>
+
+                <Directory Id='ac9ec66644' Name='Contracts'>
+                  <Component Id='SamplesContracts' Guid='58FB9390-472F-4554-ABDD-B8A27C7C5A35'>
+                    <File Id='eb622e7a47' Name='Book.cs' DiskId='1' Source='..\NielsBohrLibrary\Contracts\Book.cs' Vital='yes'/>
+                    <File Id='ce16ea26d1' Name='Books.cs' DiskId='1' Source='..\NielsBohrLibrary\Contracts\Books.cs' Vital='yes'/>
+                    <File Id='db28500e2b' Name='IBooksService.cs' DiskId='1' Source='..\NielsBohrLibrary\Contracts\IBooksService.cs' Vital='yes'/>
+                    <File Id='dace1b05f9' Name='IContentService.cs' DiskId='1' Source='..\NielsBohrLibrary\Contracts\IContentService.cs' Vital='yes'/>
+                  </Component>
+                </Directory>
+
+                <Directory Id='e9058fbabe' Name='Domain'>
+                  <Component Id='SamplesDomain' Guid='B310C133-EF98-4A78-B0A3-09E90A48CC36'>
+                    <File Id='a6d6149895' Name='Catalog.cs' DiskId='1' Source='..\NielsBohrLibrary\Domain\Catalog.cs' Vital='yes'/>
+                    <File Id='be14310914' Name='CatalogItem.cs' DiskId='1' Source='..\NielsBohrLibrary\Domain\CatalogItem.cs' Vital='yes'/>
+                  </Component>
+                </Directory>
+
+                <Directory Id='e448ec6eec' Name='Runtime'>
+                  <Component Id='SamplesRuntime' Guid='D9A8CB72-905D-4087-8CAC-FBBFC0F2D32C'>
+                    <File Id='d1f2b9d6eb' Name='LogHandler.cs' DiskId='1' Source='..\NielsBohrLibrary\Runtime\LogHandler.cs' Vital='yes'/>
+                    <File Id='b3e35e7738' Name='SecurityValidator.cs' DiskId='1' Source='..\NielsBohrLibrary\Runtime\SecurityValidator.cs' Vital='yes'/>
+                  </Component>
+                </Directory>
+                
+                <Directory Id='a3887aba38' Name='Properties'>
+                  <Component Id='SamplesProperties' Guid='BB9F8A18-14C1-4E63-9057-ACCE0B5C044A'>
+                    <File Id='afa9c8c878' Name='AssemblyInfo.cs' DiskId='1' Source='..\NielsBohrLibrary\Properties\AssemblyInfo.cs' Vital='yes'/>
+                  </Component>
+                </Directory>
+
+                <Directory Id='abd4449588' Name='App_Data'>
+                  <Component Id='SamplesApp_Data' Guid='09225D0E-64F0-4507-BAF7-E7B081C4C66B'>
+                    <File Id='bcbc73fcc4' Name='Catalog.xml' DiskId='1' Source='..\NielsBohrLibrary\App_Data\Catalog.xml' Vital='yes'/>
+                  </Component>
+                </Directory>
+                  
+              </Directory>
+            </Directory>
+            
+				</Directory>
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder" Name="Programs">
+				<Directory Id="ProgramMenuDir" Name="WCF REST Contrib" />
+			</Directory> 
+
+			<Directory Id="DesktopFolder" Name="Desktop" />
+			<Directory Id="StartupFolder" Name="Startup" />
+			
+		</Directory>
+		
+		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+		<UIRef Id="WixUI_FeatureTree" />
+
+		<Icon Id="InstallerIcon" SourceFile="Resources\Installer.ico" />
+		<Property Id="ARPPRODUCTICON" Value="InstallerIcon" />
+		
+		<Feature Id='Library' Level='1' ConfigurableDirectory='INSTALLDIR' Title='WCF REST Contrib Libray' Description='Installs the WCF REST Contrib Library.'>
+			<ComponentRef Id='Library' />
+		</Feature>
+
+		<Feature Id='Samples' Level='1' ConfigurableDirectory='SAMPLEDIR' Title='Sample Applications' Description='Installs the WCF REST Contrib Samples.'>
+			<ComponentRef Id='Samples' />
+      <ComponentRef Id='SamplesContracts' />
+      <ComponentRef Id='SamplesDomain' />
+      <ComponentRef Id='SamplesRuntime' />
+      <ComponentRef Id='SamplesProperties' />
+      <ComponentRef Id='SamplesApp_Data' />
+    </Feature>
+
+	</Product>
+</Wix>

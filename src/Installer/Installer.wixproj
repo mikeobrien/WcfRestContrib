@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.0</ProductVersion>
+    <ProjectGuid>{bbc6aa43-5f92-4ff9-9893-d24d066ea0b0}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>WcfRestContrib</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix2010.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <Cultures>en-US</Cultures>
+    <WixVariables>WixUIBannerBmp=Resources\bannrbmp.bmp;WixUIDialogBmp=Resources\dlgbmp.bmp;WixUIExclamationIco=Resources\exclamic.ico;WixUIInfoIco=Resources\info.ico;WixUINewIco=Resources\new.ico;WixUIUpIco=Resources\up.ico;WixUILicenseRtf=Resources\license.rtf</WixVariables>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <SuppressIces>ICE64;ICE43;ICE57</SuppressIces>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WixVariables>WixUIBannerBmp=Resources\bannrbmp.bmp;WixUIDialogBmp=Resources\dlgbmp.bmp;WixUIExclamationIco=Resources\exclamic.ico;WixUIInfoIco=Resources\info.ico;WixUINewIco=Resources\new.ico;WixUIUpIco=Resources\up.ico;WixUILicenseRtf=Resources\license.rtf</WixVariables>
+    <Cultures>en-US</Cultures>
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+    <SuppressIces>ICE64;ICE43;ICE57</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Installer.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>C:\Program Files (x86)\Windows Installer XML v3.5\bin\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	-->
+  <Target Name="AfterBuild">
+    <GetAssemblyIdentity AssemblyFiles="$(SolutionDir)WcfRestContrib\bin\WcfRestContrib.dll">
+      <Output TaskParameter="Assemblies" ItemName="GetVersionAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetDir)WcfRestContrib%(GetVersionAssemblyInfo.Version).msi" />
+    <Delete Files="$(TargetPath)" />
+  </Target>
+</Project>

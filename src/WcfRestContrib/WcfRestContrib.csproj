@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{166A59AC-9B87-47E4-A057-7B5F6B565B56}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WcfRestContrib</RootNamespace>
+    <AssemblyName>WcfRestContrib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>WcfRestContrib.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.IdentityModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.IdentityModel.Selectors">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\Specialized\NameValueCollectionExtensions.cs" />
+    <Compile Include="Diagnostics\IWebLogHandler.cs" />
+    <Compile Include="IdentityModel\Policy\IdentityAuthorizationPolicy.cs" />
+    <Compile Include="IO\StreamExtensions.cs" />
+    <Compile Include="Net\Http\BasicAuthentication.cs" />
+    <Compile Include="Net\Http\RequestInformation.cs" />
+    <Compile Include="Net\Http\Verbs.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
+    <Compile Include="Runtime\Serialization\WrappedDataContractSerializer.cs" />
+    <Compile Include="ServiceModel\Activation\WebServiceHostFactory.cs" />
+    <Compile Include="ServiceModel\Channels\BinaryBodyReader.cs" />
+    <Compile Include="ServiceModel\Channels\BinaryBodyWriter.cs" />
+    <Compile Include="ServiceModel\Channels\FormUrlEncodedReader.cs" />
+    <Compile Include="ServiceModel\Channels\FormUrlEncodedWriter.cs" />
+    <Compile Include="ServiceModel\Channels\MessageExtensions.cs" />
+    <Compile Include="ServiceModel\Channels\NameValueReader.cs" />
+    <Compile Include="ServiceModel\Channels\NameValueWriter.cs" />
+    <Compile Include="ServiceModel\Configuration\BehaviorExtensionElementExtensions.cs" />
+    <Compile Include="ServiceModel\Configuration\ConfigurationManager.cs" />
+    <Compile Include="ServiceModel\Configuration\CustomBindingElementExtensions.cs" />
+    <Compile Include="ServiceModel\Configuration\ErrorHandler\BehaviorElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebAuthentication\ConfigurationBehaviorElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\ConfigurationBehaviorElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\FormatterElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\FormattersElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebErrorHandler\ConfigurationBehaviorElement.cs" />
+    <Compile Include="ServiceModel\Description\ContractDescriptionExtensions.cs" />
+    <Compile Include="ServiceModel\Description\ErrorHandlerAttribute.cs" />
+    <Compile Include="ServiceModel\Description\ErrorHandlerBehavior.cs" />
+    <Compile Include="ServiceModel\Description\OperationAuthenticationAttribute.cs" />
+    <Compile Include="ServiceModel\Description\OperationAuthenticationBehavior.cs" />
+    <Compile Include="ServiceModel\Description\OperationDescriptionExtensions.cs" />
+    <Compile Include="ServiceModel\Description\RedirectAttribute.cs" />
+    <Compile Include="ServiceModel\Description\RedirectBehavior.cs" />
+    <Compile Include="ServiceModel\Description\RequestMessagePartDescription.cs" />
+    <Compile Include="ServiceModel\Description\ServiceAuthenticationAttribute.cs" />
+    <Compile Include="ServiceModel\Description\ServiceAuthenticationBehavior.cs" />
+    <Compile Include="ServiceModel\Description\ServiceDescriptionExtensions.cs" />
+    <Compile Include="ServiceModel\Description\WebAuthenticationConfigurationAttribute.cs" />
+    <Compile Include="ServiceModel\Description\WebAuthenticationConfigurationBehavior.cs" />
+    <Compile Include="ServiceModel\Description\WebDispatchFormatterConfigurationAttribute.cs" />
+    <Compile Include="ServiceModel\Description\WebDispatchFormatterConfigurationBehavior.cs" />
+    <Compile Include="ServiceModel\Description\WebDispatchFormatterAttribute.cs" />
+    <Compile Include="ServiceModel\Description\WebDispatchFormatterBehavior.cs" />
+    <Compile Include="ServiceModel\Description\WebDispatchFormatterMimeTypeAttribute.cs" />
+    <Compile Include="ServiceModel\Description\WebErrorHandlerConfigurationAttribute.cs" />
+    <Compile Include="ServiceModel\Description\WebErrorHandlerConfigurationBehavior.cs" />
+    <Compile Include="ServiceModel\Description\WebHttpBehavior.cs" />
+    <Compile Include="ServiceModel\Dispatcher\Formatters\DataContract.cs" />
+    <Compile Include="ServiceModel\Dispatcher\Formatters\DataContractJson.cs" />
+    <Compile Include="ServiceModel\Dispatcher\Formatters\FormUrlEncoded.cs" />
+    <Compile Include="ServiceModel\Dispatcher\Formatters\PoxDataContract.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IWebAuthenticationHandler.cs" />
+    <Compile Include="ServiceModel\Dispatcher\IWebFormatter.cs" />
+    <Compile Include="ServiceModel\Dispatcher\OperationAuthenticationInvoker.cs" />
+    <Compile Include="ServiceModel\Dispatcher\RedirectInspector.cs" />
+    <Compile Include="ServiceModel\Dispatcher\ServiceAuthenticationInspector.cs" />
+    <Compile Include="ServiceModel\Dispatcher\WebBasicAuthenticationHandler.cs" />
+    <Compile Include="ServiceModel\Dispatcher\WebDispatchFormatter.cs" />
+    <Compile Include="ServiceModel\Dispatcher\WebFormatterDeserializationContext.cs" />
+    <Compile Include="ServiceModel\Dispatcher\WebFormatterFactory.cs" />
+    <Compile Include="ServiceModel\Dispatcher\WebFormatterSerializationContext.cs" />
+    <Compile Include="ServiceModel\OperationContextExtensions.cs" />
+    <Compile Include="ServiceModel\ServiceHostBaseExtensions.cs" />
+    <Compile Include="ServiceModel\Web\ContractConfigurationAttribute.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\BasicUnauthorizedException.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\BasicRequiresTransportSecurityException.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\DeserializationException.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\InternalServerException.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\InvalidParameterException.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\NotFoundException.cs" />
+    <Compile Include="ServiceModel\Web\Exceptions\WebException.cs" />
+    <Compile Include="ServiceModel\Web\IncomingWebRequestContextExtensions.cs" />
+    <Compile Include="ServiceModel\Web\IWebExceptionDataContract.cs" />
+    <Compile Include="ServiceModel\Web\OutgoingWebResponseContextExtensions.cs" />
+    <Compile Include="ServiceModel\Web\ServiceConfigurationAttribute.cs" />
+    <Compile Include="ServiceModel\Web\WebErrorHandler.cs" />
+    <Compile Include="ServiceModel\Web\WebServiceHost.cs" />
+    <Compile Include="System\Web\ServiceAnonymityModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Xml\PoxXmlReader.cs" />
+    <Compile Include="Xml\PoxXmlWriter.cs" />
+    <Compile Include="Xml\TypeExtensions.cs" />
+    <Compile Include="Xml\XmlDocumentExtensions.cs" />
+    <Compile Include="Xml\XmlNodeExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WcfRestContrib.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

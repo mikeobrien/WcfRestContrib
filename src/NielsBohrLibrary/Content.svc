@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="NielsBohrLibrary.Content" CodeBehind="Content.svc.cs" Factory="WcfRestContrib.ServiceModel.Activation.WebServiceHostFactory" %>
