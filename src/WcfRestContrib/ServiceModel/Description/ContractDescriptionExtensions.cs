@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ServiceModel.Description;
-using System.ServiceModel.Configuration;
 using WcfRestContrib.ServiceModel.Configuration;
 
 namespace WcfRestContrib.ServiceModel.Description
@@ -17,27 +15,24 @@ namespace WcfRestContrib.ServiceModel.Description
             if (string.IsNullOrEmpty(behaviorConfiguration)) 
                 throw new ArgumentException("Behavior configuration not specified.");
 
-            ServiceBehaviorElement serviceBehaviors = 
+            var serviceBehaviors = 
                 ConfigurationManager.GetServiceBehaviorElement(behaviorConfiguration);
 
-            if (serviceBehaviors != null)
+            if (serviceBehaviors == null) return;
+
+            foreach (var behaviorExtension in serviceBehaviors)
             {
-                foreach (BehaviorExtensionElement behaviorExtension in serviceBehaviors)
+                var extension = behaviorExtension.CreateBehavior();
+                if (extension == null) continue;
+
+                var extensionType = extension.GetType();
+                if (!typeof (IContractBehavior).IsAssignableFrom(extensionType)) continue;
+
+                if (contract.Behaviors.Contains(extensionType))
                 {
-                    object extension = behaviorExtension.CreateBehavior();
-                    if (extension != null)
-                    {
-                        Type extensionType = extension.GetType();
-                        if (typeof(IContractBehavior).IsAssignableFrom(extensionType))
-                        {
-                            if (contract.Behaviors.Contains(extensionType))
-                            {
-                                contract.Behaviors.Remove(extensionType);
-                            }
-                            contract.Behaviors.Add((IContractBehavior)extension);
-                        }
-                    }
+                    contract.Behaviors.Remove(extensionType);
                 }
+                contract.Behaviors.Add((IContractBehavior)extension);
             }
         }
 
@@ -46,12 +41,12 @@ namespace WcfRestContrib.ServiceModel.Description
             Func<TAttribute, TBehavior> convert) 
             where TBehavior : class where TAttribute : class
         {
-            TBehavior behavior =
+            var behavior =
                 contract.Behaviors.Find<TBehavior>();
 
             if (behavior == null)
             {
-                TAttribute attribute =
+                var attribute =
                     contract.Behaviors.
                     Find<TAttribute>();
                 if (attribute != null) behavior = convert(attribute);
@@ -61,22 +56,15 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public static T GetAttribute<T>(this ContractDescription contract) where T:Attribute
         {
-            object[] attributes = contract.ContractType.GetCustomAttributes(typeof(T), true);
-            if (attributes.Length > 0)
-                return (T)attributes[0];
-            else
-                return null;
+            var attributes = contract.ContractType.GetCustomAttributes(typeof(T), true);
+            if (attributes.Length > 0) return (T)attributes[0];
+            return null;
         }
 
         public static List<T> GetAttributes<T>(this ContractDescription contract) where T:Attribute
         {
-            List<T> attributes = new List<T>();
-            object[] results = contract.ContractType.GetCustomAttributes(typeof(T), true);
-
-            foreach (object result in results)
-                attributes.Add((T)result);
-
-            return attributes;
+            var results = contract.ContractType.GetCustomAttributes(typeof(T), true);
+            return results.Cast<T>().ToList();
         }
     }
 }

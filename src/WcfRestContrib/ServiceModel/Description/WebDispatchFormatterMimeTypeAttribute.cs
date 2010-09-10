@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WcfRestContrib.ServiceModel.Dispatcher;
 using WcfRestContrib.Reflection;
 
@@ -13,7 +10,7 @@ namespace WcfRestContrib.ServiceModel.Description
         public WebDispatchFormatterMimeTypeAttribute(Type type, params string[] mimeTypes)
         {
             if (!type.CastableAs<IWebFormatter>())
-                throw new Exception(string.Format("type must implement IWebFormatter.", type.Name));
+                throw new Exception("type must implement IWebFormatter.");
 
             MimeTypes = mimeTypes;
             Type = type;

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Description;
 using System.Configuration;
 using WcfRestContrib.ServiceModel.Description;
 using WcfRestContrib.Reflection;

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.ServiceModel.Channels;
 using System.Xml;
-using System.IO;
 
 namespace WcfRestContrib.ServiceModel.Channels
 {
@@ -12,13 +8,13 @@ namespace WcfRestContrib.ServiceModel.Channels
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private byte[] _data;
+        private readonly byte[] _data;
 
         // ────────────────────────── Constructors ──────────────────────────
 
         public BinaryBodyWriter(string data) : base(true)
         {
-            _data = UTF8Encoding.UTF8.GetBytes(data);
+            _data = Encoding.UTF8.GetBytes(data);
         }
 
         public BinaryBodyWriter(byte[] data) : base(true)
@@ -30,7 +26,7 @@ namespace WcfRestContrib.ServiceModel.Channels
 
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {
-            writer.WriteStartElement(BinaryBodyReader.BINARY_ELEMENT_NAME);
+            writer.WriteStartElement(BinaryBodyReader.BinaryElementName);
             writer.WriteBase64(_data, 0, _data.Length);
             writer.WriteEndElement();
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WcfRestContrib.Net.Http;
+﻿using WcfRestContrib.Net.Http;
 
 namespace WcfRestContrib.ServiceModel.Web.Exceptions
 {
@@ -10,7 +6,7 @@ namespace WcfRestContrib.ServiceModel.Web.Exceptions
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private string _realm;
+        private readonly string _realm;
 
         // ────────────────────────── Constructors ──────────────────────────
 

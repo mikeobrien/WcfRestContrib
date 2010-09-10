@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 using System.Runtime.Serialization.Json;
-using System.ServiceModel.Channels;
-using WcfRestContrib.ServiceModel.Channels;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace WcfRestContrib.ServiceModel.Dispatcher.Formatters
 {
@@ -15,12 +8,10 @@ namespace WcfRestContrib.ServiceModel.Dispatcher.Formatters
     {
         public object Deserialize(WebFormatterDeserializationContext context, Type type)
         {
-            if (context.ContentFormat == WebFormatterDeserializationContext.DeserializationFormat.Xml)
-            {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(type);
-                return serializer.ReadObject(context.XmlReader);
-            }
-            else throw new InvalidDataException("Data must be in xml format.");
+            if (context.ContentFormat != WebFormatterDeserializationContext.DeserializationFormat.Xml)
+                throw new InvalidDataException("Data must be in xml format.");
+            var serializer = new DataContractJsonSerializer(type);
+            return serializer.ReadObject(context.XmlReader);
         }
 
         public WebFormatterSerializationContext Serialize(object data, Type type)

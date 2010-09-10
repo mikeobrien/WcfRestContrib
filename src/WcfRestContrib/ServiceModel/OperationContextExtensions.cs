@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Security.Principal;
 using System.ServiceModel;
-using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using System.IdentityModel.Policy;
 using WcfRestContrib.IdentityModel.Policy;
@@ -16,17 +13,17 @@ namespace WcfRestContrib.ServiceModel
     {
         public static void ReplacePrimaryIdentity(this OperationContext context, IIdentity identity)
         {
-            MessageProperties incomingMessageProperties = context.IncomingMessageProperties;
+            var incomingMessageProperties = context.IncomingMessageProperties;
             if (incomingMessageProperties != null)
             {
-                SecurityMessageProperty security = 
+                var security = 
                     incomingMessageProperties.Security ?? 
                     (incomingMessageProperties.Security = new SecurityMessageProperty());
 
-                List<IAuthorizationPolicy> policies = security.ServiceSecurityContext.AuthorizationPolicies.ToList();
+                var policies = security.ServiceSecurityContext.AuthorizationPolicies.ToList();
                 policies.Add(new IdentityAuthorizationPolicy(identity));
 
-                AuthorizationContext authorizationContext =
+                var authorizationContext =
                     AuthorizationContext.CreateDefaultAuthorizationContext(policies);
 
                 security.ServiceSecurityContext = new ServiceSecurityContext(

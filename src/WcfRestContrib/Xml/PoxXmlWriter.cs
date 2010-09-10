@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
+﻿using System.Xml;
 
 namespace WcfRestContrib.Xml
 {
@@ -10,8 +6,8 @@ namespace WcfRestContrib.Xml
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private XmlWriter _writer;
-        private bool _inAttribute = false;
+        private readonly XmlWriter _writer;
+        private bool _inAttribute;
 
         // ────────────────────────── Constructors ──────────────────────────
 

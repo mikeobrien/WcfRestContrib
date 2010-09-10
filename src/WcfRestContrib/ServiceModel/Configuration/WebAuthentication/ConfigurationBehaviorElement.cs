@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
 using System.ServiceModel.Configuration;
-using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Description;
 using System.Configuration;
 using WcfRestContrib.ServiceModel.Description;
 using WcfRestContrib.ServiceModel.Dispatcher;
@@ -18,10 +12,10 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private const string AUTH_HANDLER_TYPE_ELEMENT = "authenticationHandlerType";
-        private const string USERNAME_PASSWORD_VALIDATOR_TYPE_ELEMENT = "usernamePasswordValidatorType";
-        private const string REQUIRE_SECURE_TRANSPORT_ELEMENT = "requireSecureTransport";
-        private const string SOURCE_ELEMENT = "source";
+        private const string AuthHandlerTypeElement = "authenticationHandlerType";
+        private const string UsernamePasswordValidatorTypeElement = "usernamePasswordValidatorType";
+        private const string RequireSecureTransportElement = "requireSecureTransport";
+        private const string SourceElement = "source";
 
         // ────────────────────────── BehaviorExtensionElement Overrides ────────────────
 
@@ -61,40 +55,40 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
 
         // ────────────────────────── Public Members ──────────────────────────
 
-        [ConfigurationProperty(AUTH_HANDLER_TYPE_ELEMENT, IsRequired = true)]
+        [ConfigurationProperty(AuthHandlerTypeElement, IsRequired = true)]
         public string OperationAuthenticationHandlerTypeName
         {
             get
-            { return (string)base[AUTH_HANDLER_TYPE_ELEMENT]; }
+            { return (string)base[AuthHandlerTypeElement]; }
             set
-            { base[AUTH_HANDLER_TYPE_ELEMENT] = value; }
+            { base[AuthHandlerTypeElement] = value; }
         }
 
-        [ConfigurationProperty(USERNAME_PASSWORD_VALIDATOR_TYPE_ELEMENT, IsRequired = true)]
+        [ConfigurationProperty(UsernamePasswordValidatorTypeElement, IsRequired = true)]
         public string UsernamePasswordValidatorTypeName
         {
             get
-            { return (string)base[USERNAME_PASSWORD_VALIDATOR_TYPE_ELEMENT]; }
+            { return (string)base[UsernamePasswordValidatorTypeElement]; }
             set
-            { base[USERNAME_PASSWORD_VALIDATOR_TYPE_ELEMENT] = value; }
+            { base[UsernamePasswordValidatorTypeElement] = value; }
         }
 
-        [ConfigurationProperty(REQUIRE_SECURE_TRANSPORT_ELEMENT, IsRequired = false, DefaultValue = true)]
+        [ConfigurationProperty(RequireSecureTransportElement, IsRequired = false, DefaultValue = true)]
         public bool RequireSecureTransport
         {
             get
-            { return (bool)base[REQUIRE_SECURE_TRANSPORT_ELEMENT]; }
+            { return (bool)base[RequireSecureTransportElement]; }
             set
-            { base[REQUIRE_SECURE_TRANSPORT_ELEMENT] = value; }
+            { base[RequireSecureTransportElement] = value; }
         }
 
-        [ConfigurationProperty(SOURCE_ELEMENT, IsRequired = true)]
+        [ConfigurationProperty(SourceElement, IsRequired = true)]
         public string Source
         {
             get
-            { return (string)base[SOURCE_ELEMENT]; }
+            { return (string)base[SourceElement]; }
             set
-            { base[SOURCE_ELEMENT] = value; }
+            { base[SourceElement] = value; }
         }
     }
 }

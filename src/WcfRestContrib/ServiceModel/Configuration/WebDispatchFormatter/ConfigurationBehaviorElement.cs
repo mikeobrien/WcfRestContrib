@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
 using System.ServiceModel.Configuration;
-using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Description;
 using System.Configuration;
 using WcfRestContrib.ServiceModel.Description;
 using WcfRestContrib.ServiceModel.Dispatcher;
@@ -17,7 +12,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
     {
         // ────────────────────────── Private Fields ────────────────────────────────────
 
-        private const string FORMATTERS_ELEMENT = "formatters";
+        private const string FormattersElement = "formatters";
 
         // ────────────────────────── BehaviorExtensionElement Overrides ────────────────
 
@@ -28,12 +23,12 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
 
         protected override object CreateBehavior()
         {
-            Dictionary<string, Type> formatters = new Dictionary<string, Type>();
+            var formatters = new Dictionary<string, Type>();
 
             foreach (FormatterElement element in Formatters)
-                foreach (string mimeType in element.MimeTypes)
+                foreach (var mimeType in element.MimeTypes)
                 {
-                    Type formatter = null;
+                    Type formatter;
                     try
                     {
                         formatter = element.Type.GetType<IWebFormatter>();
@@ -54,13 +49,13 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
 
         // ────────────────────────── Public Members ──────────────────────────
 
-        [ConfigurationProperty(FORMATTERS_ELEMENT, IsRequired = true)]
+        [ConfigurationProperty(FormattersElement, IsRequired = true)]
         public FormattersElement Formatters
         {
             get
-            { return (FormattersElement)base[FORMATTERS_ELEMENT]; }
+            { return (FormattersElement)base[FormattersElement]; }
             set
-            { base[FORMATTERS_ELEMENT] = value; }
+            { base[FormattersElement] = value; }
         }
     }
 }

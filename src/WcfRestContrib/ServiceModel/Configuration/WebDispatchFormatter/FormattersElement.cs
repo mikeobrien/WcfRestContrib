@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
-using System.ServiceModel.Configuration;
-using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Description;
 using System.Configuration;
-using WcfRestContrib.ServiceModel.Description;
 
 namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
 {
@@ -15,22 +7,22 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private const string DEFAULT_MIME_TYPE_ELEMENT = "defaultMimeType";
+        private const string DefaultMimeTypeElement = "defaultMimeType";
 
         // ────────────────────────── Constructors ──────────────────────────
 
         public FormattersElement()
             : base(StringComparer.OrdinalIgnoreCase)
         {
-            base.AddElementName = "formatter";
+            AddElementName = "formatter";
         }
 
         // ────────────────────────── Public Members ──────────────────────────
 
-        [ConfigurationProperty(DEFAULT_MIME_TYPE_ELEMENT)]
+        [ConfigurationProperty(DefaultMimeTypeElement)]
         public string DefaultMimeType
         {
-            get { return (string)this[DEFAULT_MIME_TYPE_ELEMENT]; }
+            get { return (string)this[DefaultMimeTypeElement]; }
         }
 
         // ────────────────────────── Protected Members ──────────────────────────

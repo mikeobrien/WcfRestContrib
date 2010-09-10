@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
-using System.Runtime.Serialization.Json;
-using System.Runtime.Serialization;
-using WcfRestContrib.ServiceModel.Dispatcher;
 using WcfRestContrib.ServiceModel.Web;
 using WcfRestContrib.Reflection;
 using WcfRestContrib.Diagnostics;
@@ -20,7 +11,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private WebErrorHandlerConfigurationBehavior _behavior;
+        private readonly WebErrorHandlerConfigurationBehavior _behavior;
 
         // ────────────────────────── Constructors ──────────────────────────
 

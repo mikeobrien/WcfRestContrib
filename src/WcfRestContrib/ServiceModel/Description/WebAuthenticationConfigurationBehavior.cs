@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ServiceModel.Description;
 using WcfRestContrib.ServiceModel.Dispatcher;
 using System.IdentityModel.Selectors;

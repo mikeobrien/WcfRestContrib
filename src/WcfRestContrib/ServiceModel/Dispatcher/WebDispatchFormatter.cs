@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
-using System.Runtime.Serialization.Json;
-using System.Runtime.Serialization;
 using System.Collections.Specialized;
 using WcfRestContrib.ServiceModel.Web;
 using WcfRestContrib.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Description;
-using System.Net;
 using WcfRestContrib.ServiceModel.Web.Exceptions;
 using WcfRestContrib.Xml;
 
@@ -36,13 +30,13 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private static QueryStringConverter _queryStringConverter = new QueryStringConverter();
+        private static readonly QueryStringConverter QueryStringConverter = new QueryStringConverter();
 
-        private RequestMessagePartDescription[] _requestParameters;
-        private Type _responseType;
-        private IDispatchMessageFormatter _originalFormatter;
-        private FormatterDirection _direction;
-        private WebFormatterFactory _formatterFactory;
+        private readonly RequestMessagePartDescription[] _requestParameters;
+        private readonly Type _responseType;
+        private readonly IDispatchMessageFormatter _originalFormatter;
+        private readonly FormatterDirection _direction;
+        private readonly WebFormatterFactory _formatterFactory;
 
         // ────────────────────────── Constructors ──────────────────────────
 
@@ -72,13 +66,11 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 
         public void DeserializeRequest(Message message, object[] parameters)
         {
-            OperationContext.Current.OutgoingMessageProperties.Add(
-                WebDispatchFormatter.WebDispatcherFormatterProperty, this);
+            OperationContext.Current.OutgoingMessageProperties.Add(WebDispatcherFormatterProperty, this);
 
-            string[] accept = WebOperationContext.Current.IncomingRequest.GetAcceptTypes();
+            var accept = WebOperationContext.Current.IncomingRequest.GetAcceptTypes();
             if (accept != null)
-                OperationContext.Current.OutgoingMessageProperties.Add(
-                    WebDispatchFormatter.WebDispatcherFormatterAccept, accept);
+                OperationContext.Current.OutgoingMessageProperties.Add(WebDispatcherFormatterAccept, accept);
 
             if (_direction == FormatterDirection.Both || _direction == FormatterDirection.Incomming)
             {
@@ -96,14 +88,12 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         {
             if (_direction == FormatterDirection.Both || _direction == FormatterDirection.Outgoing)
             {
-                Message message = null;
+                Message message;
                 if (_responseType != null && result != null)
                 {
                     string[] accept = null;
-                    if (OperationContext.Current.OutgoingMessageProperties.ContainsKey(
-                        WebDispatchFormatter.WebDispatcherFormatterAccept))
-                        accept = (string[])OperationContext.Current.OutgoingMessageProperties[
-                            WebDispatchFormatter.WebDispatcherFormatterAccept];
+                    if (OperationContext.Current.OutgoingMessageProperties.ContainsKey(WebDispatcherFormatterAccept))
+                        accept = (string[])OperationContext.Current.OutgoingMessageProperties[WebDispatcherFormatterAccept];
 
                     message = Serialize(
                         _formatterFactory,
@@ -119,12 +109,12 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                 message.UpdateHttpProperty();
                 return message;
             }
-            else return _originalFormatter.SerializeReply(messageVersion, parameters, result);
+            return _originalFormatter.SerializeReply(messageVersion, parameters, result);
         }
 
         // ────────────────────────── Private Members ──────────────────────────
 
-        private void Deserialize(
+        private static void Deserialize(
             Message message, 
             WebFormatterFactory formatterFactory, 
             ref object[] parameters, 
@@ -132,10 +122,10 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             string contentType)
         {
             // Grab the actual uri values, this will be null if there are none
-            NameValueCollection uriParameters = message.GetRequestUriTemplateMatchVariables();
+            var uriParameters = message.GetRequestUriTemplateMatchVariables();
 
             // Loop through the parameters and set them based on their type
-            for (int i = 0; i < parameters.Length; i++)
+            for (var i = 0; i < parameters.Length; i++)
             {
                 switch (requestParameters[i].PartType)
                 {
@@ -151,7 +141,7 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                         {
                             try
                             {
-                                parameters[i] = _queryStringConverter.ConvertStringToValue(
+                                parameters[i] = QueryStringConverter.ConvertStringToValue(
                                         uriParameters[requestParameters[i].Name],
                                         requestParameters[i].Type);
                             }
@@ -167,15 +157,12 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                     // If it's the entity body then we need to deserialize it
                     case RequestMessagePartDescription.MessagePartType.EntityBody:
                         if (message.IsEmpty) continue;
-                        IWebFormatter formatter = formatterFactory.CreateFormatter(contentType);
-                        using (XmlDictionaryReader reader = message.GetReaderAtBodyContents())
+                        var formatter = formatterFactory.CreateFormatter(contentType);
+                        using (var reader = message.GetReaderAtBodyContents())
                         {
-                            WebFormatterDeserializationContext deserializationContext;
-
-                            if (reader.Name == BinaryBodyReader.BINARY_ELEMENT_NAME)
-                                deserializationContext = WebFormatterDeserializationContext.CreateBinary(new BinaryBodyReader(reader).Data);
-                            else
-                                deserializationContext = WebFormatterDeserializationContext.CreateXml(reader);
+                            var deserializationContext = reader.Name == BinaryBodyReader.BinaryElementName ? 
+                                           WebFormatterDeserializationContext.CreateBinary(new BinaryBodyReader(reader).Data) : 
+                                           WebFormatterDeserializationContext.CreateXml(reader);
 
                             try
                             {
@@ -191,7 +178,7 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             }
         }
 
-        private Message Serialize(
+        private static Message Serialize(
             WebFormatterFactory formatterFactory, 
             object result, 
             Type responseType, 
@@ -199,8 +186,8 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         {
             string resolvedContentType;
 
-            IWebFormatter formatter = formatterFactory.CreateFormatter(contentTypes, out resolvedContentType);
-            WebFormatterSerializationContext serializationContext = formatter.Serialize(result, responseType);
+            var formatter = formatterFactory.CreateFormatter(contentTypes, out resolvedContentType);
+            var serializationContext = formatter.Serialize(result, responseType);
 
             Message message = null;
 

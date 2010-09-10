@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace WcfRestContrib
+﻿namespace WcfRestContrib
 {
     public static class StringExtensions
     {
+        public static bool IsNullOrEmpty(this string value)
+        {
+            return string.IsNullOrEmpty(value);
+        }
+
         public static string Ellipsis(this string value, int maxLength)
         {
             return Ellipsis(value, maxLength, string.Empty, string.Empty);

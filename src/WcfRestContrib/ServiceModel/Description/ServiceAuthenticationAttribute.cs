@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
-using System.Net;
-using WcfRestContrib.ServiceModel.Dispatcher;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
@@ -15,7 +9,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        ServiceAuthenticationBehavior _behavior = new ServiceAuthenticationBehavior();
+        readonly ServiceAuthenticationBehavior _behavior = new ServiceAuthenticationBehavior();
 
         // ────────────────────────── IServiceBehavior Members ──────────────────────────
 

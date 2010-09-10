@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Xml.Linq;
 using System.IO;
 using System.Net.Mime;
@@ -13,13 +12,13 @@ namespace NielsBohrLibrary.Domain
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private static List<CatalogItem> _catalog = new List<CatalogItem>();
+        private static readonly List<CatalogItem> _catalog = new List<CatalogItem>();
 
         // ────────────────────────── Constructor ──────────────────────────
 
         static Catalog()
         {
-            XDocument document = XDocument.Load(GetCatalogPath());
+            var document = XDocument.Load(GetCatalogPath());
 
             var items = from item in document.Element("catalog").Elements("item")
                 select new CatalogItem()
@@ -68,7 +67,7 @@ namespace NielsBohrLibrary.Domain
 
         public static void DeleteItem(string isbn)
         {
-            CatalogItem item = _catalog.FirstOrDefault(
+            var item = _catalog.FirstOrDefault(
                 i => i.Isbn.Equals(isbn, StringComparison.OrdinalIgnoreCase));
             if (item != null)
                 lock (_catalog) { _catalog.Remove(item); }
@@ -76,15 +75,15 @@ namespace NielsBohrLibrary.Domain
 
         public static bool SaveContentStream(Stream stream, string isbn)
         {
-            string path = GetContentPath(isbn);
-            bool exists = File.Exists(path);
+            var path = GetContentPath(isbn);
+            var exists = File.Exists(path);
             stream.Save(path);
             return exists;
         }
 
         public static bool TryGetContentStream(string isbn, out string filename, out string contentType, out Stream contentStream)
         {
-            string path = GetContentPath(isbn);
+            var path = GetContentPath(isbn);
 
             if (File.Exists(path))
             {

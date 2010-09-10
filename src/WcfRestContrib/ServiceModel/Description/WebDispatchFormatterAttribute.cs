@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
-using System.Runtime.Serialization.Json;
-using System.Runtime.Serialization;
 using WcfRestContrib.ServiceModel.Dispatcher;
 
 namespace WcfRestContrib.ServiceModel.Description
@@ -17,7 +10,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ─────────────────────────────
 
-        private WebDispatchFormatterBehavior _behavior;
+        private readonly WebDispatchFormatterBehavior _behavior;
 
         // ────────────────────────── Constructors ───────────────────────────────
 

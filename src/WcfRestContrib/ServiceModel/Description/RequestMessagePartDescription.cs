@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel.Description;
+﻿using System.ServiceModel.Description;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
-    public class RequestMessagePartDescription : System.ServiceModel.Description.MessagePartDescription
+    public class RequestMessagePartDescription : MessagePartDescription
     {
         // ────────────────────────── Enumerations ──────────────────────────
 
@@ -22,13 +18,13 @@ namespace WcfRestContrib.ServiceModel.Description
         public RequestMessagePartDescription(MessagePartDescription messagePart, MessagePartType partType, string alias) : 
             base(messagePart.Name, messagePart.Namespace)
         {
-            this.Index = messagePart.Index;
-            this.MemberInfo = messagePart.MemberInfo;
-            this.Multiple = messagePart.Multiple;
-            this.ProtectionLevel = messagePart.ProtectionLevel;
-            this.Type = messagePart.Type;
-            this.Alias = alias;
-            this.PartType = partType;
+            Index = messagePart.Index;
+            MemberInfo = messagePart.MemberInfo;
+            Multiple = messagePart.Multiple;
+            ProtectionLevel = messagePart.ProtectionLevel;
+            Type = messagePart.Type;
+            Alias = alias;
+            PartType = partType;
         }
 
         // ────────────────────────── Public Members ──────────────────────────

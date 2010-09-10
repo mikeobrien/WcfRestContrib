@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.IO;
-using System.ServiceModel;
 
 namespace WcfRestContrib.Web
 {
@@ -12,12 +10,12 @@ namespace WcfRestContrib.Web
     {
         // ────────────────────────── Private Fields ─────────────────────────────
 
-        private static IEnumerable<KeyValuePair<string, string>> serviceMapping;
+        private static readonly IEnumerable<KeyValuePair<string, string>> ServiceMapping;
 
         // ────────────────────────── Constructors ───────────────────────────────
 
         static ServiceAnonymityModule()
-        { serviceMapping = GetServiceMapping(); }
+        { ServiceMapping = GetServiceMapping(); }
 
         // ────────────────────────── IHttpModule Implementation ─────────────────
 
@@ -43,28 +41,24 @@ namespace WcfRestContrib.Web
                     string.Compare(path, map.Key, true) == 0
                 );
 
-            KeyValuePair<string, string> mapping =
-                serviceMapping.FirstOrDefault(serviceMatch);
+            var mapping = ServiceMapping.FirstOrDefault(serviceMatch);
 
-            if (mapping.Key != null && mapping.Value != null)
-            {
-                string pathInfo = path.Remove(0, mapping.Key.Length);
-                if (string.IsNullOrEmpty(pathInfo)) pathInfo = "/";
-                HttpContext.Current.RewritePath(
-                    mapping.Value, 
-                    pathInfo,
-                    HttpContext.Current.Request.QueryString.ToString());
-            }
+            if (mapping.Key == null || mapping.Value == null) return;
+
+            var pathInfo = path.Remove(0, mapping.Key.Length);
+            if (string.IsNullOrEmpty(pathInfo)) pathInfo = "/";
+            HttpContext.Current.RewritePath(
+                mapping.Value, 
+                pathInfo,
+                HttpContext.Current.Request.QueryString.ToString());
         }
 
         private static IEnumerable<KeyValuePair<string, string>> GetServiceMapping()
         {
-            List<KeyValuePair<string, string>> serviceMapping =
-                new List<KeyValuePair<string, string>>();
+            var serviceMapping = new List<KeyValuePair<string, string>>();
 
-            string webRoot = HttpContext.Current.Server.MapPath("~/");
-            string[] serviceFiles = Directory.GetFiles(
-                webRoot, "*.svc", SearchOption.AllDirectories);
+            var webRoot = HttpContext.Current.Server.MapPath("~/");
+            var serviceFiles = Directory.GetFiles(webRoot, "*.svc", SearchOption.AllDirectories);
 
             Func<string, bool, string> getRelative = (path, ext) =>
                 "~/" +

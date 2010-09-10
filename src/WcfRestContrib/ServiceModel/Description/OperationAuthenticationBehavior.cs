@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
+﻿using System.Configuration;
 using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
-using System.Net;
 using WcfRestContrib.ServiceModel.Dispatcher;
 
 namespace WcfRestContrib.ServiceModel.Description
@@ -19,7 +13,7 @@ namespace WcfRestContrib.ServiceModel.Description
         public void ApplyDispatchBehavior(OperationDescription operationDescription, 
             DispatchOperation dispatchOperation)
         {
-            WebAuthenticationConfigurationBehavior behavior =
+            var behavior =
                 operationDescription.DeclaringContract.FindBehavior
                     <WebAuthenticationConfigurationBehavior,
                     WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);

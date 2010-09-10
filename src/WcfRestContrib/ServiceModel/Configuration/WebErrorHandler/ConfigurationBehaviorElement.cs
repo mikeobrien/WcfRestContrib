@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel;
 using System.ServiceModel.Configuration;
-using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Description;
 using System.Configuration;
 using WcfRestContrib.ServiceModel.Description;
 using WcfRestContrib.Reflection;
@@ -18,10 +12,10 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebErrorHandler
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private const string LOG_HANDLER_TYPE_ELEMENT = "logHandlerType";
-        private const string UNHANDLED_ERROR_MESSAGE_ELEMENT = "unhandledErrorMessage";
-        private const string RETURN_RAW_EXCEPTION = "returnRawException";
-        private const string EXCEPTION_DATA_CONTRACT_TYPE_ELEMENT = "exceptionDataContractType";
+        private const string LogHandlerTypeElement = "logHandlerType";
+        private const string UnhandledErrorMessageElement = "unhandledErrorMessage";
+        private const string ReturnRawExceptionElement = "returnRawException";
+        private const string ExceptionDataContractTypeElement = "exceptionDataContractType";
 
         // ────────────────────────── BehaviorExtensionElement Overrides ──────────────────────────
 
@@ -43,7 +37,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebErrorHandler
                     throw new Exception(string.Format("Invalid logHandlerType specified in webErrorHandler behavior element. {0}", e));
                 }
 
-            Type exceptionDataContract = null;
+            Type exceptionDataContract;
             try
             {
                 exceptionDataContract = ExceptionDataContractType.GetType<IWebExceptionDataContract>();
@@ -62,40 +56,40 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebErrorHandler
 
         // ────────────────────────── Public Members ──────────────────────────
 
-        [ConfigurationProperty(LOG_HANDLER_TYPE_ELEMENT, IsRequired = false, DefaultValue = null)]
+        [ConfigurationProperty(LogHandlerTypeElement, IsRequired = false, DefaultValue = null)]
         public string LogHandlerType
         {
             get
-            { return (string)base[LOG_HANDLER_TYPE_ELEMENT]; }
+            { return (string)base[LogHandlerTypeElement]; }
             set
-            { base[LOG_HANDLER_TYPE_ELEMENT] = value; }
+            { base[LogHandlerTypeElement] = value; }
         }
 
-        [ConfigurationProperty(UNHANDLED_ERROR_MESSAGE_ELEMENT, IsRequired = false, DefaultValue = null)]
+        [ConfigurationProperty(UnhandledErrorMessageElement, IsRequired = false, DefaultValue = null)]
         public string UnhandledErrorMessage
         {
             get
-            { return (string)base[UNHANDLED_ERROR_MESSAGE_ELEMENT]; }
+            { return (string)base[UnhandledErrorMessageElement]; }
             set
-            { base[UNHANDLED_ERROR_MESSAGE_ELEMENT] = value; }
+            { base[UnhandledErrorMessageElement] = value; }
         }
 
-        [ConfigurationProperty(RETURN_RAW_EXCEPTION, IsRequired = false, DefaultValue = false)]
+        [ConfigurationProperty(ReturnRawExceptionElement, IsRequired = false, DefaultValue = false)]
         public bool ReturnRawException
         {
             get
-            { return (bool)base[RETURN_RAW_EXCEPTION]; }
+            { return (bool)base[ReturnRawExceptionElement]; }
             set
-            { base[RETURN_RAW_EXCEPTION] = value; }
+            { base[ReturnRawExceptionElement] = value; }
         }
 
-        [ConfigurationProperty(EXCEPTION_DATA_CONTRACT_TYPE_ELEMENT, IsRequired = false, DefaultValue = null)]
+        [ConfigurationProperty(ExceptionDataContractTypeElement, IsRequired = false, DefaultValue = null)]
         public string ExceptionDataContractType
         {
             get
-            { return (string)base[EXCEPTION_DATA_CONTRACT_TYPE_ELEMENT]; }
+            { return (string)base[ExceptionDataContractTypeElement]; }
             set
-            { base[EXCEPTION_DATA_CONTRACT_TYPE_ELEMENT] = value; }
+            { base[ExceptionDataContractTypeElement] = value; }
         }
     }
 }

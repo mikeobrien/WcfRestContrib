@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.IdentityModel.Selectors;
 using WcfRestContrib.Diagnostics;
 using System.Diagnostics;
-using WcfRestContrib.ServiceModel.Web;
 using WcfRestContrib.Net.Http;
 using WcfRestContrib.ServiceModel.Web.Exceptions;
 

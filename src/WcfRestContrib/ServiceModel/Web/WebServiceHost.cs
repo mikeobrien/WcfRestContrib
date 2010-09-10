@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
 using WcfRestContrib.ServiceModel.Description;
 
 namespace WcfRestContrib.ServiceModel.Web
@@ -37,14 +35,14 @@ namespace WcfRestContrib.ServiceModel.Web
             {
                 this.ReplaceBehaviorOnAllEndpoints(
                     typeof (System.ServiceModel.Description.WebHttpBehavior),
-                    new Description.WebHttpBehavior(
+                    new WebHttpBehavior(
                         ServiceConfigurationAttribute.CustomErrorHandler));
 
                 if (ServiceConfigurationAttribute.BindingConfiguration != null &&
                     ServiceConfigurationAttribute.BindingConfiguration.Length > 0 &&
                     !this.HasServiceElement())
                 {
-                    foreach (string bindingConfiguration in ServiceConfigurationAttribute.BindingConfiguration)
+                    foreach (var bindingConfiguration in ServiceConfigurationAttribute.BindingConfiguration)
                         this.LoadBinding(bindingConfiguration);
                 }
 
@@ -60,7 +58,7 @@ namespace WcfRestContrib.ServiceModel.Web
             }
 
             // Load contract behaviors
-            foreach (KeyValuePair<string, ContractDescription> contract in this.ImplementedContracts)
+            foreach (var contract in ImplementedContracts)
             {
                 var contractConfig = contract.Value.GetAttribute<ContractConfigurationAttribute>();
                 if (contractConfig != null)
@@ -72,12 +70,9 @@ namespace WcfRestContrib.ServiceModel.Web
 
         private ServiceConfigurationAttribute ServiceConfigurationAttribute
         {
-            get
-            {
-                if (_serviceConfigurationAttribute == null)
-                    _serviceConfigurationAttribute =
-                        this.GetServiceAttribute<ServiceConfigurationAttribute>();
-                return _serviceConfigurationAttribute;
+            get {
+                return _serviceConfigurationAttribute ??
+                       (_serviceConfigurationAttribute = this.GetServiceAttribute<ServiceConfigurationAttribute>());
             }
         }
     }

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ServiceModel;
-using System.ServiceModel.Configuration;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
-using System.Configuration;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using System.Collections.ObjectModel;
@@ -52,7 +48,7 @@ namespace WcfRestContrib.ServiceModel.Description
                 if (!dispatcher.ErrorHandlers.Contains(_errorHandler))
                     dispatcher.ErrorHandlers.Add(_errorHandler);
 
-                foreach (EndpointDispatcher endpoint in dispatcher.Endpoints)
+                foreach (var endpoint in dispatcher.Endpoints)
                     if (endpoint.DispatchRuntime.MessageInspectors.FirstOrDefault(
                         i => i.GetType() == typeof(HttpRequestInformationInspector)) == null)
                         endpoint.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
@@ -73,7 +69,7 @@ namespace WcfRestContrib.ServiceModel.Description
             if (!dispatchRuntime.ChannelDispatcher.ErrorHandlers.Contains(_errorHandler))
                 dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(_errorHandler);
 
-            foreach (EndpointDispatcher endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
+            foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
                 if (endpointDispatcher.DispatchRuntime.MessageInspectors.FirstOrDefault(
                         i => i.GetType() == typeof(HttpRequestInformationInspector)) == null)
                     endpointDispatcher.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
@@ -89,15 +85,15 @@ namespace WcfRestContrib.ServiceModel.Description
         {
             // ────────────────────────── IDispatchMessageInspector Members ──────────────────────────
 
-            public object AfterReceiveRequest(ref System.ServiceModel.Channels.Message request, 
+            public object AfterReceiveRequest(ref Message request, 
                 IClientChannel channel, InstanceContext instanceContext)
             {
                 if (OperationContext.Current.OutgoingMessageProperties.ContainsKey(
                         HttpRequestInformationProperty)) return null;
 
-                RequestInformation info = new RequestInformation();
+                var info = new RequestInformation();
 
-                string contentLengthHeader =
+                var contentLengthHeader =
                     WebOperationContext.Current.IncomingRequest.Headers[HttpRequestHeader.ContentLength];
 
                 long contentLength;
@@ -119,7 +115,7 @@ namespace WcfRestContrib.ServiceModel.Description
                 return null;
             }
 
-            public void BeforeSendReply(ref System.ServiceModel.Channels.Message reply, object correlationState) { }
+            public void BeforeSendReply(ref Message reply, object correlationState) { }
         }
     }
 }

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
-using System.Net;
 using WcfRestContrib.ServiceModel.Dispatcher;
 
 namespace WcfRestContrib.ServiceModel.Description
@@ -25,7 +20,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase)
         {
-            WebAuthenticationConfigurationBehavior behavior = 
+            var behavior = 
                 serviceHostBase.Description.FindBehavior
                         <WebAuthenticationConfigurationBehavior,
                         WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
@@ -35,7 +30,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
             foreach (ChannelDispatcher dispatcher in 
                 serviceHostBase.ChannelDispatchers)
-                foreach (EndpointDispatcher endpoint in dispatcher.Endpoints)
+                foreach (var endpoint in dispatcher.Endpoints)
                     endpoint.DispatchRuntime.MessageInspectors.Add(
                         new ServiceAuthenticationInspector(
                             behavior.AuthenticationHandler,
@@ -51,7 +46,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime)
         {
-            WebAuthenticationConfigurationBehavior behavior = 
+            var behavior = 
                 dispatchRuntime.ChannelDispatcher.Host.Description.FindBehavior
                         <WebAuthenticationConfigurationBehavior,
                         WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
@@ -64,7 +59,7 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
-            foreach (EndpointDispatcher endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
+            foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(
                     new ServiceAuthenticationInspector(
                         behavior.AuthenticationHandler,

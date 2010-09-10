@@ -25,13 +25,15 @@ namespace WcfRestContrib.ServiceModel.Web
                 webException = (WebException)error;
             else
             {
-                WebErrorHandlerConfigurationBehavior behavior =
+                var behavior =
                         GetWebErrorHandlerConfiguration();
 
                 string unhandledErrorMessage;
                 
                 if (behavior.ReturnRawException) unhandledErrorMessage = error.ToString();
-                else unhandledErrorMessage = (behavior != null && behavior.UnhandledErrorMessage != null) ? behavior.UnhandledErrorMessage : "An error has occured processing your request.";
+                else unhandledErrorMessage = (behavior != null && behavior.UnhandledErrorMessage != null) ? 
+                                              behavior.UnhandledErrorMessage : 
+                                              "An error has occured processing your request.";
 
                 webException = new WebException(error,
                     System.Net.HttpStatusCode.InternalServerError, 
@@ -49,7 +51,7 @@ namespace WcfRestContrib.ServiceModel.Web
 
             if (webDispatchFormatter != null)
             {
-                WebErrorHandlerConfigurationBehavior behavior = GetWebErrorHandlerConfiguration();
+                var behavior = GetWebErrorHandlerConfiguration();
                 IWebExceptionDataContract exceptionContract;
                 
                 if (behavior != null && behavior.HasExceptionDataContract)
@@ -88,15 +90,15 @@ namespace WcfRestContrib.ServiceModel.Web
 
         // ────────────────────────── Private Members ──────────────────────────
 
-        private WebErrorHandlerConfigurationBehavior GetWebErrorHandlerConfiguration()
+        private static WebErrorHandlerConfigurationBehavior GetWebErrorHandlerConfiguration()
         {
-            WebErrorHandlerConfigurationBehavior behavior = 
+            var behavior = 
                     OperationContext.Current.Host.Description.Behaviors.
                     Find<WebErrorHandlerConfigurationBehavior>();
 
             if (behavior == null)
             {
-                WebErrorHandlerConfigurationAttribute attribute =
+                var attribute =
                     OperationContext.Current.Host.Description.Behaviors.
                     Find<WebErrorHandlerConfigurationAttribute>();
                 if (attribute != null) behavior = attribute.BaseBehavior;
@@ -104,10 +106,9 @@ namespace WcfRestContrib.ServiceModel.Web
             return behavior;
         }
 
-        private void InternalHandleError(Exception error)
+        private static void InternalHandleError(Exception error)
         {
-            WebErrorHandlerConfigurationBehavior behavior =
-                    GetWebErrorHandlerConfiguration();
+            var behavior = GetWebErrorHandlerConfiguration();
 
             if (behavior != null && behavior.LogHandler != null)
             {
@@ -124,7 +125,7 @@ namespace WcfRestContrib.ServiceModel.Web
             }
         }
 
-        private string GenerateResponseText(string message)
+        private static string GenerateResponseText(string message)
         {
             return string.Format(
                 "<html><body style=\"font-family:Arial;font-size:11pt;\">{0}</body></html>",

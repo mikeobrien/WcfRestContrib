@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using System.Reflection;
-using System.Runtime.Serialization;
+﻿using System.Xml;
 
 namespace WcfRestContrib.Xml
 {
@@ -12,7 +6,7 @@ namespace WcfRestContrib.Xml
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private XmlReader _sourceReader;
+        private readonly XmlReader _sourceReader;
         private XmlReader _reader;
 
         // ────────────────────────── Constructors ──────────────────────────
@@ -28,7 +22,7 @@ namespace WcfRestContrib.Xml
 
         protected virtual XmlDocument GetDocument() 
         {
-            XmlDocument document = new XmlDocument();
+            var document = new XmlDocument();
             if (_sourceReader != null) document.Load(_sourceReader);
             return document;
         }
@@ -41,7 +35,7 @@ namespace WcfRestContrib.Xml
             {
                 if (_reader == null)
                 {
-                    XmlDocument document = GetDocument();
+                    var document = GetDocument();
                     document.SortAlphabetically<XmlElement>();
                     _reader = new XmlNodeReader(document);
                 }
@@ -52,21 +46,20 @@ namespace WcfRestContrib.Xml
         // ────────────────────────── Overriden Members ──────────────────────────
 
         public override bool IsStartElement(string localname, string ns) { return base.IsStartElement(localname); }
-        public override string GetAttribute(string name, string namespaceURI) { return Reader.GetAttribute(name); }
+        public override string GetAttribute(string name, string namespaceUri) { return Reader.GetAttribute(name); }
         public override bool MoveToAttribute(string name, string ns) { return Reader.MoveToAttribute(name); }
         public override string ReadElementString(string localname, string ns) { return base.ReadElementString(localname); }
         public override void ReadStartElement(string localname, string ns) { base.ReadStartElement(localname); }
-        public override bool ReadToDescendant(string localName, string namespaceURI) { return base.ReadToDescendant(localName); }
-        public override bool ReadToFollowing(string localName, string namespaceURI) { return base.ReadToFollowing(localName); }
-        public override bool ReadToNextSibling(string localName, string namespaceURI) { return base.ReadToNextSibling(localName); }
-        public override string this[string name, string namespaceURI] { get { return base[name]; } }
+        public override bool ReadToDescendant(string localName, string namespaceUri) { return base.ReadToDescendant(localName); }
+        public override bool ReadToFollowing(string localName, string namespaceUri) { return base.ReadToFollowing(localName); }
+        public override bool ReadToNextSibling(string localName, string namespaceUri) { return base.ReadToNextSibling(localName); }
+        public override string this[string name, string namespaceUri] { get { return base[name]; } }
 
         public override bool Read()
         {
-            bool more;
             do
             {
-                more = Reader.Read();
+                var more = Reader.Read();
                 if (!more) return false;
             } while (Reader.IsEmptyElement);
 

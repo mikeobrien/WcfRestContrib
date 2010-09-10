@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Net;
-using System.Runtime.Serialization;
 
 namespace WcfRestContrib.ServiceModel.Web.Exceptions
 {
     public class WebException : Exception 
     {
-        // ────────────────────────── Constructors ──────────────────────────
-
         public WebException(HttpStatusCode status, string friendyMessage, params object[] args) : 
             base(string.Format(friendyMessage, args))
         {
@@ -22,8 +16,6 @@ namespace WcfRestContrib.ServiceModel.Web.Exceptions
         {
             Status = status;
         }             
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public HttpStatusCode Status { get; private set; }
 

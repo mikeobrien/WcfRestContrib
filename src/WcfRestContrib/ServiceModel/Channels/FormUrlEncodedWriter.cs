@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Xml;
+﻿using System.IO;
 using System.Web;
 
 namespace WcfRestContrib.ServiceModel.Channels
@@ -13,7 +7,7 @@ namespace WcfRestContrib.ServiceModel.Channels
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        TextWriter _writer;
+        readonly TextWriter _writer;
 
         // ────────────────────────── Constructors ──────────────────────────
 

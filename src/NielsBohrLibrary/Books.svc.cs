@@ -14,7 +14,7 @@ namespace NielsBohrLibrary
         public Contracts.Books GetBooks()
         {
             return new Contracts.Books(Catalog.GetCatalog().Select(
-                i => new Book()
+                i => new Book
                 {
                     Author = i.Author,
                     Description = i.Description,
@@ -36,7 +36,7 @@ namespace NielsBohrLibrary
 
             return new Contracts.Books(Catalog.GetCatalog().
                 Where(i => i.Published == integerYear).Select(
-                i => new Book()
+                i => new Book
                 {
                     Author = i.Author,
                     Description = i.Description,
@@ -50,12 +50,12 @@ namespace NielsBohrLibrary
 
         public Book GetBook(string isbn)
         {
-            CatalogItem item = Catalog.GetItem(isbn);
+            var item = Catalog.GetItem(isbn);
             if (item == null)
                 throw new WebException(System.Net.HttpStatusCode.NotFound,
                     "Sorry, we dont have the book you're looking for.");
             
-            return new Book()
+            return new Book
             {
                Author = item.Author,
                Description = item.Description,
@@ -83,7 +83,7 @@ namespace NielsBohrLibrary
             if (book == null) throw new ArgumentNullException("book");
             if (Catalog.ItemExists(isbn))
                 Catalog.UpdateItem(isbn,
-                    new CatalogItem()
+                    new CatalogItem
                     {
                         Author = book.Author,
                         Description = book.Description,
@@ -97,7 +97,7 @@ namespace NielsBohrLibrary
             {
                 book.Isbn = isbn;
                 Catalog.AddItem(
-                    new CatalogItem()
+                    new CatalogItem
                     {
                         Author = book.Author,
                         Description = book.Description,

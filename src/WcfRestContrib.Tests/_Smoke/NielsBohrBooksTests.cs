@@ -49,7 +49,7 @@ namespace WcfRestContrib.Tests._Smoke
         [Test]
         public void BooksHasMultipleBooks()
         {
-            XDocument books = _server.GetXDocument("Books/");
+            var books = _server.GetXDocument("Books/");
             Assert.That(books.Element("Books").Elements("Book").Count(), Is.GreaterThan(1));
         }
 
@@ -58,7 +58,7 @@ namespace WcfRestContrib.Tests._Smoke
         {
             // We delete the chemistry book so as not to disturb the other tests.
             // Hey, it's integration, forget perfection ;)
-            HttpWebResponse response = _server.Invoke(
+            var response = _server.Invoke(
                 new TestRestRequest(Verbs.Delete, Uris.TheresJustNoChemistryUri)
                     {
                         Credentials = Credentials.TonyClifton
@@ -71,14 +71,14 @@ namespace WcfRestContrib.Tests._Smoke
         [Test]
         public void CanGetSingleBook()
         {
-            XDocument book = _server.GetXDocument(Uris.FeynmanBookUri);
+            var book = _server.GetXDocument(Uris.FeynmanBookUri);
             Assert.That(book.Element("Book").Element("Isbn").Value, Is.EqualTo(BookData.FeynmanBookIsbn));
         }
 
         [Test]
         public void CanGetSingleBookInJsonFormat()
         {
-            string json = _server.GetResponse(
+            var json = _server.GetResponse(
                 new TestRestRequest(Verbs.Get, Uris.FeynmanBookUri)
                     {
                         Accept = "application/json"
@@ -91,7 +91,7 @@ namespace WcfRestContrib.Tests._Smoke
         [Test]
         public void CanModifyBookWhenAuthenticated()
         {
-            HttpWebResponse response = _server.Invoke(
+            var response = _server.Invoke(
                 new TestRestRequest(Verbs.Put, Uris.FeynmanBookUri)
                     {
                         Credentials = Credentials.TonyClifton,
@@ -104,7 +104,7 @@ namespace WcfRestContrib.Tests._Smoke
         [Test]
         public void CanPostNewBook()
         {
-            HttpWebResponse response = _server.Invoke(
+            var response = _server.Invoke(
                 new TestRestRequest(Verbs.Post, Uris.NewBookUri)
                     {
                         Credentials = Credentials.TonyClifton,

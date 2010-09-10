@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
@@ -25,11 +23,8 @@ namespace WcfRestContrib.ServiceModel
 
         public static ServiceBehaviorElement GetServiceBehaviorElement(this ServiceHostBase serviceHost)
         {
-            ServiceElement service = GetServiceElement(serviceHost);
-            if (service != null)
-                return ConfigurationManager.GetServiceBehaviorElement(service.BehaviorConfiguration);
-            else
-                return null;
+            var service = GetServiceElement(serviceHost);
+            return service != null ? ConfigurationManager.GetServiceBehaviorElement(service.BehaviorConfiguration) : null;
         }
 
         public static void LoadBehaviors(
@@ -39,16 +34,16 @@ namespace WcfRestContrib.ServiceModel
             if (string.IsNullOrEmpty(behaviorConfiguration)) 
                 throw new ArgumentException("Behavior configuration not specified.");
 
-            ServiceBehaviorElement serviceBehaviors = 
+            var serviceBehaviors = 
                 ConfigurationManager.GetServiceBehaviorElement(behaviorConfiguration);
             if (serviceBehaviors != null)
             {
-                foreach (BehaviorExtensionElement behaviorExtension in serviceBehaviors)
+                foreach (var behaviorExtension in serviceBehaviors)
                 {
-                    object extension = behaviorExtension.CreateBehavior();
+                    var extension = behaviorExtension.CreateBehavior();
                     if (extension != null)
                     {
-                        Type extensionType = extension.GetType();
+                        var extensionType = extension.GetType();
                         if (typeof(IServiceBehavior).IsAssignableFrom(extensionType))
                         {
                             if (serviceHost.Description.Behaviors.Contains(extensionType))
@@ -69,12 +64,12 @@ namespace WcfRestContrib.ServiceModel
             if (string.IsNullOrEmpty(bindingConfiguration))
                 throw new ArgumentException("Binding configuration not specified.");
 
-            BindingsSection bindingsSection = ConfigurationManager.GetBindingsSection();
+            var bindingsSection = ConfigurationManager.GetBindingsSection();
 
-            foreach (ServiceEndpoint endpoint in serviceHost.Description.Endpoints)
+            foreach (var endpoint in serviceHost.Description.Endpoints)
             {
                 // Get the binding collection of the same type as the endpoint binding
-                BindingCollectionElement bindingCollection = bindingsSection.BindingCollections.FirstOrDefault(
+                var bindingCollection = bindingsSection.BindingCollections.FirstOrDefault(
                     b => b.BindingType == endpoint.Binding.GetType());
 
                 // If there isnt one declared of that type move on
@@ -91,14 +86,14 @@ namespace WcfRestContrib.ServiceModel
                 
                 if (configurationElement is CustomBindingElement)
                 {
-                    CustomBinding binding = (CustomBinding)endpoint.Binding;
-                    CustomBindingElement bindingElement = (CustomBindingElement)configurationElement;
+                    var binding = (CustomBinding)endpoint.Binding;
+                    var bindingElement = (CustomBindingElement)configurationElement;
 
                     // We only want to apply bindings if they have the
                     // same or no transport binding element
 
                     // Grab the configuration transport binding element
-                    BindingElementExtensionElement configurationBindingElement = 
+                    var configurationBindingElement = 
                         bindingElement.FirstOrDefault(e => e.BindingElementType.IsSubclassOf(typeof(TransportBindingElement)));
 
                     // If the binding configuration does indeed contain a 
@@ -107,7 +102,7 @@ namespace WcfRestContrib.ServiceModel
                     if (configurationBindingElement != null)
                     {
                         // Grab the endpoint transport binding element
-                        TransportBindingElement transportBindingElement =
+                        var transportBindingElement =
                             (TransportBindingElement)binding.Elements.
                             FirstOrDefault(e => e is TransportBindingElement);
 
@@ -147,7 +142,7 @@ namespace WcfRestContrib.ServiceModel
             {
                 if (replaceType != null)
                 {
-                    IEndpointBehavior exisitingBehavior = endpoint.Behaviors.FirstOrDefault(
+                    var exisitingBehavior = endpoint.Behaviors.FirstOrDefault(
                         b => b.GetType() == replaceType);
                     if (exisitingBehavior != null)
                         endpoint.Behaviors.Remove(exisitingBehavior);
@@ -164,7 +159,7 @@ namespace WcfRestContrib.ServiceModel
             {
                 if (!(endpoint.Binding is CustomBinding))
                     endpoint.Binding = new CustomBinding(endpoint.Binding);
-                TElement element = ((CustomBinding)endpoint.Binding).
+                var element = ((CustomBinding)endpoint.Binding).
                                         Elements.Find<TElement>();
                 if (element != null) action(element);
             }

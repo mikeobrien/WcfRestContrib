@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel.Dispatcher;
+﻿using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
@@ -13,7 +9,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private bool _customErrorHandler;
+        private readonly bool _customErrorHandler;
 
         // ────────────────────────── Constructors ──────────────────────────
 
@@ -41,7 +37,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
             SwapBehaviors(operationDescription, originalBehavior, surrogateBehavior);
 
-            IDispatchMessageFormatter formatter = base.GetRequestDispatchFormatter(operationDescription, endpoint);
+            var formatter = base.GetRequestDispatchFormatter(operationDescription, endpoint);
 
             SwapBehaviors(operationDescription, surrogateBehavior, originalBehavior);
 
@@ -50,7 +46,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         // ────────────────────────── Private Members ──────────────────────────
 
-        private void SwapBehaviors(OperationDescription operationDescription, IOperationBehavior remove, IOperationBehavior add)
+        private static void SwapBehaviors(OperationDescription operationDescription, IOperationBehavior remove, IOperationBehavior add)
         {
             if (remove != null && add != null)
             {
@@ -59,16 +55,16 @@ namespace WcfRestContrib.ServiceModel.Description
             }
         }
 
-        private void TryGetSurrogateBehavior(OperationDescription operationDescription, ref IOperationBehavior original, ref IOperationBehavior surrogate)
+        private static void TryGetSurrogateBehavior(OperationDescription operationDescription, ref IOperationBehavior original, ref IOperationBehavior surrogate)
         {
             if (!IsUntypedMessage(operationDescription.Messages[0]) && 
                 operationDescription.Messages[0].Body.Parts.Count != 0)
             {
-                WebGetAttribute webGetAttribute = operationDescription.Behaviors.Find<WebGetAttribute>();
+                var webGetAttribute = operationDescription.Behaviors.Find<WebGetAttribute>();
                 if (webGetAttribute != null)
                 {
                     original = webGetAttribute;
-                    surrogate = new WebInvokeAttribute() {
+                    surrogate = new WebInvokeAttribute {
                          BodyStyle = webGetAttribute.BodyStyle,
                          Method = "NONE",
                          RequestFormat = webGetAttribute.RequestFormat,
@@ -77,11 +73,11 @@ namespace WcfRestContrib.ServiceModel.Description
                 }
                 else
                 {
-                    WebInvokeAttribute webInvokeAttribute = operationDescription.Behaviors.Find<WebInvokeAttribute>();
+                    var webInvokeAttribute = operationDescription.Behaviors.Find<WebInvokeAttribute>();
                     if (webInvokeAttribute != null && webInvokeAttribute.Method == "GET")
                     {
                         original = webInvokeAttribute;
-                        surrogate = new WebInvokeAttribute() {
+                        surrogate = new WebInvokeAttribute {
                             BodyStyle = webInvokeAttribute.BodyStyle,
                             Method = "NONE",
                             RequestFormat = webInvokeAttribute.RequestFormat,
@@ -92,7 +88,7 @@ namespace WcfRestContrib.ServiceModel.Description
             }
         }
 
-        private bool IsUntypedMessage(MessageDescription message)
+        private static bool IsUntypedMessage(MessageDescription message)
         {
             if (message == null)
             {

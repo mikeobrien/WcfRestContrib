@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
+﻿using System.ServiceModel;
 using NielsBohrLibrary.Contracts;
 using WcfRestContrib.ServiceModel.Web;
 using System.IO;
 using System.ServiceModel.Web;
-using WcfRestContrib.IO;
 using System.Net.Mime;
 using WcfRestContrib.ServiceModel.Web.Exceptions;
 
@@ -44,10 +38,9 @@ namespace NielsBohrLibrary
 
                 return contentStream;
             }
-            else
-                throw new WebException(
-                    System.Net.HttpStatusCode.NotFound,
-                    "Book content is not available for ISBN {0}.", isbn);
+            throw new WebException(
+                System.Net.HttpStatusCode.NotFound,
+                "Book content is not available for ISBN {0}.", isbn);
         }
     }
 }

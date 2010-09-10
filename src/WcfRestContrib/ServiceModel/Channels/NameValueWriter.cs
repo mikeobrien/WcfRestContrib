@@ -10,11 +10,11 @@ namespace WcfRestContrib.ServiceModel.Channels
 
         bool _inAttribute;
         bool _firstElement = true;
-        Stack<string> _fullyQualifiedName = new Stack<string>();
-        Dictionary<string, int> _elementIndex = new Dictionary<string, int>();
-        string _nameEntitiesSeperator;
-        string _pairSeperator;
-        string _nameValueSeperator;
+        readonly Stack<string> _fullyQualifiedName = new Stack<string>();
+        readonly Dictionary<string, int> _elementIndex = new Dictionary<string, int>();
+        readonly string _nameEntitiesSeperator;
+        readonly string _pairSeperator;
+        readonly string _nameValueSeperator;
 
         // ────────────────────────── Constructors ──────────────────────────
 
@@ -35,7 +35,7 @@ namespace WcfRestContrib.ServiceModel.Channels
 
         public override void WriteStartElement(string prefix, string localName, string ns)
         {
-            string fullName = string.Format("{0}{1}{2}", GetCurrentFullyQualifiedName(), _nameEntitiesSeperator, localName);
+            var fullName = string.Format("{0}{1}{2}", GetCurrentFullyQualifiedName(), _nameEntitiesSeperator, localName);
             string name;
             if (_elementIndex.ContainsKey(fullName))
             {
@@ -54,7 +54,7 @@ namespace WcfRestContrib.ServiceModel.Channels
         {
             if (!_inAttribute)
             {
-                string nameValuePair = string.Empty;
+                var nameValuePair = string.Empty;
                 if (!_firstElement) nameValuePair += _pairSeperator;
                 nameValuePair += string.Format("{0}{1}{2}", GetCurrentFullyQualifiedName(), _nameValueSeperator, EncodeValue(text));
                 Write(nameValuePair);

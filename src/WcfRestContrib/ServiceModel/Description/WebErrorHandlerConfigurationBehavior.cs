@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ServiceModel.Description;
-using WcfRestContrib.ServiceModel.Dispatcher;
-using System.IdentityModel.Selectors;
 using WcfRestContrib.Diagnostics;
 using WcfRestContrib.ServiceModel.Web;
 
@@ -14,7 +9,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private Type _exceptionDataContract;
+        private readonly Type _exceptionDataContract;
 
         // ────────────────────────── Constructors ──────────────────────────
 

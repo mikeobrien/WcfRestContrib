@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Runtime.Serialization;
 
@@ -22,24 +19,21 @@ namespace WcfRestContrib.ServiceModel.Web.Exceptions
 
         private static string GetMessage(Exception exception)
         {
-            string message = "The request body could not be deserialized. {0}";
-            Exception messageException = null;
+            const string message = "The request body could not be deserialized. {0}";
 
-            messageException = FindException<XmlException>(exception);
+            Exception messageException = FindException<XmlException>(exception);
             if (messageException != null)
                 return string.Format(message, messageException.Message);
 
             messageException = FindException<SerializationException>(exception);
-            if (messageException != null)
-                return string.Format(message, messageException.Message);
-
-            return string.Format(message, 
+            return string.Format(message, messageException != null ? 
+                messageException.Message : 
                 "Please check the formatting of your request body.");
         }
 
         private static T FindException<T>(Exception exception) where T : Exception 
         {
-            Exception currentException = exception;
+            var currentException = exception;
 
             do
             {

@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.ServiceModel;
-using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
-using System.Runtime.Serialization.Json;
-using System.Runtime.Serialization;
 using WcfRestContrib.ServiceModel.Dispatcher;
 
 namespace WcfRestContrib.ServiceModel.Description
@@ -18,7 +12,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private WebDispatchFormatter.FormatterDirection _direction;
+        private readonly WebDispatchFormatter.FormatterDirection _direction;
 
         // ────────────────────────── Constructors ──────────────────────────
 
@@ -31,7 +25,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(OperationDescription operationDescription, DispatchOperation dispatchOperation)
         {
-            WebDispatchFormatterConfigurationBehavior behavior =
+            var behavior =
                 operationDescription.DeclaringContract.Behaviors.Find
                     <WebDispatchFormatterConfigurationBehavior>();
 
@@ -41,7 +35,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
             if (behavior == null)
             {
-                WebDispatchFormatterConfigurationAttribute configurationAttribute = 
+                var configurationAttribute = 
                     operationDescription.DeclaringContract.GetAttribute<WebDispatchFormatterConfigurationAttribute>();
 
                 if (configurationAttribute == null)
@@ -53,27 +47,27 @@ namespace WcfRestContrib.ServiceModel.Description
                 if (configurationAttribute != null)
                     defaultMimeType = configurationAttribute.DefaultMimeType;
 
-                List<WebDispatchFormatterMimeTypeAttribute> mimeTypeAttributes = 
+                var mimeTypeAttributes = 
                     operationDescription.DeclaringContract.GetAttributes<WebDispatchFormatterMimeTypeAttribute>();
 
                 if (mimeTypeAttributes == null || mimeTypeAttributes.Count == 0)
                     mimeTypeAttributes = dispatchOperation.Parent.ChannelDispatcher.Host.Description.
                         GetAttributes<WebDispatchFormatterMimeTypeAttribute>();
 
-                Dictionary<string, Type> formatters = new Dictionary<string, Type>();
+                var formatters = new Dictionary<string, Type>();
 
                 if (mimeTypeAttributes != null && mimeTypeAttributes.Count > 0)
                 {
 
-                    foreach (WebDispatchFormatterMimeTypeAttribute mimeTypeAttribute in mimeTypeAttributes)
-                        foreach (string mimeType in mimeTypeAttribute.MimeTypes)
+                    foreach (var mimeTypeAttribute in mimeTypeAttributes)
+                        foreach (var mimeType in mimeTypeAttribute.MimeTypes)
                         {
                             if (defaultMimeType == null) defaultMimeType = mimeType;
                             formatters.Add(mimeType, mimeTypeAttribute.Type);
                         }
                 }
 
-                if (formatters != null && formatters.Count > 0)
+                if (formatters.Count > 0)
                     behavior = new WebDispatchFormatterConfigurationBehavior(
                         formatters, defaultMimeType);
             }

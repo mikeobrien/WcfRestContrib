@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace WcfRestContrib.Reflection
 {
@@ -31,8 +28,7 @@ namespace WcfRestContrib.Reflection
 
             if (type.CastableAs<T>())
                 return type;
-            else
-                throw new Exception(string.Format("{0} cannot be cast as {1}.", type.Name, typeof(T).Name));
+            throw new Exception(string.Format("{0} cannot be cast as {1}.", type.Name, typeof(T).Name));
         }
     }
 }

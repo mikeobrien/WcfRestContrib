@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Xml;
 using System.Collections;
 
@@ -15,7 +12,7 @@ namespace WcfRestContrib.Xml
             foreach (XmlElement child in nodes)
             {
                 node.AppendChild(child);
-                if (includeChildren && node.HasChildNodes) SortAlphabetically<T>(child, includeChildren);
+                if (includeChildren && node.HasChildNodes) SortAlphabetically<T>(child, true);
             }
         }
     }

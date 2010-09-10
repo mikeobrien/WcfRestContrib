@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceModel.Configuration;
+﻿using System.ServiceModel.Configuration;
 using System.Reflection;
 
 namespace WcfRestContrib.ServiceModel.Configuration
@@ -15,7 +14,7 @@ namespace WcfRestContrib.ServiceModel.Configuration
                         "CreateBehavior",
                         BindingFlags.Instance |
                         BindingFlags.NonPublic).
-                        Invoke(extensionElement, new object[0] { });
+                        Invoke(extensionElement, new object[] { });
             }
             catch (TargetInvocationException ex)
             {

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
-using WcfRestContrib.Xml;
 using System.Xml;
 
 namespace WcfRestContrib.Runtime.Serialization
@@ -12,10 +8,10 @@ namespace WcfRestContrib.Runtime.Serialization
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private System.Runtime.Serialization.DataContractSerializer _serializer;
-        private bool _verifyObjectName;
-        private Func<XmlReader, XmlReader> _createReader;
-        private Func<XmlWriter, XmlWriter> _createWriter;
+        private readonly DataContractSerializer _serializer;
+        private readonly bool _verifyObjectName;
+        private readonly Func<XmlReader, XmlReader> _createReader;
+        private readonly Func<XmlWriter, XmlWriter> _createWriter;
 
         // ────────────────────────── Constructors ──────────────────────────
 
@@ -29,7 +25,7 @@ namespace WcfRestContrib.Runtime.Serialization
             verifyObjectName) { }
 
         public WrappedDataContractSerializer(
-            System.Runtime.Serialization.DataContractSerializer serializer,
+            DataContractSerializer serializer,
             Func<XmlReader, XmlReader> createReader,
             Func<XmlWriter, XmlWriter> createWriter,
             bool verifyObjectName)
@@ -42,27 +38,27 @@ namespace WcfRestContrib.Runtime.Serialization
 
         // ────────────────────────── Implemented Members ──────────────────────────
 
-        public override bool IsStartObject(System.Xml.XmlDictionaryReader reader)
+        public override bool IsStartObject(XmlDictionaryReader reader)
         {
             return _serializer.IsStartObject(_createReader(reader));
         }
 
-        public override object ReadObject(System.Xml.XmlDictionaryReader reader, bool verifyObjectName)
+        public override object ReadObject(XmlDictionaryReader reader, bool verifyObjectName)
         {
             return _serializer.ReadObject(_createReader(reader), _verifyObjectName);
         }
 
-        public override void WriteEndObject(System.Xml.XmlDictionaryWriter writer)
+        public override void WriteEndObject(XmlDictionaryWriter writer)
         {
             _serializer.WriteEndObject(_createWriter(writer));
         }
 
-        public override void WriteObjectContent(System.Xml.XmlDictionaryWriter writer, object graph)
+        public override void WriteObjectContent(XmlDictionaryWriter writer, object graph)
         {
             _serializer.WriteObjectContent(_createWriter(writer), graph);
         }
 
-        public override void WriteStartObject(System.Xml.XmlDictionaryWriter writer, object graph)
+        public override void WriteStartObject(XmlDictionaryWriter writer, object graph)
         {
             _serializer.WriteStartObject(_createWriter(writer), graph);
         }

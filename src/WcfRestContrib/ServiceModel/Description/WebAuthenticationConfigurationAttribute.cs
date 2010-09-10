@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ServiceModel.Dispatcher;
-using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
-using System.Net;
 using WcfRestContrib.ServiceModel.Dispatcher;
-using WcfRestContrib.Web;
 using System.IdentityModel.Selectors;
 using WcfRestContrib.Reflection;
 
@@ -18,7 +11,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ───────────────────────────
 
-        WebAuthenticationConfigurationBehavior _behavior;
+        readonly WebAuthenticationConfigurationBehavior _behavior;
 
         // ────────────────────────── Constructors ─────────────────────────────
 

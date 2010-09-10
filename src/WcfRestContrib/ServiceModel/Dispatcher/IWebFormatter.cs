@@ -1,8 +1,4 @@
 ﻿using System;
-using System.ServiceModel.Channels;
-using System.Xml;
-using WcfRestContrib.ServiceModel.Channels;
-using System.Runtime.Serialization;
 
 namespace WcfRestContrib.ServiceModel.Dispatcher
 {

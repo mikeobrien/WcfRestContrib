@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
-using System.Runtime.Serialization;
 using System.IO;
 using System.Web;
 using WcfRestContrib.Xml;
@@ -14,14 +11,14 @@ namespace WcfRestContrib.ServiceModel.Channels
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private Stream _stream;
-        private string _pairSeperator;
-        private string _nameValueSeperator;
-        private string _nameEntitiesSeperator;
+        private readonly Stream _stream;
+        private readonly string _pairSeperator;
+        private readonly string _nameValueSeperator;
+        private readonly string _nameEntitiesSeperator;
 
         // ────────────────────────── Constructors ──────────────────────────
 
-        public NameValueReader(Stream stream, string pairSeperator, string nameValueSeperator, string nameEntitiesSeperator) 
+        protected NameValueReader(Stream stream, string pairSeperator, string nameValueSeperator, string nameEntitiesSeperator) 
         { 
             _stream = stream;
             _pairSeperator = pairSeperator;
@@ -43,21 +40,21 @@ namespace WcfRestContrib.ServiceModel.Channels
 
         private XmlDocument Decode(Stream stream, string pairSeperator, string nameValueSeperator, string nameEntitiesSeperator)
         {
-            Dictionary<string, XmlElement> elementMap = new Dictionary<string,XmlElement>();
-            XmlDocument document = new XmlDocument();
+            var elementMap = new Dictionary<string,XmlElement>();
+            var document = new XmlDocument();
             string formData;
 
             using (TextReader reader = new StreamReader(stream))
             { formData = reader.ReadToEnd(); }
 
-            if (formData != null && formData.Length > 0)
+            if (!formData.IsNullOrEmpty())
             {
-                string[] pairs = formData.Split(new string[] { pairSeperator }, StringSplitOptions.None);
+                var pairs = formData.Split(new [] { pairSeperator }, StringSplitOptions.None);
                 if (pairs.Length > 0)
                 {
-                    foreach (string pair in pairs)
+                    foreach (var pair in pairs)
                     {
-                        string[] nameValuePair = pair.Split(new string[] { nameValueSeperator }, StringSplitOptions.None);
+                        var nameValuePair = pair.Split(new [] { nameValueSeperator }, StringSplitOptions.None);
                         if (nameValuePair.Length > 0 && !elementMap.ContainsKey(nameValuePair[0]))
                         {
                             DecodeNameValuePair(
@@ -77,15 +74,15 @@ namespace WcfRestContrib.ServiceModel.Channels
 
         private void DecodeNameValuePair(XmlDocument document, Dictionary<string, XmlElement> elementMap, string name, string value, string nameEntitiesSeperator)
         {
-            string[] nameEntities = name.Split(new string[] { nameEntitiesSeperator }, StringSplitOptions.None);
+            var nameEntities = name.Split(new [] { nameEntitiesSeperator }, StringSplitOptions.None);
             
             if (nameEntities.Length < 2) 
                 throw new InvalidDataException(
                     string.Format("Form value name must contain at least two entities seperated by a '{0}'.", nameEntitiesSeperator));
 
-            XmlElement currentElement = document.DocumentElement;
+            var currentElement = document.DocumentElement;
 
-            for (int index = 0; index < nameEntities.Length; index++)
+            for (var index = 0; index < nameEntities.Length; index++)
             {
                 XmlElement nextElement = null;
                 if (index == 0)
@@ -98,7 +95,7 @@ namespace WcfRestContrib.ServiceModel.Channels
                 }
                 else
                 {
-                    string fullyQualifiedName = string.Join(nameEntitiesSeperator, nameEntities, 0, index + 1);
+                    var fullyQualifiedName = string.Join(nameEntitiesSeperator, nameEntities, 0, index + 1);
                     if (currentElement.HasChildNodes && elementMap.ContainsKey(fullyQualifiedName))
                         nextElement = elementMap[fullyQualifiedName];
                     if (nextElement == null)

@@ -11,8 +11,8 @@ namespace WcfRestContrib.ServiceModel.Dispatcher.Formatters
         {
             if (context.ContentFormat == WebFormatterDeserializationContext.DeserializationFormat.Binary)
             {
-                FormUrlEncodedReader formReader = new FormUrlEncodedReader(new MemoryStream(context.BinaryData));
-                DataContractSerializer serializer = new DataContractSerializer(type);
+                var formReader = new FormUrlEncodedReader(new MemoryStream(context.BinaryData));
+                var serializer = new DataContractSerializer(type);
                 return serializer.ReadObject(formReader, false);
             }
             throw new InvalidDataException("Data must be in binary format.");
@@ -20,8 +20,8 @@ namespace WcfRestContrib.ServiceModel.Dispatcher.Formatters
 
         public WebFormatterSerializationContext Serialize(object data, Type type)
         {
-            MemoryStream stream = new MemoryStream();
-            DataContractSerializer serializer = new DataContractSerializer(type);
+            var stream = new MemoryStream();
+            var serializer = new DataContractSerializer(type);
             serializer.WriteObject(new FormUrlEncodedWriter(stream), data);
             stream.Position = 0;
             return WebFormatterSerializationContext.CreateBinary(

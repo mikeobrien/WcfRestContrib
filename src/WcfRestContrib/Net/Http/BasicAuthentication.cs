@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net;
 using System.IdentityModel.Selectors;
@@ -53,21 +51,21 @@ namespace WcfRestContrib.Net.Http
 
         private void GetCredentials(WebHeaderCollection headers)
         {
-            string credentials = headers["Authorization"];
+            var credentials = headers["Authorization"];
             if (credentials != null) credentials = credentials.Trim();
 
             if (!string.IsNullOrEmpty(credentials))
             {
                 try
                 {
-                    string[] credentialParts = credentials.Split(new char[] { ' ' });
+                    var credentialParts = credentials.Split(new [] { ' ' });
                     if (credentialParts.Length == 2 && 
                         credentialParts[0].Equals("basic", 
                         StringComparison.OrdinalIgnoreCase))
                     {
-                        credentials = ASCIIEncoding.ASCII.GetString(
+                        credentials = Encoding.ASCII.GetString(
                             Convert.FromBase64String(credentialParts[1]));
-                        credentialParts = credentials.Split(new char[] { ':' }, 2);
+                        credentialParts = credentials.Split(new [] { ':' }, 2);
                         if (credentialParts.Length == 2)
                         {
                             _username = credentialParts[0];

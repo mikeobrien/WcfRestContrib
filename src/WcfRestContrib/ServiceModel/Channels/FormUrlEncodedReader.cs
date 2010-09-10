@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Xml;
 using System.Web;
 
 namespace WcfRestContrib.ServiceModel.Channels
@@ -24,8 +19,7 @@ namespace WcfRestContrib.ServiceModel.Channels
             {
                 return name.Substring(0, name.IndexOf('#'));
             }
-            else
-                return name ?? string.Empty;
+            return name ?? string.Empty;
         }
 
         public override string DecodeValue(string value)

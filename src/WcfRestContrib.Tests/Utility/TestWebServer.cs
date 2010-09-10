@@ -109,7 +109,7 @@ namespace WcfRestContrib.Tests.Utility
         /// <returns></returns>
         public string GetResponse(TestRestRequest rest)
         {
-            HttpWebResponse response = Invoke(rest);
+            var response = Invoke(rest);
             using(var reader = new StreamReader(response.GetResponseStream()))
             {
                 return reader.ReadToEnd();

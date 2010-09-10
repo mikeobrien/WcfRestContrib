@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IdentityModel.Policy;
 using System.Security.Principal;
 using System.IdentityModel.Claims;
@@ -12,8 +10,8 @@ namespace WcfRestContrib.IdentityModel.Policy
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private const string AUTH_CONTEXT_IDENTITY_PROPERTY_NAME = "Identities";
-        private IIdentity _identity;
+        private const string AuthContextIdentityPropertyName = "Identities";
+        private readonly IIdentity _identity;
 
         // ────────────────────────── Constructors ──────────────────────────
 
@@ -33,16 +31,15 @@ namespace WcfRestContrib.IdentityModel.Policy
 
         public bool Evaluate(EvaluationContext context, ref object state)
         {
-            List<IIdentity> identities = new List<IIdentity>();
-            identities.Add(_identity);
+            var identities = new List<IIdentity> {_identity};
 
             context.AddClaimSet(this, 
-                new DefaultClaimSet(this.Issuer, new Claim(ClaimTypes.Name, _identity == null ? null : _identity.Name, Rights.Identity)));
+                new DefaultClaimSet(Issuer, new Claim(ClaimTypes.Name, _identity == null ? null : _identity.Name, Rights.Identity)));
 
-            if (context.Properties.ContainsKey(AUTH_CONTEXT_IDENTITY_PROPERTY_NAME))
-                context.Properties[AUTH_CONTEXT_IDENTITY_PROPERTY_NAME] = identities;
+            if (context.Properties.ContainsKey(AuthContextIdentityPropertyName))
+                context.Properties[AuthContextIdentityPropertyName] = identities;
             else
-                context.Properties.Add(AUTH_CONTEXT_IDENTITY_PROPERTY_NAME, identities);
+                context.Properties.Add(AuthContextIdentityPropertyName, identities);
 
             return true;
         }

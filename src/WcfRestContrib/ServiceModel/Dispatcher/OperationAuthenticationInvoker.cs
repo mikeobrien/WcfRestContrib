@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
-using System.ServiceModel.Description;
-using System.ServiceModel.Channels;
-using System.Net;
 using System.IdentityModel.Selectors;
 using System.ServiceModel;
-using System.Security.Principal;
-using WcfRestContrib.ServiceModel.Web;
 
 namespace WcfRestContrib.ServiceModel.Dispatcher
 {
@@ -18,11 +10,11 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        private IOperationInvoker _invoker;
-        private IWebAuthenticationHandler _handler;
-        private UserNamePasswordValidator _validator;
-        private bool _requiresTransportLayerSecurity;
-        private string _source;
+        private readonly IOperationInvoker _invoker;
+        private readonly IWebAuthenticationHandler _handler;
+        private readonly UserNamePasswordValidator _validator;
+        private readonly bool _requiresTransportLayerSecurity;
+        private readonly string _source;
 
         // ────────────────────────── Constructors ──────────────────────────
 
