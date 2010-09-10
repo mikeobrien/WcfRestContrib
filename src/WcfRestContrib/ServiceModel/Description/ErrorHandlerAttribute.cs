@@ -16,16 +16,21 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
-        ErrorHandlerBehavior _behavior;
+        readonly ErrorHandlerBehavior _behavior;
 
         // ────────────────────────── Constructors ──────────────────────────
 
-        public ErrorHandlerAttribute(Type errorHandler)
+        public ErrorHandlerAttribute(Type errorHandler) : this(errorHandler, null, false) { }
+
+        public ErrorHandlerAttribute(
+            Type errorHandler, 
+            string unhandledErrorMessage,
+            bool returnRawException)
         {
             if (!errorHandler.CastableAs<IErrorHandler>())
-                throw new Exception(string.Format("errorHandler must implement IErrorHandler.", errorHandler.Name));
+                throw new Exception("errorHandler must implement IErrorHandler.");
 
-            _behavior = new ErrorHandlerBehavior(errorHandler);
+            _behavior = new ErrorHandlerBehavior(errorHandler, unhandledErrorMessage, returnRawException);
         }
 
         // ────────────────────────── IContractBehavior Members ──────────────────────────

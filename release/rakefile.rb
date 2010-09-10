@@ -21,7 +21,7 @@ task :init do
 		spec.platform = Gem::Platform::RUBY
 		spec.summary = "Goodies for .NET WCF Rest"
 		spec.name = "wcfrestcontrib"
-		spec.version = "1.0.5.2"
+		spec.version = "1.0.6.0"
 		spec.files = Dir["lib/**/*"]
 		spec.authors = ["Mike O'Brien"]
 		spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"

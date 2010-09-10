@@ -65,7 +65,7 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WcfRestContrib, Version=1.0.5.0, Culture=neutral, PublicKeyToken=89183999a8dc93b5" />
+    <Reference Include="WcfRestContrib, Version=1.0.6.0, Culture=neutral, PublicKeyToken=89183999a8dc93b5" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Catalog.xml" />

@@ -16,7 +16,9 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
     {
         // ────────────────────────── BehaviorExtensionElement Overrides ──────────────────────────
 
-        private const string ELEMENT_ERROR_HANDLER_TYPE = "errorHandlerType";
+        private const string ErrorHandlerTypeElement = "errorHandlerType";
+        private const string UnhandledErrorMessageElement = "unhandledErrorMessage";
+        private const string ReturnRawExceptionElement = "returnRawException";
 
         // ────────────────────────── BehaviorExtensionElement Overrides ──────────────────────────
 
@@ -27,7 +29,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
 
         protected override object CreateBehavior()
         {
-            Type errorHandler = null;
+            Type errorHandler;
             try
             {
                 errorHandler = ErrorHandlerType.GetType<IErrorHandler>();
@@ -37,16 +39,37 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
                 throw new Exception(string.Format("Invalid errorHandlerType specified in errorHandler behavior element. {0}", e));
             }
 
-            return new ErrorHandlerBehavior(errorHandler);
+            return new ErrorHandlerBehavior(
+                errorHandler,
+                UnhandledErrorMessage,
+                ReturnRawException);
         }
 
         // ────────────────────────── Public Members ──────────────────────────
 
-        [ConfigurationProperty(ELEMENT_ERROR_HANDLER_TYPE, IsRequired = true)]
+        [ConfigurationProperty(ErrorHandlerTypeElement, IsRequired = true)]
         public string ErrorHandlerType
         {
-            get { return (string) base[ELEMENT_ERROR_HANDLER_TYPE]; }
-            set { base[ELEMENT_ERROR_HANDLER_TYPE] = value; }
+            get { return (string) base[ErrorHandlerTypeElement]; }
+            set { base[ErrorHandlerTypeElement] = value; }
+        }
+
+        [ConfigurationProperty(UnhandledErrorMessageElement, IsRequired = false, DefaultValue = null)]
+        public string UnhandledErrorMessage
+        {
+            get
+            { return (string)base[UnhandledErrorMessageElement]; }
+            set
+            { base[UnhandledErrorMessageElement] = value; }
+        }
+
+        [ConfigurationProperty(ReturnRawExceptionElement, IsRequired = false, DefaultValue = false)]
+        public bool ReturnRawException
+        {
+            get
+            { return (bool)base[ReturnRawExceptionElement]; }
+            set
+            { base[ReturnRawExceptionElement] = value; }
         }
     }
 }

@@ -21,15 +21,24 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public const string HttpRequestInformationProperty = "HttpRequestInformation";
 
-        private IErrorHandler _errorHandler;
+        private readonly IErrorHandler _errorHandler;
 
         // ────────────────────────── Constructors ──────────────────────────
 
-        public ErrorHandlerBehavior(Type type)
+        public ErrorHandlerBehavior(Type type,
+            string unhandledErrorMessage,
+            bool returnRawException)
         {
-            _errorHandler = 
+            _errorHandler =
                 (IErrorHandler)Activator.CreateInstance(type);
+            UnhandledErrorMessage = unhandledErrorMessage;
+            ReturnRawException = returnRawException;
         }
+
+        // ────────────────────────── Public Members ──────────────────────────
+
+        public string UnhandledErrorMessage { get; set; }
+        public bool ReturnRawException { get; set; }
 
         // ────────────────────────── IServiceBehavior Members ──────────────────────────
 
