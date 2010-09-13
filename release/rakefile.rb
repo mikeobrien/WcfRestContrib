@@ -7,9 +7,9 @@ desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
   asm.version = ENV["GO_PIPELINE_LABEL"]
   asm.company_name = "Ultraviolet Catastrophe"
-  asm.product_name = "WCF REST Contrib"
-  asm.title = "WCF REST Contrib"
-  asm.description = "Goodies for WCF REST."
+  asm.product_name = "Wcf Rest Contrib"
+  asm.title = "Wcf Rest Contrib"
+  asm.description = "Goodies for Wcf Rest."
   asm.copyright = "Copyright (c) 2010 Ultraviolet Catastrophe"
   asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
@@ -25,6 +25,6 @@ end
 desc "Zips and eploys the application binaries."
 zip :deployBinaries => [:build]  do |zip|
      zip.directories_to_zip "src/WcfRestContrib/bin/Release"
-     zip.output_file = "WcfRestContrib_$(ENV['GO_PIPELINE_LABEL']).zip"
+     zip.output_file = "WcfRestContrib_${ENV['GO_PIPELINE_LABEL']}.zip"
      zip.output_path = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/"
 end
