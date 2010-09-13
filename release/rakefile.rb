@@ -55,7 +55,6 @@ zip :deploySample => :deployBinaries do |zip|
 end
 
 task :deployGem => :deploySample do
-	puts("Creating gem...")
 	spec = Gem::Specification.new do |spec|
 		spec.platform = Gem::Platform::RUBY
 		spec.summary = "Goodies for .NET WCF Rest"
@@ -68,7 +67,7 @@ task :deployGem => :deploySample do
 	end
 
 	Rake::GemPackageTask.new(spec) do |package|
-		package.package_dir_path = "release/pkg"
+		package.package_dir = "release/pkg"
 	end
 	
 	Common.CopyFiles("release/pkg/*.gem", ReleasePath) 
