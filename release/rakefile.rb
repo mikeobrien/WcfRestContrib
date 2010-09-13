@@ -84,7 +84,7 @@ end
 task :package => :prepareGemFiles
 
 desc "Push the gem to ruby gems"
-task :pushGem
+task :pushGem => :package do
 	result = system("gem", "push", "release/pkg/wcfrestcontrib-#{ENV['GO_PIPELINE_LABEL']}.gem")
 end
 
