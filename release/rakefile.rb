@@ -1,7 +1,7 @@
 require "albacore"
 require "release/robocopy"
 
-task :default => [:zip]
+task :default => [:deployBinaries]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -29,9 +29,8 @@ msbuild :build => [:assemblyInfo] do |msb|
   msb.solution = "src/WcfRestContrib.sln"
 end
 
-
 desc "Zips and eploys the application binaries."
-zip => [:build]  do |zip|
+zip :deployBinaries => [:build]  do |zip|
      zip.directories_to_zip "src/WcfRestContrib/bin/Release"
      zip.output_file = "WcfRestContrib_$(ENV['GO_PIPELINE_LABEL']).zip"
      zip.output_path = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/"
