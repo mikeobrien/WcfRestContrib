@@ -25,6 +25,6 @@ end
 desc "Zips and eploys the application binaries."
 zip :deployBinaries => [:build]  do |zip|
      zip.directories_to_zip "src/WcfRestContrib/bin/Release"
-     zip.output_file = "WcfRestContrib_${ENV['GO_PIPELINE_LABEL']}.zip"
+     zip.output_file = "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.zip"
      zip.output_path = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/"
 end
