@@ -14,13 +14,6 @@ assemblyinfo :assemblyInfo do |asm|
   asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
 
-/*
-desc "Updates the sample application wcf rest contrib assembly version."
-task :updateSampleVersion
-
-end
-*/
-
 desc "Builds the application."
 msbuild :build => [:assemblyInfo] do |msb|
   msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
