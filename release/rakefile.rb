@@ -6,21 +6,6 @@ require 'rake/gempackagetask'
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-spec = Gem::Specification.new do |spec|
-	spec.platform = Gem::Platform::RUBY
-	spec.summary = "Goodies for .NET WCF Rest"
-	spec.name = "wcfrestcontrib"
-	spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-	spec.files = Dir["src/WcfRestContrib/bin/Release/*"]
-	spec.authors = ["Mike O'Brien"]
-	spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
-	spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
-end
-
-Rake::GemPackageTask.new(spec) do |package|
-	package.package_dir = "release/pkg"
-end
-
 task :default => [:package]
 
 desc "Generate assembly info."
@@ -69,5 +54,38 @@ zip :deploySample => :deployBinaries do |zip|
      zip.output_path = ReleasePath
 end
 
-task :package => :deploySample
+desc "Prepares the gem files to be packaged."
+task :prepareGemFiles => :build do
+	target = "release/lib"
+	FileUtils.mkdir_p(target)
+    Dir.glob("src/WcfRestContrib/bin/Release/*") do |name|
+		FileUtils.cp(name, target)
+	end	
+end
+
+# Gemspec
+spec = Gem::Specification.new do |spec|
+	spec.platform = Gem::Platform::RUBY
+	spec.summary = "Goodies for .NET WCF Rest"
+	spec.name = "wcfrestcontrib"
+	spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
+	spec.files = Dir["lib/**/*"]
+	spec.authors = ["Mike O'Brien"]
+	spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
+	spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
+end
+
+# Create the Gem package task
+Rake::GemPackageTask.new(spec) do |package|
+	package.package_dir = "release/pkg"
+end
+
+# Make the gem package task dependent on the build
+task :package => :prepareGemFiles
+
+desc "Push the gem to ruby gems"
+task :pushGem
+	result = system("gem", "push", "release/pkg/wcfrestcontrib-#{ENV['GO_PIPELINE_LABEL']}.gem")
+end
+
 
