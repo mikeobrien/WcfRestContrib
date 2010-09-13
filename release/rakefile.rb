@@ -67,7 +67,7 @@ task :deployGem => :deploySample do
 	end
 
 	Rake::GemPackageTask.new(spec) do |package|
-		package.package_dir = "release/pkg"
+		package.package_dir = "d:\"
 	end
 	
 	Common.CopyFiles("release/pkg/*.gem", ReleasePath) 
