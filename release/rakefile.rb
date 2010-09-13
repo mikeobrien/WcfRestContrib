@@ -35,8 +35,13 @@ msbuild :build => :setAssemblyVersion do |msb|
   msb.solution = "src/WcfRestContrib.sln"
 end
 
+desc "Inits the deploy"
+task :initDeploy => :build do
+	Common.EnsurePath(ReleasePath)
+end
+
 desc "Zips and eploys the application binaries."
-zip :deployBinaries => :build do |zip|
+zip :deployBinaries => :initDeploy do |zip|
      zip.directories_to_zip "src/WcfRestContrib/bin/Release"
      zip.output_file = "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.zip"
      zip.output_path = ReleasePath
