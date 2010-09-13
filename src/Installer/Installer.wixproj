@@ -19,6 +19,7 @@
     <WixVariables>WixUIBannerBmp=Resources\bannrbmp.bmp;WixUIDialogBmp=Resources\dlgbmp.bmp;WixUIExclamationIco=Resources\exclamic.ico;WixUIInfoIco=Resources\info.ico;WixUINewIco=Resources\new.ico;WixUIUpIco=Resources\up.ico;WixUILicenseRtf=Resources\license.rtf</WixVariables>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE64;ICE43;ICE57</SuppressIces>
+    <SuppressValidation>True</SuppressValidation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -27,6 +28,7 @@
     <Cultures>en-US</Cultures>
     <SuppressPdbOutput>True</SuppressPdbOutput>
     <SuppressIces>ICE64;ICE43;ICE57</SuppressIces>
+    <SuppressValidation>True</SuppressValidation>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Installer.wxs" />
