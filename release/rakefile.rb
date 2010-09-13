@@ -6,7 +6,19 @@ require 'rake/gempackagetask'
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-CreateGemPackageTask()
+spec = Gem::Specification.new do |spec|
+	spec.platform = Gem::Platform::RUBY
+	spec.summary = "Goodies for .NET WCF Rest"
+	spec.name = "wcfrestcontrib"
+	spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
+	spec.files = Dir["src/WcfRestContrib/bin/Release/*"]
+	spec.authors = ["Mike O'Brien"]
+	spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
+	spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
+end
+
+Rake::GemPackageTask.new(spec) do |package|
+end
 
 task :default => [:package]
 
@@ -58,20 +70,3 @@ end
 
 task :package => :deploySample
 
-def CreateGemPackageTask()
-	spec = Gem::Specification.new do |spec|
-		spec.platform = Gem::Platform::RUBY
-		spec.summary = "Goodies for .NET WCF Rest"
-		spec.name = "wcfrestcontrib"
-		spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-		spec.files = Dir["src/WcfRestContrib/bin/Release/*"]
-		spec.authors = ["Mike O'Brien"]
-		spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
-		spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
-	end
-
-	Rake::GemPackageTask.new(spec) do |package|
-	end
-	
-	Common.CopyFiles("release/pkg/*.gem", ReleasePath) 
-end
