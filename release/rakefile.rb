@@ -6,7 +6,9 @@ require 'rake/gempackagetask'
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-task :default => [:deployGem]
+CreateGemPackageTask()
+
+task :default => [:package]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -54,7 +56,9 @@ zip :deploySample => :deployBinaries do |zip|
      zip.output_path = ReleasePath
 end
 
-task :deployGem => :deploySample do
+task :package => :deploySample
+
+def CreateGemPackageTask()
 	spec = Gem::Specification.new do |spec|
 		spec.platform = Gem::Platform::RUBY
 		spec.summary = "Goodies for .NET WCF Rest"
@@ -67,7 +71,6 @@ task :deployGem => :deploySample do
 	end
 
 	Rake::GemPackageTask.new(spec) do |package|
-		package.package_dir = "d:/"
 	end
 	
 	Common.CopyFiles("release/pkg/*.gem", ReleasePath) 
