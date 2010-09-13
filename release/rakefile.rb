@@ -4,7 +4,7 @@ require "release/common"
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/"
 
-task :default => [:deploySample]
+task :default => [:deployGem]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -47,3 +47,20 @@ zip :deploySample => :deployBinaries do |zip|
      zip.output_path = ReleasePath
 end
 
+task :deployGem => :deploySample do
+	spec = Gem::Specification.new do |spec|
+		spec.platform = Gem::Platform::RUBY
+		spec.summary = "Goodies for .NET WCF Rest"
+		spec.name = "wcfrestcontrib"
+		spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
+		spec.files = Dir["src/WcfRestContrib/bin/Release/*"]
+		spec.authors = ["Mike O'Brien"]
+		spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
+		spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
+	end
+
+	Rake::GemPackageTask.new(spec) do |package|
+	end
+	
+	Common.CopyFiles("release/pkg/*.gem", ReleasePath) 
+end
