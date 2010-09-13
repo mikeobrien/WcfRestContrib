@@ -18,6 +18,7 @@ spec = Gem::Specification.new do |spec|
 end
 
 Rake::GemPackageTask.new(spec) do |package|
+	package.package_dir = "release/pkg"
 end
 
 task :default => [:package]
