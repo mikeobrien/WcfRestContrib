@@ -125,6 +125,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>"$(ProgramFiles)\Microsoft F#\v4.0\fsi.exe" --quiet --exec "$(ProjectDir)PostCompile.fsx" ... $(ProjectDir)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

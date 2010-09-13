@@ -1,33 +1,23 @@
-require 'rubygems'
-require 'rake/gempackagetask'
+require "albacore"
+require "release/robocopy"
 
-task :default => [:init, :package, :clean]
+task :default => [:build]
 
-task :clean do
-	if FileTest.exists?("lib") then FileUtils.rm_rf("lib") end
+desc "Generate assembly info."
+assemblyinfo :assemblyInfo do |asm|
+  asm.version = ENV["GO_PIPELINE_LABEL"]
+  asm.company_name = "Ultraviolet Catastrophe"
+  asm.product_name = "WCF REST Contrib"
+  asm.title = "WCF REST Contrib"
+  asm.description = "Goodies for WCF REST."
+  asm.copyright = "Copyright (c) 2010 Ultraviolet Catastrophe"
+  asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
 
-task :init do
-	if FileTest.exists?("lib") then FileUtils.rm_rf("lib") end
-	if FileTest.exists?("pkg") then FileUtils.rm_rf("pkg") end
-	
-	FileUtils.mkdir_p "lib"
-	
-	Dir["../src/WcfRestContrib/bin/release/*"].each do | file |
-		FileUtils.copy(file, "lib");
-	end
-
-	spec = Gem::Specification.new do |spec|
-		spec.platform = Gem::Platform::RUBY
-		spec.summary = "Goodies for .NET WCF Rest"
-		spec.name = "wcfrestcontrib"
-		spec.version = "1.0.6.0"
-		spec.files = Dir["lib/**/*"]
-		spec.authors = ["Mike O'Brien"]
-		spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
-		spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
-	end
-
-	Rake::GemPackageTask.new(spec) do |package|
-	end
+desc "Builds the application."
+msbuild :build => [:assemblyInfo] do |msb|
+  msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
+  msb.properties :configuration => :Release
+  msb.targets :Clean, :Build
+  msb.solution = "src/WcfRestContrib.sln"
 end
