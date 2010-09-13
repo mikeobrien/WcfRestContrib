@@ -1,8 +1,10 @@
 require "albacore"
 require "release/robocopy"
 require "release/common"
+require 'rubygems'
+require 'rake/gempackagetask'
 
-ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/"
+ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
 task :default => [:deployGem]
 
