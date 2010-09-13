@@ -55,6 +55,7 @@ zip :deploySample => :deployBinaries do |zip|
 end
 
 task :deployGem => :deploySample do
+	puts("Creating gem...")
 	spec = Gem::Specification.new do |spec|
 		spec.platform = Gem::Platform::RUBY
 		spec.summary = "Goodies for .NET WCF Rest"
