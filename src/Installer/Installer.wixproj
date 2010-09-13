@@ -44,11 +44,4 @@
 	<Target Name="BeforeBuild">
 	</Target>
 	-->
-  <Target Name="AfterBuild">
-    <GetAssemblyIdentity AssemblyFiles="$(SolutionDir)WcfRestContrib\bin\WcfRestContrib.dll">
-      <Output TaskParameter="Assemblies" ItemName="GetVersionAssemblyInfo" />
-    </GetAssemblyIdentity>
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TargetDir)WcfRestContrib%(GetVersionAssemblyInfo.Version).msi" />
-    <Delete Files="$(TargetPath)" />
-  </Target>
 </Project>
