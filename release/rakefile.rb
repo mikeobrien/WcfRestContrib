@@ -37,7 +37,7 @@ end
 
 desc "Inits the deploy"
 task :initDeploy => :build do
-	Common.EnsurePath("d:/temp/test")
+	Common.EnsurePath(ReleasePath)
 end
 
 desc "Zips and eploys the application binaries."
