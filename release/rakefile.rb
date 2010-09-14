@@ -75,7 +75,7 @@ task :prepareGemFiles => :build do
 end
 
 desc "Creates gem"
-task :createGem => :prepareGemFiles do
+task :createGem do
 
 	spec = Gem::Specification.new do |spec|
 		spec.platform = Gem::Platform::RUBY
