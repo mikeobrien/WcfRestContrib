@@ -57,7 +57,7 @@ msbuild :buildSampleApp => :buildTestProject do |msb|
 end
 
 desc "Set assembly reference in the sample project."
-task :addSampleAssemblyReference => :deployBinaries do
+task :addSampleAssemblyReference => :buildSampleApp do
     path = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
 	replace = /<ProjectReference.*<\/ProjectReference>/m
 	reference = "<Reference Include=\"WcfRestContrib\"><HintPath>bin\WcfRestContrib.dll</HintPath></Reference>"
