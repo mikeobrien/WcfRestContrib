@@ -56,7 +56,7 @@ end
 
 desc "Prepares the gem files to be packaged."
 task :prepareGemFiles => :build do
-	target = "release/lib"
+	target = "gem/files/lib"
 	FileUtils.mkdir_p(target)
     Dir.glob("src/WcfRestContrib/bin/Release/*") do |name|
 		FileUtils.cp(name, target)
@@ -69,7 +69,7 @@ spec = Gem::Specification.new do |spec|
 	spec.summary = "Goodies for .NET WCF Rest"
 	spec.name = "wcfrestcontrib"
 	spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-	spec.files = Dir["lib/**/*"]
+	spec.files = Dir["gem/files/lib/**/*"]
 	spec.authors = ["Mike O'Brien"]
 	spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
 	spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
@@ -77,7 +77,7 @@ end
 
 # Create the Gem package task
 Rake::GemPackageTask.new(spec) do |package|
-	package.package_dir = "release/pkg"
+	package.package_dir = "gem/pkg"
 end
 
 # Make the gem package task dependent on the build
