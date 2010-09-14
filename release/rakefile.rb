@@ -74,9 +74,6 @@ task :prepareGemFiles => :build do
 	
 end
 
-desc "Creates gem"
-task :createGem do
-
 	spec = Gem::Specification.new do |spec|
 		spec.platform = Gem::Platform::RUBY
 		spec.summary = "Goodies for .NET WCF Rest"
@@ -91,6 +88,9 @@ task :createGem do
 	# Create the Gem package task
 	Rake::GemPackageTask.new(spec) do |package|
 	end
+desc "Creates gem"
+task :createGem do
+
 	
 	Rake::Task["package"].execute
 
