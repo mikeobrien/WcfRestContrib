@@ -73,6 +73,9 @@ task :prepareGemFiles => :build do
 	end	
 end
 
+desc "Init gem package task"
+task :initGemPackageTask => :prepareGemFiles do
+
 	# Gemspec
 	spec = Gem::Specification.new do |spec|
 		spec.platform = Gem::Platform::RUBY
@@ -89,9 +92,6 @@ end
 	Rake::GemPackageTask.new(spec) do |package|
 		package.package_dir = "gem/pkg"
 	end
-desc "Init gem package task"
-task :initGemPackageTask => :prepareGemFiles do
-
 
 end
 
