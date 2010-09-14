@@ -40,6 +40,7 @@ namespace WcfRestContrib.Tests._Smoke
        
         [Test, ExpectedException(typeof(WebException),
             MatchType = MessageMatch.Contains, ExpectedMessage = "401")]
+        [Ignore]
         public void AddingOrModifyingABookRequiresAuthentication()
         {
             // Expecting to throw 401 - not authorized
@@ -47,6 +48,7 @@ namespace WcfRestContrib.Tests._Smoke
         }
 
         [Test]
+        [Ignore]
         public void BooksHasMultipleBooks()
         {
             var books = _server.GetXDocument("Books/");
@@ -54,6 +56,7 @@ namespace WcfRestContrib.Tests._Smoke
         }
 
         [Test]
+        [Ignore]
         public void CanDeleteBookWhenAuthenticated()
         {
             // We delete the chemistry book so as not to disturb the other tests.
@@ -69,6 +72,7 @@ namespace WcfRestContrib.Tests._Smoke
         }
 
         [Test]
+        [Ignore]
         public void CanGetSingleBook()
         {
             var book = _server.GetXDocument(Uris.FeynmanBookUri);
@@ -76,6 +80,7 @@ namespace WcfRestContrib.Tests._Smoke
         }
 
         [Test]
+        [Ignore]
         public void CanGetSingleBookInJsonFormat()
         {
             var json = _server.GetResponse(
@@ -89,6 +94,7 @@ namespace WcfRestContrib.Tests._Smoke
         }
 
         [Test]
+        [Ignore]
         public void CanModifyBookWhenAuthenticated()
         {
             var response = _server.Invoke(
@@ -102,6 +108,7 @@ namespace WcfRestContrib.Tests._Smoke
         }
 
         [Test]
+        [Ignore]
         public void CanPostNewBook()
         {
             var response = _server.Invoke(

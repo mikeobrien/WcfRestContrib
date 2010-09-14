@@ -35,8 +35,14 @@ msbuild :build => :setAssemblyVersion do |msb|
     msb.solution = "src/WcfRestContrib.sln"
 end
 
+desc "NUnit Test Runner Example"
+nunit :unitTests => :build do |nunit|
+	nunit.path_to_command = "lib/nunit/net-2.0/nunit-console.exe"
+	nunit.assemblies "src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll"
+end
+
 desc "Inits the deploy"
-task :initDeploy => :build do
+task :initDeploy => :unitTests do
     Common.EnsurePath(ReleasePath)
 end
 
