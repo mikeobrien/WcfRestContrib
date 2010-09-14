@@ -38,7 +38,7 @@ end
 desc "Inits the deploy"
 task :initDeploy => :build do
 	if !Dir.exists?(ReleasePath) then 
-		FileUtils.mkdir_p(ReleasePath
+		FileUtils.mkdir_p(ReleasePath)
 	end
 end
 
