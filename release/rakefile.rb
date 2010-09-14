@@ -71,7 +71,7 @@ msbuild :buildInstaller => :addSampleAssemblyReference do |msb|
     msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
-    msb.solution = "Installer/Installer.wixproj"
+    msb.solution = "src/Installer/Installer.wixproj"
 end
 
 desc "NUnit Test Runner"
