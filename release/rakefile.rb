@@ -91,7 +91,7 @@ task :createGem do
 	Rake::GemPackageTask.new(spec) do |package|
 	end
 	
-	Rake::Task["package"].execute
+	Rake::Task["package"].invoke
 
 end
 
