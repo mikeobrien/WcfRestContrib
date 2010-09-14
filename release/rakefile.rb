@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-task :default => [:createGem]
+task :default => [:deploySample]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -102,6 +102,6 @@ end
 
 desc "Push the gem to ruby gems"
 task :pushGem => :package do
-	result = system("gem", "push", "release/pkg/wcfrestcontrib-#{ENV['GO_PIPELINE_LABEL']}.gem")
+	result = system("gem", "push", "gem/pkg/wcfrestcontrib-#{ENV['GO_PIPELINE_LABEL']}.gem")
 end
 
