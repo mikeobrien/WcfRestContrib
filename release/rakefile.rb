@@ -80,7 +80,6 @@ spec = Gem::Specification.new do |spec|
 	spec.summary = "Goodies for .NET WCF Rest"
 	spec.name = "wcfrestcontrib"
 	spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-	spec.files = Dir["lib/**/*"]
 	spec.authors = ["Mike O'Brien"]
 	spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
 	spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
@@ -90,8 +89,12 @@ end
 Rake::GemPackageTask.new(spec) do |package|
 end
 
+task :configureGemSpec => :prepareGemFiles do
+	spec.files = Dir["lib/**/*"]
+end
+
 # Make the gem package task dependent on the build
-task :package => :prepareGemFiles
+task :package => :configureGemSpec
 
 desc "Push the gem to ruby gems"
 task :pushGem => :package do
