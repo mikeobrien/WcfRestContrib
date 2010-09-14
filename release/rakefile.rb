@@ -4,9 +4,9 @@ require "release/common"
 require 'rubygems'
 require 'rake/gempackagetask'
 
-ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
+releasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-task :default => [:initDeploy]
+task :default => [:deploySample]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -37,23 +37,21 @@ end
 
 desc "Inits the deploy"
 task :initDeploy => :build do
-	path = "d:/temp/test2"
-	puts(path)
-	Common.EnsurePath(path)
+	Common.EnsurePath(releasePath)
 end
 
 desc "Zips and eploys the application binaries."
 zip :deployBinaries => :initDeploy do |zip|
      zip.directories_to_zip "src/WcfRestContrib/bin/Release"
      zip.output_file = "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.zip"
-     zip.output_path = ReleasePath
+     zip.output_path = releasePath
 end
 
 desc "Zips and eploys the application binaries."
 zip :deploySample => :deployBinaries do |zip|
      zip.directories_to_zip "src/NielsBohrLibrary"
      zip.output_file = "WcfRestContribSample_#{ENV['GO_PIPELINE_LABEL']}.zip"
-     zip.output_path = ReleasePath
+     zip.output_path = releasePath
 end
 
 desc "Prepares the gem files to be packaged."
