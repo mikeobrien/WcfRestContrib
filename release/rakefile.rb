@@ -63,7 +63,8 @@ task :prepareGemFiles => :build do
 		 FileUtils.rm_rf target
 	end
 
-	FileUtils.mkdir_p(target)
+	FileUtils.mkdir_p("#{target}/files/lib")
+	FileUtils.mkdir_p("#{target}/pkg")
 	
     Dir.glob("src/WcfRestContrib/bin/Release/*") do |name|
 		FileUtils.cp(name,  "#{target}/files/lib")
