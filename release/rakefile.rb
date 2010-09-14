@@ -39,6 +39,7 @@ desc "NUnit Test Runner Example"
 nunit :unitTests => :build do |nunit|
 	nunit.path_to_command = "lib/nunit/net-2.0/nunit-console.exe"
 	nunit.assemblies "src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll"
+	nunit.options "/xml=reports/TestResult.xml"
 end
 
 desc "Inits the deploy"
