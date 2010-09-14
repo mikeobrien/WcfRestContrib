@@ -63,25 +63,30 @@ task :prepareGemFiles => :build do
 	end	
 end
 
-# Gemspec
-spec = Gem::Specification.new do |spec|
-	spec.platform = Gem::Platform::RUBY
-	spec.summary = "Goodies for .NET WCF Rest"
-	spec.name = "wcfrestcontrib"
-	spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-	spec.files = Dir["lib/**/*"]
-	spec.authors = ["Mike O'Brien"]
-	spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
-	spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
-end
+desc "Init gem package task"
+task :initGemPackageTask => :prepareGemFiles do
 
-# Create the Gem package task
-Rake::GemPackageTask.new(spec) do |package|
-	package.package_dir = "gem/pkg"
+	# Gemspec
+	spec = Gem::Specification.new do |spec|
+		spec.platform = Gem::Platform::RUBY
+		spec.summary = "Goodies for .NET WCF Rest"
+		spec.name = "wcfrestcontrib"
+		spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
+		spec.files = Dir["lib/**/*"]
+		spec.authors = ["Mike O'Brien"]
+		spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
+		spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
+	end
+
+	# Create the Gem package task
+	Rake::GemPackageTask.new(spec) do |package|
+		package.package_dir = "gem/pkg"
+	end
+
 end
 
 # Make the gem package task dependent on the build
-task :package => :prepareGemFiles
+task :package => :initGemPackageTask
 
 desc "Push the gem to ruby gems"
 task :pushGem => :package do
