@@ -6,9 +6,9 @@ require "rake/gempackagetask"
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}"
 
-task :default => [:initDeploy]
+task :default => [:deploySample]
 
-desc "Inits the deploy"
+desc "Inits the build"
 task :initBuild do
 	Common.EnsurePath("reports")
 end

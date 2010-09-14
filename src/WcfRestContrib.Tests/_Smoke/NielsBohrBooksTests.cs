@@ -14,6 +14,7 @@ namespace WcfRestContrib.Tests._Smoke
     /// NielsBohrLibrary web application (as well as its data!).
     /// </summary>
     [TestFixture]
+    [Ignore("Ignoging this till I figure out how to test this.")]
     public class NielsBohrBooksTests
     {
         #region Test server management
@@ -40,7 +41,6 @@ namespace WcfRestContrib.Tests._Smoke
        
         [Test, ExpectedException(typeof(WebException),
             MatchType = MessageMatch.Contains, ExpectedMessage = "401")]
-        [Ignore]
         public void AddingOrModifyingABookRequiresAuthentication()
         {
             // Expecting to throw 401 - not authorized
