@@ -57,22 +57,21 @@ end
 desc "Prepares the gem files to be packaged."
 task :prepareGemFiles => :build do
 	
-	target = "gem"
+	gem = "gem"
+	lib = "#{gem}/files/lib"
+	pkg = "#{gem}/pkg"
 	
-	if Dir.exists?(target) then 
-		 FileUtils.rm_rf target
+	if Dir.exists?(gem) then 
+		 FileUtils.rm_rf gem
 	end
 
-	FileUtils.mkdir_p("#{target}/files/lib")
-	FileUtils.mkdir_p("#{target}/pkg")
+	FileUtils.mkdir_p(lib)
+	FileUtils.mkdir_p(pkg)
 	
     Dir.glob("src/WcfRestContrib/bin/Release/*") do |name|
-		FileUtils.cp(name,  "#{target}/files/lib")
+		FileUtils.cp(name, lib)
 	end	
 end
-
-desc "Init gem package task"
-task :initGemPackageTask => :prepareGemFiles do
 
 	# Gemspec
 	spec = Gem::Specification.new do |spec|
@@ -90,6 +89,9 @@ task :initGemPackageTask => :prepareGemFiles do
 	Rake::GemPackageTask.new(spec) do |package|
 		package.package_dir = "gem/pkg"
 	end
+desc "Init gem package task"
+task :initGemPackageTask => :prepareGemFiles do
+
 
 end
 
