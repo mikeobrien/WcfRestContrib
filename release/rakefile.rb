@@ -32,16 +32,50 @@ task :setAssemblyVersion => :assemblyInfo do
     Common.WriteAllFileText(path, project) 
 end
 
-desc "Builds the application."
-msbuild :build => :setAssemblyVersion do |msb|
+desc "Builds the library."
+msbuild :buildLibrary => :setAssemblyVersion do |msb|
     msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
-    msb.solution = "src/WcfRestContrib.sln"
+    msb.solution = "src/WcfRestContrib/WcfRestContrib.csproj"
 end
 
-desc "NUnit Test Runner Example"
-nunit :unitTests => :build do |nunit|
+desc "Builds the test project."
+msbuild :buildTestProject => :buildLibrary do |msb|
+    msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
+    msb.properties :configuration => :Release
+    msb.targets :Clean, :Build
+    msb.solution = "src/WcfRestContrib.Tests/WcfRestContrib.Tests.csproj"
+end
+
+desc "Builds the sample app."
+msbuild :buildSampleApp => :buildTestProject do |msb|
+    msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
+    msb.properties :configuration => :Release
+    msb.targets :Clean, :Build
+    msb.solution = "NielsBohrLibrary/NielsBohrLibrary.csproj"
+end
+
+desc "Set assembly reference in the sample project."
+task :addSampleAssemblyReference => :deployBinaries do
+    path = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
+	replace = /<ProjectReference.*<\/ProjectReference>/m
+	reference = "<Reference Include=\"WcfRestContrib\"><HintPath>bin\WcfRestContrib.dll</HintPath></Reference>"
+    project = Common.ReadAllFileText(path)
+    project = project.gsub(replace, reference)
+    Common.WriteAllFileText(path, project) 
+end
+
+desc "Builds the installer."
+msbuild :buildInstaller => :addSampleAssemblyReference do |msb|
+    msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
+    msb.properties :configuration => :Release
+    msb.targets :Clean, :Build
+    msb.solution = "Installer/Installer.wixproj"
+end
+
+desc "NUnit Test Runner"
+nunit :unitTests => :buildInstaller do |nunit|
 	nunit.path_to_command = "lib/nunit/net-2.0/nunit-console.exe"
 	nunit.assemblies "src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll"
 	nunit.options "/xml=reports/TestResult.xml"
@@ -59,18 +93,8 @@ zip :deployBinaries => :initDeploy do |zip|
     zip.output_path = ReleasePath
 end
 
-desc "Set assembly version in web.config"
-task :addSampleAssemblyReference => :deployBinaries do
-    path = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
-	replace = /<ProjectReference.*<\/ProjectReference>/m
-	reference = "<Reference Include=\"WcfRestContrib\"><HintPath>bin\WcfRestContrib.dll</HintPath></Reference>"
-    project = Common.ReadAllFileText(path)
-    project = project.gsub(replace, reference)
-    Common.WriteAllFileText(path, project) 
-end
-
 desc "Zips and eploys the application binaries."
-zip :deploySample => :addSampleAssemblyReference do |zip|
+zip :deploySample => :deployBinaries do |zip|
     zip.directories_to_zip "src/NielsBohrLibrary"
     zip.output_file = "WcfRestContribSample_#{ENV['GO_PIPELINE_LABEL']}.zip"
     zip.output_path = ReleasePath
