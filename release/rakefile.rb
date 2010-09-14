@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-task :default => [:deploySample]
+task :default => [:build]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -34,79 +34,3 @@ msbuild :build => :setAssemblyVersion do |msb|
   msb.targets :Clean, :Build
   msb.solution = "src/WcfRestContrib.sln"
 end
-
-desc "Inits the deploy"
-task :initDeploy => :build do
-	Common.EnsurePath("D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/")
-end
-
-desc "Zips and eploys the application binaries."
-zip :deployBinaries => :initDeploy do |zip|
-     zip.directories_to_zip "src/WcfRestContrib/bin/Release"
-     zip.output_file = "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.zip"
-     zip.output_path = ReleasePath
-end
-
-desc "Zips and eploys the application binaries."
-zip :deploySample => :deployBinaries do |zip|
-     zip.directories_to_zip "src/NielsBohrLibrary"
-     zip.output_file = "WcfRestContribSample_#{ENV['GO_PIPELINE_LABEL']}.zip"
-     zip.output_path = ReleasePath
-end
-
-desc "Prepares the gem files to be packaged."
-task :prepareGemFiles => :build do
-    
-    gem = "gem"
-    lib = "#{gem}/files/lib"
-    docs = "#{gem}/files/docs"
-    pkg = "#{gem}/pkg"
-    
-    if Dir.exists?(gem) then 
-         FileUtils.rm_rf gem
-    end
-
-    FileUtils.mkdir_p(lib)
-    FileUtils.mkdir_p(pkg)
-    FileUtils.mkdir_p(docs)
-    
-    Dir.glob("src/WcfRestContrib/bin/Release/*") do |name|
-        FileUtils.cp(name, lib)
-    end    
-    
-    Dir.glob("src/docs/**/*") do |name|
-        FileUtils.cp(name, docs)
-    end    
-    
-end
-
-desc "Creates gem"
-task :createGem => :prepareGemFiles do
-
-    FileUtils.cd("gem/files") do
-    
-        spec = Gem::Specification.new do |spec|
-            spec.platform = Gem::Platform::RUBY
-            spec.summary = "Goodies for .NET WCF Rest"
-            spec.name = "wcfrestcontrib"
-            spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-            spec.files = Dir["lib/**/*"]
-            spec.files = Dir["docs/**/*"]
-            spec.authors = ["Mike O'Brien"]
-            spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
-            spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
-        end
-
-        Rake::GemPackageTask.new(spec) do |package|
-            package.package_dir = "../pkg"
-        end
-        
-        Rake::Task["package"].invoke
-    end
-end
-
-desc "Push the gem to ruby gems"
-task :pushGem => :createGem do
-	result = system("gem", "push", "gem/pkg/wcfrestcontrib-#{ENV['GO_PIPELINE_LABEL']}.gem")
-end
-
