@@ -42,11 +42,9 @@
               <Directory Id='b4165f5362' Name='Niels Bohr Library'>
                 
 						    <Component Id='Samples' Guid='2E946E79-754F-4E7D-8D07-57628667B011'>
-							    <File Id='ecc273f7e0' Name='NielsBohrLibrary.sln' DiskId='1' Source='..\NielsBohrLibrary\NielsBohrLibrary.Distrib.sln' Vital='yes'>
+							    <File Id='ecc273f7e0' Name='NielsBohrLibrary.csproj' DiskId='1' Source='..\NielsBohrLibrary\NielsBohrLibrary.csproj' Vital='yes'>
 								    <Shortcut Id="da00134443" Directory="ProgramMenuDir" Name="Niels Bohr Library Sample" WorkingDirectory='INSTALLDIR'  />
 							    </File>
-
-                  <File Id='e6fcd93ad0' Name='NielsBohrLibrary.csproj' DiskId='1' Source='..\NielsBohrLibrary\NielsBohrLibrary.Distrib.csproj' Vital='yes' />
 
                   <File Id='c9935ee541' Name='Books.svc' DiskId='1' Source='..\NielsBohrLibrary\Books.svc' Vital='yes'/>
                   <File Id='b68d837a4e' Name='Books.svc.cs' DiskId='1' Source='..\NielsBohrLibrary\Books.svc.cs' Vital='yes'/>
