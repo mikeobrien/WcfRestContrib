@@ -107,7 +107,7 @@ zip :deploySample => :deployBinaries do |zip|
 end
 
 desc "Prepares the gem files to be packaged."
-task :prepareGemFiles => :build do
+task :prepareGemFiles => :deploySample do
     
     gem = "gem"
     lib = "#{gem}/files/lib"
@@ -152,5 +152,11 @@ end
 desc "Push the gem to ruby gems"
 task :pushGem => :createGem do
 	result = system("gem", "push", "gem/pkg/wcfrestcontrib-#{ENV['GO_PIPELINE_LABEL']}.gem")
+end
+
+desc "Tag the current release"
+task :tagRelease do
+	result = system("git", "tag", "-a", "v#{ENV['GO_PIPELINE_LABEL']}", "-m", "Release of v#{ENV['GO_PIPELINE_LABEL']}")
+	result = system("git", "push", "--tags")
 end
 
