@@ -156,7 +156,7 @@ end
 
 desc "Tag the current release"
 task :tagRelease do
-	result = system("git", "tag", "-a", "v#{ENV['GO_PIPELINE_LABEL']}")
+	result = system("git", "tag", "-a", "v#{ENV['GO_PIPELINE_LABEL']}", "-m", "v#{ENV['GO_PIPELINE_LABEL']}")
 	puts("Tag complete #{result}")
 	result = system("git", "push", "--tags")
 	puts("Push complete #{result}")
