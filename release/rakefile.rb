@@ -37,7 +37,9 @@ end
 
 desc "Inits the deploy"
 task :initDeploy => :build do
-	Common.EnsurePath(ReleasePath)
+	if !Dir.exists?(ReleasePath) then 
+		FileUtils.mkdir_p(ReleasePath
+	end
 end
 
 desc "Zips and eploys the application binaries."
