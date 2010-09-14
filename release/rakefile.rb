@@ -88,7 +88,6 @@ end
 
 # Create the Gem package task
 Rake::GemPackageTask.new(spec) do |package|
-	package.package_dir = "gem/pkg"
 end
 
 # Make the gem package task dependent on the build
