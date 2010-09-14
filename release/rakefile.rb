@@ -92,7 +92,7 @@ task :createGem do
 	Rake::GemPackageTask.new(spec) do |package|
 	end
 	
-	Rake::Task["njnljl"].execute
+	Rake::Task["package"].execute
 
 end
 
