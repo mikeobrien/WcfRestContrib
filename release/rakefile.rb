@@ -156,7 +156,11 @@ end
 
 desc "Tag the current release"
 task :tagRelease do
+	puts("Tagging the release")
 	result = system("git", "tag", "-a", "v#{ENV['GO_PIPELINE_LABEL']}", "-m", "\"Release of v#{ENV['GO_PIPELINE_LABEL']}\"")
+	puts("Tag complete #{result}")
+	puts("Pushing the tag")
 	result = system("git", "push", "--tags")
+	puts("Push complete #{result}")
 end
 
