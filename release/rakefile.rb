@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/"
 
-task :default => [:deploySample]
+task :default => [:initDeploy]
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo do |asm|
@@ -27,17 +27,17 @@ task :setAssemblyVersion => :assemblyInfo do
 	Common.WriteAllFileText(path, project) 
 end
 
-desc "Inits the deploy"
-task :initDeploy => :build do
-	Common.EnsurePath(ReleasePath)
-end
-
 desc "Builds the application."
 msbuild :build => :setAssemblyVersion do |msb|
   msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
   msb.properties :configuration => :Release
   msb.targets :Clean, :Build
   msb.solution = "src/WcfRestContrib.sln"
+end
+
+desc "Inits the deploy"
+task :initDeploy => :build do
+	Common.EnsurePath("d:/temp/test")
 end
 
 desc "Zips and eploys the application binaries."
