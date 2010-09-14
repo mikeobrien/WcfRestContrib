@@ -83,10 +83,10 @@ task :initGemPackageTask => :prepareGemFiles do
 		package.package_dir = "gem/pkg"
 	end
 
+	# Make the gem package task dependent on the build
+	task :package => :initGemPackageTask
 end
 
-# Make the gem package task dependent on the build
-task :package => :initGemPackageTask
 
 desc "Push the gem to ruby gems"
 task :pushGem => :package do
