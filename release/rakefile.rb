@@ -37,9 +37,7 @@ end
 
 desc "Inits the deploy"
 task :initDeploy => :build do
-	if !Dir.exists?(ReleasePath) then 
-		FileUtils.mkdir_p(ReleasePath)
-	end
+	Common.EnsurePath("D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}/")
 end
 
 desc "Zips and eploys the application binaries."
