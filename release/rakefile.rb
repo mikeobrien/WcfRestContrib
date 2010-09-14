@@ -59,8 +59,18 @@ zip :deployBinaries => :initDeploy do |zip|
     zip.output_path = ReleasePath
 end
 
+desc "Set assembly version in web.config"
+task :addSampleAssemblyReference => :deployBinaries do
+    path = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
+	replace = /<ProjectReference.*<\/ProjectReference>/m
+	reference = "<Reference Include=\"WcfRestContrib\"><HintPath>bin\WcfRestContrib.dll</HintPath></Reference>"
+    project = Common.ReadAllFileText(path)
+    project = project.gsub(replace, reference)
+    Common.WriteAllFileText(path, project) 
+end
+
 desc "Zips and eploys the application binaries."
-zip :deploySample => :deployBinaries do |zip|
+zip :deploySample => :addSampleAssemblyReference do |zip|
     zip.directories_to_zip "src/NielsBohrLibrary"
     zip.output_file = "WcfRestContribSample_#{ENV['GO_PIPELINE_LABEL']}.zip"
     zip.output_path = ReleasePath
