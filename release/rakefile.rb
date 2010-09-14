@@ -86,8 +86,15 @@ task :initDeploy => :unitTests do
     Common.EnsurePath(ReleasePath)
 end
 
+desc "Deploys the installer"
+task :deployInstaller => :initDeploy do
+	path = "src/Installer/bin/Release/"
+	File.rename("#{path}WcfRestContrib.msi", "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.msi")
+	Common.CopyFiles("#{path}*.msi", ReleasePath)
+end
+
 desc "Zips and eploys the application binaries."
-zip :deployBinaries => :initDeploy do |zip|
+zip :deployBinaries => :deployInstaller do |zip|
     zip.directories_to_zip "src/WcfRestContrib/bin/Release"
     zip.output_file = "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.zip"
     zip.output_path = ReleasePath
