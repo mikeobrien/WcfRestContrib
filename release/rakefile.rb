@@ -37,7 +37,7 @@ end
 
 desc "Inits the deploy"
 task :initDeploy => :build do
-	path = ReleasePath
+	path = "d:/temp/test2"
 	puts(path)
 	Common.EnsurePath(path)
 end
