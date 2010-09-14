@@ -56,10 +56,17 @@ end
 
 desc "Prepares the gem files to be packaged."
 task :prepareGemFiles => :build do
-	target = "gem/files/lib"
+	
+	target = "gem"
+	
+	if Dir.exists?(target) then 
+		 FileUtils.rm_rf target
+	end
+
 	FileUtils.mkdir_p(target)
+	
     Dir.glob("src/WcfRestContrib/bin/Release/*") do |name|
-		FileUtils.cp(name, target)
+		FileUtils.cp(name,  "#{target}/files/lib")
 	end	
 end
 
@@ -83,10 +90,10 @@ task :initGemPackageTask => :prepareGemFiles do
 		package.package_dir = "gem/pkg"
 	end
 
-	# Make the gem package task dependent on the build
-	task :package => :initGemPackageTask
 end
 
+# Make the gem package task dependent on the build
+task :package => :initGemPackageTask
 
 desc "Push the gem to ruby gems"
 task :pushGem => :package do
