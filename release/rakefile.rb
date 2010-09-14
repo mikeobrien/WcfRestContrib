@@ -90,7 +90,6 @@ task :initGemPackageTask => :prepareGemFiles do
 
 	# Create the Gem package task
 	Rake::GemPackageTask.new(spec) do |package|
-		package.package_dir = "gem/pkg"
 	end
 
 end
