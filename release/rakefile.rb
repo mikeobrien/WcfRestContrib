@@ -89,8 +89,7 @@ end
 desc "Deploys the installer"
 task :deployInstaller => :initDeploy do
 	path = "src/Installer/bin/Release/"
-	File.rename("#{path}WcfRestContrib.msi", "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.msi")
-	Common.CopyFiles("#{path}*.msi", ReleasePath)
+	File.rename("#{path}WcfRestContrib.msi", "#{ReleasePath}WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.msi")
 end
 
 desc "Zips and eploys the application binaries."
