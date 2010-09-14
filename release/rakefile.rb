@@ -77,22 +77,26 @@ end
 desc "Creates gem"
 task :createGem => :prepareGemFiles do
 
-	spec = Gem::Specification.new do |spec|
-		spec.platform = Gem::Platform::RUBY
-		spec.summary = "Goodies for .NET WCF Rest"
-		spec.name = "wcfrestcontrib"
-		spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
-		spec.files = Dir["gem/files/lib/**/*"]
-		spec.authors = ["Mike O'Brien"]
-		spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
-		spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
-	end
-
-	Rake::GemPackageTask.new(spec) do |package|
-		package.package_dir = "gem/pkg"
-	end
+	FileUtils.cd("gem/files") do
 	
-	Rake::Task["package"].invoke
+		spec = Gem::Specification.new do |spec|
+			spec.platform = Gem::Platform::RUBY
+			spec.summary = "Goodies for .NET WCF Rest"
+			spec.name = "wcfrestcontrib"
+			spec.version = "#{ENV['GO_PIPELINE_LABEL']}"
+			spec.files = Dir["lib/**/*"]
+			spec.authors = ["Mike O'Brien"]
+			spec.homepage = "http://github.com/mikeobrien/WcfRestContrib"
+			spec.description = "The WCF REST Contrib library adds functionality to the current .NET WCF REST implementation."
+		end
+
+		Rake::GemPackageTask.new(spec) do |package|
+			package.package_dir = "../pkg"
+		end
+		
+		Rake::Task["package"].invoke
+	
+	end
 
 end
 
