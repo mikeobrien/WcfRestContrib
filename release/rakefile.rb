@@ -8,8 +8,13 @@ ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib
 
 task :default => [:initDeploy]
 
+desc "Inits the deploy"
+task :initBuild do
+	Common.EnsurePath("reports")
+end
+
 desc "Generate assembly info."
-assemblyinfo :assemblyInfo do |asm|
+assemblyinfo :assemblyInfo => :initBuild do |asm|
     asm.version = ENV["GO_PIPELINE_LABEL"]
     asm.company_name = "Ultraviolet Catastrophe"
     asm.product_name = "Wcf Rest Contrib"
@@ -45,7 +50,6 @@ end
 desc "Inits the deploy"
 task :initDeploy => :unitTests do
     Common.EnsurePath(ReleasePath)
-	Common.EnsurePath("reports")
 end
 
 desc "Zips and eploys the application binaries."
