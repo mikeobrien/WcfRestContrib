@@ -2,7 +2,7 @@
 
 namespace WcfRestContrib.Xml
 {
-    public class PoxXmlReader : XmlDictionaryReader 
+    public class PoxXmlReader : XmlDictionaryReader
     {
         // ────────────────────────── Private Fields ──────────────────────────
 
@@ -20,7 +20,7 @@ namespace WcfRestContrib.Xml
 
         // ────────────────────────── Protected Members ──────────────────────────
 
-        protected virtual XmlDocument GetDocument() 
+        protected virtual XmlDocument GetDocument()
         {
             var document = new XmlDocument();
             if (_sourceReader != null) document.Load(_sourceReader);
@@ -54,6 +54,19 @@ namespace WcfRestContrib.Xml
         public override bool ReadToFollowing(string localName, string namespaceUri) { return base.ReadToFollowing(localName); }
         public override bool ReadToNextSibling(string localName, string namespaceUri) { return base.ReadToNextSibling(localName); }
         public override string this[string name, string namespaceUri] { get { return base[name]; } }
+
+        public override bool CanReadBinaryContent
+        {
+            get
+            {
+                return Reader.CanReadBinaryContent;
+            }
+        }
+
+        public override int ReadContentAsBase64(byte[] buffer, int index, int count)
+        {
+            return Reader.ReadContentAsBase64(buffer, index, count);
+        }
 
         public override bool Read()
         {
