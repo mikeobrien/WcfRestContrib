@@ -34,7 +34,6 @@ end
 
 desc "Builds the library."
 msbuild :buildLibrary => :setAssemblyVersion do |msb|
-    msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/WcfRestContrib/WcfRestContrib.csproj"
@@ -42,7 +41,6 @@ end
 
 desc "Builds the test project."
 msbuild :buildTestProject => :buildLibrary do |msb|
-    msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/WcfRestContrib.Tests/WcfRestContrib.Tests.csproj"
@@ -50,7 +48,6 @@ end
 
 desc "Builds the sample app."
 msbuild :buildSampleApp => :buildTestProject do |msb|
-    msb.path_to_command = File.join(ENV['windir'], 'Microsoft.NET', 'Framework', 'v4.0.30319', 'MSBuild.exe')
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
