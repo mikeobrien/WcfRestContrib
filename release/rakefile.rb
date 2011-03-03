@@ -72,7 +72,7 @@ end
 
 desc "NUnit Test Runner"
 nunit :unitTests => :buildInstaller do |nunit|
-	nunit.path_to_command = "lib/nunit/net-2.0/nunit-console.exe"
+	nunit.command = "lib/nunit/net-2.0/nunit-console.exe"
 	nunit.assemblies "src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll"
 	nunit.options "/xml=reports/TestResult.xml"
 end
