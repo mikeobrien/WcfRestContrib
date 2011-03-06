@@ -1,8 +1,7 @@
 require "albacore"
 require "release/robocopy"
 require "release/common"
-require "rubygems"
-require "rake/gempackagetask"
+require "release/nuget"
 
 ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}"
 
