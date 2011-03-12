@@ -9,14 +9,10 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 {
     public class ServiceAuthenticationInspector : Attribute, IDispatchMessageInspector 
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly IWebAuthenticationHandler _handler;
         private readonly UserNamePasswordValidator _validator;
         private readonly bool _requiresTransportLayerSecurity;
         private readonly string _source;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public ServiceAuthenticationInspector(
             IWebAuthenticationHandler handler,
@@ -29,8 +25,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             _requiresTransportLayerSecurity = requiresTransportLayerSecurity;
             _source = source;
         }
-
-        // ────────────────────────── IDispatchMessageInspector Members ──────────────────────────
 
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {

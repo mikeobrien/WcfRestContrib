@@ -9,11 +9,7 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class WebAuthenticationConfigurationAttribute : Attribute, IServiceBehavior 
     {
-        // ────────────────────────── Private Fields ───────────────────────────
-
         readonly WebAuthenticationConfigurationBehavior _behavior;
-
-        // ────────────────────────── Constructors ─────────────────────────────
 
         public WebAuthenticationConfigurationAttribute(
             Type authenticationHandler,
@@ -34,12 +30,8 @@ namespace WcfRestContrib.ServiceModel.Description
                 source);
         }
 
-        // ────────────────────────── Public Members ─────────────────────────────
-
         public WebAuthenticationConfigurationBehavior BaseBehavior
         { get { return _behavior; } }
-
-        // ────────────────────────── IServiceBehavior Members ───────────────────
 
         public void AddBindingParameters(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         { _behavior.AddBindingParameters(serviceDescription, serviceHostBase, endpoints, bindingParameters); }

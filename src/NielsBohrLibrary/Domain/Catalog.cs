@@ -10,11 +10,7 @@ namespace NielsBohrLibrary.Domain
 {
     public static class Catalog
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private static readonly List<CatalogItem> _catalog = new List<CatalogItem>();
-
-        // ────────────────────────── Constructor ──────────────────────────
 
         static Catalog()
         {
@@ -36,8 +32,6 @@ namespace NielsBohrLibrary.Domain
             foreach (var item in items)
                 _catalog.Add(item);
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public static IEnumerable<CatalogItem> GetCatalog()
         {
@@ -100,8 +94,6 @@ namespace NielsBohrLibrary.Domain
                 return false;
             }
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private static string GetCatalogPath()
         {

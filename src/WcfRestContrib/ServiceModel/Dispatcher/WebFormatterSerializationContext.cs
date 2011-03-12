@@ -5,16 +5,12 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 {
     public class WebFormatterSerializationContext
     {
-        // ────────────────────────── Public Constants ──────────────────────────
-
         public enum SerializationFormat
         {
             Binary,
             Xml,
             Json
         }
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         private WebFormatterSerializationContext(byte[] binaryData)
         {
@@ -30,8 +26,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                 ContentFormat = SerializationFormat.Xml;
             XmlSerializer = xmlSerializer;
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public SerializationFormat ContentFormat { get; private set; }
         public byte[] BinaryData { get; private set; }

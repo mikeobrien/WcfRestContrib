@@ -6,8 +6,6 @@ namespace WcfRestContrib.ServiceModel.Web
     [AttributeUsage( AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple=false, Inherited=true)]
     public class ServiceConfigurationAttribute : Attribute 
     {
-        // ────────────────────────── Constructors ──────────────────────────
-
         public ServiceConfigurationAttribute(bool customErrorHandler) :
             this(null, customErrorHandler, TransferMode.Buffered) { }
 
@@ -42,8 +40,6 @@ namespace WcfRestContrib.ServiceModel.Web
             BehaviorConfiguration = behaviorConfiguration;
             BindingConfiguration = bindingConfiguration;
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public bool CustomErrorHandler { get; private set; }
         public TransferMode TransferMode { get; private set; }

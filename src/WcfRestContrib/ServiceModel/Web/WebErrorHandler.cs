@@ -3,6 +3,8 @@ using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
+using WcfRestContrib.DependencyInjection;
+using WcfRestContrib.Diagnostics;
 using WcfRestContrib.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Dispatcher;
 using System.Net.Mime;
@@ -15,8 +17,6 @@ namespace WcfRestContrib.ServiceModel.Web
 {
     public class WebErrorHandler : IErrorHandler 
     {
-        // ────────────────────────── IErrorHandler Members ──────────────────────────
-
         public void ProvideFault(Exception error, MessageVersion version, ref Message fault)
         {
             WebException webException;
@@ -88,24 +88,6 @@ namespace WcfRestContrib.ServiceModel.Web
             return true;
         }
 
-        // ────────────────────────── Private Members ──────────────────────────
-
-        private static WebErrorHandlerConfigurationBehavior GetWebErrorHandlerConfiguration()
-        {
-            var behavior = 
-                    OperationContext.Current.Host.Description.Behaviors.
-                    Find<WebErrorHandlerConfigurationBehavior>();
-
-            if (behavior == null)
-            {
-                var attribute =
-                    OperationContext.Current.Host.Description.Behaviors.
-                    Find<WebErrorHandlerConfigurationAttribute>();
-                if (attribute != null) behavior = attribute.BaseBehavior;
-            }
-            return behavior;
-        }
-
         private static void InternalHandleError(Exception error)
         {
             var behavior = GetWebErrorHandlerConfiguration();
@@ -118,11 +100,21 @@ namespace WcfRestContrib.ServiceModel.Web
                     ErrorHandlerBehavior.HttpRequestInformationProperty))
                     info = (RequestInformation)OperationContext.Current.OutgoingMessageProperties[
                         ErrorHandlerBehavior.HttpRequestInformationProperty];
-                else
-                    info = new RequestInformation();
+                else info = new RequestInformation();
 
-                behavior.LogHandler.Write(error, info);
+                GetLogHandler(behavior.LogHandler).Write(error, info);
             }
+        }
+
+        private static WebErrorHandlerConfigurationBehavior GetWebErrorHandlerConfiguration()
+        {
+            return OperationContext.Current.Host.Description.FindBehavior<WebErrorHandlerConfigurationBehavior, 
+                                                                    WebErrorHandlerConfigurationAttribute>(x => x.BaseBehavior);
+        }
+
+        private static IWebLogHandler GetLogHandler(Type type)
+        {
+            return OperationContext.Current.Host.Description.GetObjectFactory().Create<IWebLogHandler>(type);
         }
 
         private static string GenerateResponseText(string message)
@@ -132,8 +124,6 @@ namespace WcfRestContrib.ServiceModel.Web
                 message);
         }
 
-        // ────────────────────────── Private Types ──────────────────────────
-
         [DataContract(Name="Error", Namespace="")]
         private class WebExceptionContract : IWebExceptionDataContract
         {
@@ -142,8 +132,6 @@ namespace WcfRestContrib.ServiceModel.Web
 
             [DataMember(Name = "Message")]
             public string Message { get; set; }
-
-            // ────────────────────────── IWebExceptionContract Implementation ──────────────────────────
 
             public void Init(WebException exception)
             {

@@ -8,13 +8,9 @@ using WcfRestContrib.Reflection;
 
 namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
 {
-    public class ConfigurationBehaviorElement : BehaviorExtensionElement
+    public class BehaviorElement : BehaviorExtensionElement
     {
-        // ────────────────────────── Private Fields ────────────────────────────────────
-
         private const string FormattersElement = "formatters";
-
-        // ────────────────────────── BehaviorExtensionElement Overrides ────────────────
 
         public override Type BehaviorType
         {
@@ -46,8 +42,6 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
             return new WebDispatchFormatterConfigurationBehavior(
                 formatters, Formatters.DefaultMimeType);
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         [ConfigurationProperty(FormattersElement, IsRequired = true)]
         public FormattersElement Formatters

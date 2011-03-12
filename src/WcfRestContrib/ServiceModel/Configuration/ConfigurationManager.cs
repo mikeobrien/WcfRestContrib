@@ -5,14 +5,10 @@ namespace WcfRestContrib.ServiceModel.Configuration
 {
     public static class ConfigurationManager
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private const string ServiceModelElement = "system.serviceModel/";
         private const string ServicesElement = ServiceModelElement + "services";
         private const string BehaviorsElement = ServiceModelElement + "behaviors";
         private const string BindingsElement = ServiceModelElement + "bindings";
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public static ServiceBehaviorElement GetServiceBehaviorElement(string behaviorConfiguration)
         {

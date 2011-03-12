@@ -4,12 +4,8 @@ namespace WcfRestContrib.Xml
 {
     public class PoxXmlReader : XmlDictionaryReader
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly XmlReader _sourceReader;
         private XmlReader _reader;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public PoxXmlReader() { }
 
@@ -18,16 +14,12 @@ namespace WcfRestContrib.Xml
             _sourceReader = reader;
         }
 
-        // ────────────────────────── Protected Members ──────────────────────────
-
         protected virtual XmlDocument GetDocument()
         {
             var document = new XmlDocument();
             if (_sourceReader != null) document.Load(_sourceReader);
             return document;
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private XmlReader Reader
         {
@@ -42,8 +34,6 @@ namespace WcfRestContrib.Xml
                 return _reader;
             }
         }
-
-        // ────────────────────────── Overriden Members ──────────────────────────
 
         public override bool IsStartElement(string localname, string ns) { return base.IsStartElement(localname); }
         public override string GetAttribute(string name, string namespaceUri) { return Reader.GetAttribute(name); }
@@ -78,8 +68,6 @@ namespace WcfRestContrib.Xml
 
             return true;
         }
-
-        // ────────────────────────── Passthrough Members ──────────────────────────
 
         public override string NamespaceURI { get { return Reader.NamespaceURI; } }
         public override int AttributeCount { get { return Reader.AttributeCount; } }

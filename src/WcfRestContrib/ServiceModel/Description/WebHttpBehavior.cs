@@ -7,18 +7,12 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class WebHttpBehavior : System.ServiceModel.Description.WebHttpBehavior
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly bool _customErrorHandler;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebHttpBehavior(bool customErrorHandler)
         {
             _customErrorHandler = customErrorHandler;
         }
-
-        // ────────────────────────── WebHttpBehavior Overrides ──────────────────────────
 
         protected override void AddServerErrorHandlers(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
         {
@@ -43,8 +37,6 @@ namespace WcfRestContrib.ServiceModel.Description
 
             return formatter;
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private static void SwapBehaviors(OperationDescription operationDescription, IOperationBehavior remove, IOperationBehavior add)
         {

@@ -8,19 +8,13 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 {
     public class RedirectInspector : Attribute, IParameterInspector 
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly string _redirectUrlQuerystringParameter;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public RedirectInspector(
             string redirectUrlQuerystringParameter)
         {
             _redirectUrlQuerystringParameter = redirectUrlQuerystringParameter;
         }
-
-        // ────────────────────────── IParameterInspector Members ──────────────────────────
 
         public void AfterCall(string operationName, object[] outputs, object returnValue, object correlationState)
         {
@@ -36,8 +30,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         {
             return null;
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private static string GetRedirectUrl(string redirectUrlQuerystringParameter)
         {

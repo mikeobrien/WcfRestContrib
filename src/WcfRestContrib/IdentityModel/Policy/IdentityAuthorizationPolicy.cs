@@ -8,20 +8,14 @@ namespace WcfRestContrib.IdentityModel.Policy
 {
     public class IdentityAuthorizationPolicy : IAuthorizationPolicy
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private const string AuthContextIdentityPropertyName = "Identities";
         private readonly IIdentity _identity;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public IdentityAuthorizationPolicy(IIdentity identity)
         {
             Id = Guid.NewGuid().ToString();
             _identity = identity;
         }
-
-        // ────────────────────────── IAuthorizationPolicy Implementation ──────────────────────────
 
         public string Id
         { get; private set; }

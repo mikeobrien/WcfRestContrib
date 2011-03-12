@@ -8,15 +8,11 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 {
     public class OperationAuthenticationInvoker : Attribute, IOperationInvoker 
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly IOperationInvoker _invoker;
         private readonly IWebAuthenticationHandler _handler;
         private readonly UserNamePasswordValidator _validator;
         private readonly bool _requiresTransportLayerSecurity;
         private readonly string _source;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public OperationAuthenticationInvoker(
             IOperationInvoker invoker,
@@ -31,8 +27,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             _requiresTransportLayerSecurity = requiresTransportLayerSecurity;
             _source = source;
         }
-
-        // ────────────────────────── IOperationInvoker Members ──────────────────────────
 
         public object[] AllocateInputs()
         { return _invoker.AllocateInputs(); }

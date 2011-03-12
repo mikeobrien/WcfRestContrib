@@ -6,8 +6,6 @@ namespace WcfRestContrib.ServiceModel.Channels
 {
     public abstract class NameValueWriter : XmlDictionaryWriter
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         bool _inAttribute;
         bool _firstElement = true;
         readonly Stack<string> _fullyQualifiedName = new Stack<string>();
@@ -16,8 +14,6 @@ namespace WcfRestContrib.ServiceModel.Channels
         readonly string _pairSeperator;
         readonly string _nameValueSeperator;
 
-        // ────────────────────────── Constructors ──────────────────────────
-
         protected NameValueWriter(string pairSeperator, string nameValueSeperator, string nameEntitiesSeperator)
         {
             _pairSeperator = pairSeperator;
@@ -25,13 +21,9 @@ namespace WcfRestContrib.ServiceModel.Channels
             _nameEntitiesSeperator = nameEntitiesSeperator;
         }
 
-        // ────────────────────────── Abstract Methods ──────────────────────────
-
         protected abstract void Write(string nameValuePair);
         protected abstract string EncodeName(string name, int index);
         protected abstract string EncodeValue(string value);
-
-        // ────────────────────────── Implemented Members ──────────────────────────
 
         public override void WriteStartElement(string prefix, string localName, string ns)
         {
@@ -77,12 +69,8 @@ namespace WcfRestContrib.ServiceModel.Channels
         public override void WriteEndElement() 
         { if (_fullyQualifiedName.Count > 0) _fullyQualifiedName.Pop(); }
 
-        // ────────────────────────── Private Members ──────────────────────────
-
         private string GetCurrentFullyQualifiedName()
         { return string.Join(_nameEntitiesSeperator, _fullyQualifiedName.Reverse().ToArray()); }
-
-        // ────────────────────────── Not Implemented ──────────────────────────
 
         public override void WriteBase64(byte[] buffer, int index, int count) { }
         public override void WriteCData(string text) { }

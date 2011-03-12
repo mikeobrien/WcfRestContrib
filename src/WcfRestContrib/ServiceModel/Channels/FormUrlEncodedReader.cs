@@ -6,12 +6,8 @@ namespace WcfRestContrib.ServiceModel.Channels
 {
     public class FormUrlEncodedReader : NameValueReader 
     {
-        // ────────────────────────── Constructors ──────────────────────────
-
         public FormUrlEncodedReader(Stream stream):
             base(stream, "&", "=", ".") { }
-
-        // ────────────────────────── Implemented Members ──────────────────────────
 
         public override string DecodeName(string name)
         {

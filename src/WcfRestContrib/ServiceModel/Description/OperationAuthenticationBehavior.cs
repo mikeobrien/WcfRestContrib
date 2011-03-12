@@ -1,36 +1,36 @@
 ﻿using System.Configuration;
+using System.IdentityModel.Selectors;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Dispatcher;
+using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
     public class OperationAuthenticationBehavior : IOperationBehavior 
     {
-        // ────────────────────────── IOperationBehavior Members ──────────────────────────
-
         public void ApplyDispatchBehavior(OperationDescription operationDescription, 
             DispatchOperation dispatchOperation)
         {
             var behavior =
                 operationDescription.DeclaringContract.FindBehavior
                     <WebAuthenticationConfigurationBehavior,
+                    WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior) ??
+                dispatchOperation.Parent.ChannelDispatcher.Host.Description.FindBehavior
+                    <WebAuthenticationConfigurationBehavior,
                     WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
-
-            if (behavior == null)
-                behavior = dispatchOperation.Parent.ChannelDispatcher.Host.Description.FindBehavior
-                        <WebAuthenticationConfigurationBehavior,
-                        WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
 
             if (behavior == null)
                 throw new ConfigurationErrorsException(
                     "OperationAuthenticationConfigurationBehavior not applied to contract or service. This behavior is required to configure operation authentication.");
+            
+            var objectFactory = dispatchOperation.Parent.ChannelDispatcher.Host.Description.GetObjectFactory();
 
             dispatchOperation.Invoker = new OperationAuthenticationInvoker(
                 dispatchOperation.Invoker,
-                behavior.AuthenticationHandler,
-                behavior.UsernamePasswordValidator,
+                objectFactory.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler),
+                objectFactory.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator),
                 behavior.RequireSecureTransport,
                 behavior.Source);
         }

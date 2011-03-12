@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Description;
+using WcfRestContrib.DependencyInjection;
 using WcfRestContrib.ServiceModel.Configuration;
 
 namespace WcfRestContrib.ServiceModel.Description
@@ -41,14 +42,11 @@ namespace WcfRestContrib.ServiceModel.Description
             Func<TAttribute, TBehavior> convert) 
             where TBehavior : class where TAttribute : class
         {
-            var behavior =
-                contract.Behaviors.Find<TBehavior>();
+            var behavior = contract.Behaviors.Find<TBehavior>();
 
             if (behavior == null)
             {
-                var attribute =
-                    contract.Behaviors.
-                    Find<TAttribute>();
+                var attribute = contract.Behaviors.Find<TAttribute>();
                 if (attribute != null) behavior = convert(attribute);
             }
             return behavior;

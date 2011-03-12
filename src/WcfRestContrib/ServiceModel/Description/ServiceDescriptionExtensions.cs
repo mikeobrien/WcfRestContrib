@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Description;
+using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
@@ -9,20 +10,23 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         public static TBehavior FindBehavior<TBehavior, TAttribute>(
             this ServiceDescription service,
-            Func<TAttribute, TBehavior> convert) 
+            Func<TAttribute, TBehavior> attributeMap) 
             where TBehavior : class where TAttribute : class
         {
-            var behavior =
-                service.Behaviors.Find<TBehavior>();
+            var behavior = service.Behaviors.Find<TBehavior>();
 
             if (behavior == null)
             {
-                var attribute =
-                    service.Behaviors.
-                    Find<TAttribute>();
-                if (attribute != null) behavior = convert(attribute);
+                var attribute = service.Behaviors.Find<TAttribute>();
+                if (attribute != null) behavior = attributeMap(attribute);
             }
             return behavior;
+        }
+
+        public static IObjectFactory GetObjectFactory(this ServiceDescription service)
+        {
+            var behavior = service.FindBehavior<DependencyInjectionBehavior, DependencyInjectionAttribute>(x => x.BaseBehavior);
+            return behavior == null ? DefaultObjectFactory.Instance : behavior.ObjectFactory;
         }
 
         public static List<T> GetAttributes<T>(this ServiceDescription service) where T:Attribute

@@ -1,17 +1,12 @@
 ﻿using System;
 using System.ServiceModel.Description;
-using WcfRestContrib.Diagnostics;
 using WcfRestContrib.ServiceModel.Web;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
     public class WebErrorHandlerConfigurationBehavior : IServiceBehavior
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly Type _exceptionDataContract;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebErrorHandlerConfigurationBehavior(
             Type logHandler,
@@ -19,20 +14,17 @@ namespace WcfRestContrib.ServiceModel.Description
             bool returnRawException,
             Type exceptionDataContract)
         {
-            if (logHandler != null) 
-                LogHandler = (IWebLogHandler)Activator.CreateInstance(logHandler);
+            LogHandler = logHandler;
             UnhandledErrorMessage = unhandledErrorMessage;
             ReturnRawException = returnRawException;
             _exceptionDataContract = exceptionDataContract;
         }
 
-        // ────────────────────────── Public Members ──────────────────────────
-
-        public IWebLogHandler LogHandler { get; set; }
+        public Type LogHandler { get; set; }
+        public Type ExceptionDataContract { get; set; }
         public string UnhandledErrorMessage { get; set; }
         public bool ReturnRawException { get; set; }
-        public bool HasExceptionDataContract
-        { get { return _exceptionDataContract != null; } }
+        public bool HasExceptionDataContract { get { return _exceptionDataContract != null; } }
 
         public IWebExceptionDataContract CreateExceptionDataContract()
         {
@@ -45,8 +37,6 @@ namespace WcfRestContrib.ServiceModel.Description
                 throw new Exception(string.Format("Unable to create web exception data contract {0}: {1}", _exceptionDataContract.Name, e.Message), e);
             }
         }
-
-        // ────────────────────────── IServiceBehavior Members ──────────────────────────
 
         public void AddBindingParameters(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, System.ServiceModel.Channels.BindingParameterCollection bindingParameters) { }
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase) { }

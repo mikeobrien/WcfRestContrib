@@ -9,14 +9,10 @@ namespace WcfRestContrib.ServiceModel.Channels
 {
     public abstract class NameValueReader : PoxXmlReader
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly Stream _stream;
         private readonly string _pairSeperator;
         private readonly string _nameValueSeperator;
         private readonly string _nameEntitiesSeperator;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         protected NameValueReader(Stream stream, string pairSeperator, string nameValueSeperator, string nameEntitiesSeperator) 
         { 
@@ -26,12 +22,8 @@ namespace WcfRestContrib.ServiceModel.Channels
             _nameEntitiesSeperator = nameEntitiesSeperator;
         }
 
-        // ────────────────────────── Abstract Members ──────────────────────────
-
         public abstract string DecodeName(string name);
         public abstract string DecodeValue(string value);
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         protected override XmlDocument GetDocument()
         {

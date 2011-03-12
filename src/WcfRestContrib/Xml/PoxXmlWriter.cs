@@ -4,20 +4,13 @@ namespace WcfRestContrib.Xml
 {
     public class PoxXmlWriter : XmlDictionaryWriter
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly XmlWriter _writer;
         private bool _inAttribute;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public PoxXmlWriter(XmlWriter writer)
         {
             _writer = writer;
         }
-
-
-        // ────────────────────────── Overriden Members ──────────────────────────
 
         public override void WriteStartAttribute(string prefix, string localName, string ns) 
         {
@@ -34,8 +27,6 @@ namespace WcfRestContrib.Xml
         {
             _inAttribute = false;
         }
-
-        // ────────────────────────── Passthrough Members ──────────────────────────
 
         public override void WriteQualifiedName(XmlDictionaryString localName, XmlDictionaryString namespaceUri) { base.WriteQualifiedName(localName, null); }
         public override void WriteQualifiedName(string localName, string ns) { base.WriteQualifiedName(localName, string.Empty); }

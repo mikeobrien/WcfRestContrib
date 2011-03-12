@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
-using System.Collections.Specialized;
 using WcfRestContrib.ServiceModel.Web;
 using WcfRestContrib.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Description;
@@ -16,8 +14,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 {
     public class WebDispatchFormatter : IDispatchMessageFormatter
     {
-        // ────────────────────────── Public Constants ──────────────────────────
-
         public enum FormatterDirection
         {
             Both,
@@ -28,8 +24,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         public const string WebDispatcherFormatterProperty = "WebDispatcherFormatter";
         public const string WebDispatcherFormatterAccept = "WebDispatcherFormatterAccept";
 
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private static readonly QueryStringConverter QueryStringConverter = new QueryStringConverter();
 
         private readonly RequestMessagePartDescription[] _requestParameters;
@@ -37,8 +31,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         private readonly IDispatchMessageFormatter _originalFormatter;
         private readonly FormatterDirection _direction;
         private readonly WebFormatterFactory _formatterFactory;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebDispatchFormatter(
             WebFormatterFactory formatterFactory,
@@ -55,14 +47,10 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                 _originalFormatter = originalFormatter;
         }
 
-        // ────────────────────────── Public Members ──────────────────────────
-
         public Message Serialize(object result, Type responseType, string[] contentTypes)
         {
             return Serialize(_formatterFactory, result, responseType, contentTypes);
         }
-
-        // ────────────────────────── IDispatchMessageFormatter Members ──────────────────────────
 
         public void DeserializeRequest(Message message, object[] parameters)
         {
@@ -111,8 +99,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             }
             return _originalFormatter.SerializeReply(messageVersion, parameters, result);
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private static void Deserialize(
             Message message, 

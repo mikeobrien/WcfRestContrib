@@ -8,16 +8,12 @@ using WcfRestContrib.Reflection;
 
 namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
 {
-    public class ConfigurationBehaviorElement : BehaviorExtensionElement
+    public class BehaviorElement : BehaviorExtensionElement
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private const string AuthHandlerTypeElement = "authenticationHandlerType";
         private const string UsernamePasswordValidatorTypeElement = "usernamePasswordValidatorType";
         private const string RequireSecureTransportElement = "requireSecureTransport";
         private const string SourceElement = "source";
-
-        // ────────────────────────── BehaviorExtensionElement Overrides ────────────────
 
         public override Type BehaviorType
         {
@@ -52,8 +48,6 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
                 RequireSecureTransport,
                 Source);
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         [ConfigurationProperty(AuthHandlerTypeElement, IsRequired = true)]
         public string OperationAuthenticationHandlerTypeName

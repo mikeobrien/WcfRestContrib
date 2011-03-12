@@ -6,11 +6,7 @@ namespace WcfRestContrib.ServiceModel.Channels
 {
     public class BinaryBodyWriter : BodyWriter
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly byte[] _data;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public BinaryBodyWriter(string data) : base(true)
         {
@@ -21,8 +17,6 @@ namespace WcfRestContrib.ServiceModel.Channels
         {
             _data = data;
         }
-
-        // ────────────────────────── Overriden Members ──────────────────────────
 
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {

@@ -9,11 +9,7 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class WebErrorHandlerConfigurationAttribute : Attribute, IServiceBehavior
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly WebErrorHandlerConfigurationBehavior _behavior;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebErrorHandlerConfigurationAttribute(
             Type logHandler, 
@@ -52,12 +48,8 @@ namespace WcfRestContrib.ServiceModel.Description
             _behavior = new WebErrorHandlerConfigurationBehavior(logHandler, unhandledErrorMessage, returnRawException, exceptionDataContract);
         }
 
-        // ────────────────────────── Public Members ──────────────────────────
-
         public WebErrorHandlerConfigurationBehavior BaseBehavior
         { get { return _behavior; } }
-
-        // ────────────────────────── IServiceBehavior Members ──────────────────────────
 
         public void AddBindingParameters(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         { _behavior.AddBindingParameters(serviceDescription, serviceHostBase, endpoints, bindingParameters); }

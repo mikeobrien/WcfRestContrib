@@ -8,16 +8,12 @@ using WcfRestContrib.Diagnostics;
 
 namespace WcfRestContrib.ServiceModel.Configuration.WebErrorHandler
 {
-    public class ConfigurationBehaviorElement : BehaviorExtensionElement
+    public class BehaviorElement : BehaviorExtensionElement
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private const string LogHandlerTypeElement = "logHandlerType";
         private const string UnhandledErrorMessageElement = "unhandledErrorMessage";
         private const string ReturnRawExceptionElement = "returnRawException";
         private const string ExceptionDataContractTypeElement = "exceptionDataContractType";
-
-        // ────────────────────────── BehaviorExtensionElement Overrides ──────────────────────────
 
         public override Type BehaviorType
         {
@@ -53,8 +49,6 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebErrorHandler
                 ReturnRawException,
                 exceptionDataContract);
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         [ConfigurationProperty(LogHandlerTypeElement, IsRequired = false, DefaultValue = null)]
         public string LogHandlerType

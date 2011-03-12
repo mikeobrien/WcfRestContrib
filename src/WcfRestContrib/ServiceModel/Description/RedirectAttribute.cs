@@ -7,18 +7,12 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class RedirectAttribute : Attribute, IOperationBehavior 
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         readonly RedirectBehavior _behavior;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public RedirectAttribute(string redirectUrlQuerystringParameter)
         {
             _behavior = new RedirectBehavior(redirectUrlQuerystringParameter);
         }
-
-        // ────────────────────────── IOperationBehavior Members ──────────────────────────
 
         public void ApplyDispatchBehavior(OperationDescription operationDescription, DispatchOperation dispatchOperation)
         { _behavior.ApplyDispatchBehavior(operationDescription, dispatchOperation); }

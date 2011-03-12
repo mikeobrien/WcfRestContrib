@@ -6,25 +6,15 @@ namespace WcfRestContrib.ServiceModel.Web
 {
     public class WebServiceHost : System.ServiceModel.Web.WebServiceHost
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private ServiceConfigurationAttribute _serviceConfigurationAttribute;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebServiceHost(
             Type serviceType, params Uri[] baseAddresses)
-            : base(serviceType, baseAddresses)
-        {
-        }
+            : base(serviceType, baseAddresses) { }
 
         public WebServiceHost(
             object singletonInstance, params Uri[] baseAddresses)
-            : base(singletonInstance, baseAddresses)
-        {
-        }
-
-        // ────────────────────────── Overriden Members ──────────────────────────
+            : base(singletonInstance, baseAddresses) { }
 
         protected override void OnOpening()
         {
@@ -65,8 +55,6 @@ namespace WcfRestContrib.ServiceModel.Web
                     contract.Value.LoadContractBehaviors(contractConfig.BehaviorConfiguration);
             }
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private ServiceConfigurationAttribute ServiceConfigurationAttribute
         {

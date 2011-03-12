@@ -8,16 +8,10 @@ namespace WcfRestContrib.Web
 {
     public class ServiceAnonymityModule : IHttpModule
     {
-        // ────────────────────────── Private Fields ─────────────────────────────
-
         private static readonly IEnumerable<KeyValuePair<string, string>> ServiceMapping;
-
-        // ────────────────────────── Constructors ───────────────────────────────
 
         static ServiceAnonymityModule()
         { ServiceMapping = GetServiceMapping(); }
-
-        // ────────────────────────── IHttpModule Implementation ─────────────────
 
         public void Dispose() { }
 
@@ -26,8 +20,6 @@ namespace WcfRestContrib.Web
             app.BeginRequest +=
                 (s, e) => EnsureServiceMapping();
         }
-
-        // ────────────────────────── Private Members ───────────────────────────
 
         private static void EnsureServiceMapping()
         {

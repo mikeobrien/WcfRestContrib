@@ -7,21 +7,15 @@ namespace WcfRestContrib.Net.Http
 {
     public class BasicAuthentication 
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private string _username;
         private string _password;
         private bool _valid;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public BasicAuthentication(WebHeaderCollection headers)
         {
             GetCredentials(headers);
         }
         
-        // ────────────────────────── Public Members ──────────────────────────
-
         public string Username { get { return _username; } }
 
         public bool Authenticate(string username, string password)
@@ -46,8 +40,6 @@ namespace WcfRestContrib.Net.Http
             headers["WWW-Authenticate"] = 
                 string.Format("Basic realm=\"{0}\"", realm);
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         private void GetCredentials(WebHeaderCollection headers)
         {

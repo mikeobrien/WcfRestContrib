@@ -10,18 +10,12 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class WebDispatchFormatterBehavior : IOperationBehavior
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly WebDispatchFormatter.FormatterDirection _direction;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebDispatchFormatterBehavior(WebDispatchFormatter.FormatterDirection direction)
         {
             _direction = direction;
         }
-
-        // ────────────────────────── IOperationBehavior Members ──────────────────────────
 
         public void ApplyDispatchBehavior(OperationDescription operationDescription, DispatchOperation dispatchOperation)
         {

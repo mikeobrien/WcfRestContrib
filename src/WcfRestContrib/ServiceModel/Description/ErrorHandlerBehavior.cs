@@ -8,83 +8,65 @@ using System.ServiceModel.Channels;
 using System.Collections.ObjectModel;
 using System.Net;
 using WcfRestContrib.Net.Http;
+using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
     public class ErrorHandlerBehavior : IServiceBehavior, IContractBehavior
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         public const string HttpRequestInformationProperty = "HttpRequestInformation";
 
-        private readonly IErrorHandler _errorHandler;
+        private readonly Type _errorHandler;
 
-        // ────────────────────────── Constructors ──────────────────────────
-
-        public ErrorHandlerBehavior(Type type,
-            string unhandledErrorMessage,
-            bool returnRawException)
+        public ErrorHandlerBehavior(Type type, string unhandledErrorMessage, bool returnRawException)
         {
-            _errorHandler =
-                (IErrorHandler)Activator.CreateInstance(type);
+            _errorHandler = type;
             UnhandledErrorMessage = unhandledErrorMessage;
             ReturnRawException = returnRawException;
         }
 
-        // ────────────────────────── Public Members ──────────────────────────
-
         public string UnhandledErrorMessage { get; set; }
         public bool ReturnRawException { get; set; }
 
-        // ────────────────────────── IServiceBehavior Members ──────────────────────────
-
-        public void ApplyDispatchBehavior(
-            ServiceDescription serviceDescription, 
-            ServiceHostBase serviceHostBase)
+        public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
-            foreach (ChannelDispatcher dispatcher in 
-                serviceHostBase.ChannelDispatchers)
-            {
-                if (!dispatcher.ErrorHandlers.Contains(_errorHandler))
-                    dispatcher.ErrorHandlers.Add(_errorHandler);
+            var objectFactory = serviceDescription.GetObjectFactory();
+            var errorHandler = objectFactory.Create<IErrorHandler>(_errorHandler);
 
-                foreach (var endpoint in dispatcher.Endpoints)
-                    if (endpoint.DispatchRuntime.MessageInspectors.FirstOrDefault(
-                        i => i.GetType() == typeof(HttpRequestInformationInspector)) == null)
-                        endpoint.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
+            foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers)
+            {
+                if (!dispatcher.ErrorHandlers.Contains(errorHandler)) dispatcher.ErrorHandlers.Add(errorHandler);
+
+                foreach (var endpoint in dispatcher.Endpoints.
+                                Where(endpoint => endpoint.DispatchRuntime.MessageInspectors.
+                                    FirstOrDefault(i => i.GetType() == typeof (HttpRequestInformationInspector)) == null))
+                    endpoint.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
             }
         }
 
         public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) { }
         public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) { }
 
+        public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) 
+        {
+            var objectFactory = dispatchRuntime.ChannelDispatcher.Host.Description.GetObjectFactory();
+            var errorHandler = objectFactory.Create<IErrorHandler>(_errorHandler);
 
-        // ────────────────────────── IContractBehavior Members ──────────────────────────
+            if (!dispatchRuntime.ChannelDispatcher.ErrorHandlers.Contains(errorHandler))
+                dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(errorHandler);
 
-        public void ApplyDispatchBehavior(
-            ContractDescription contractDescription, 
-            ServiceEndpoint endpoint, 
-            DispatchRuntime dispatchRuntime) 
-        { 
-            if (!dispatchRuntime.ChannelDispatcher.ErrorHandlers.Contains(_errorHandler))
-                dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(_errorHandler);
-
-            foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
-                if (endpointDispatcher.DispatchRuntime.MessageInspectors.FirstOrDefault(
-                        i => i.GetType() == typeof(HttpRequestInformationInspector)) == null)
-                    endpointDispatcher.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
+            foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints.
+                                Where(endpointDispatcher => endpointDispatcher.DispatchRuntime.MessageInspectors.
+                                    FirstOrDefault(i => i.GetType() == typeof (HttpRequestInformationInspector)) == null))
+                endpointDispatcher.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
         }
         
         public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
         public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime) { }
         public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint) { }
 
-        // ────────────────────────── Private Types ──────────────────────────
-
         private class HttpRequestInformationInspector : IDispatchMessageInspector   
         {
-            // ────────────────────────── IDispatchMessageInspector Members ──────────────────────────
-
             public object AfterReceiveRequest(ref Message request, 
                 IClientChannel channel, InstanceContext instanceContext)
             {

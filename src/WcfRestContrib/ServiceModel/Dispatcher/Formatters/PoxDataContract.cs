@@ -7,8 +7,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher.Formatters
 {
     public class PoxDataContract : IWebFormatter 
     {
-        // ────────────────────────── IWebFormatter Members ──────────────────────────
-
         public object Deserialize(WebFormatterDeserializationContext context, Type type)
         {
             if (context.ContentFormat == WebFormatterDeserializationContext.DeserializationFormat.Xml)
@@ -22,8 +20,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher.Formatters
         {
             return WebFormatterSerializationContext.CreateXmlSerialized(CreateSerializer(type));
         }
-
-        // ────────────────────────── Private Methods ──────────────────────────
 
         private static WrappedDataContractSerializer CreateSerializer(Type type)
         {

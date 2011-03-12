@@ -1,22 +1,20 @@
 ﻿using System;
+using System.IdentityModel.Selectors;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Dispatcher;
+using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
     public class ServiceAuthenticationBehavior : IServiceBehavior, IContractBehavior 
     {
-        // ────────────────────────── Private Members ──────────────────────────
-
         public class ServiceAuthenticationConfigurationMissingException : Exception
         {
             public ServiceAuthenticationConfigurationMissingException() : 
                 base("ServiceAuthenticationConfigurationBehavior not applied to contract or service. This behavior is required to configure service authentication.") {}
         }
-
-        // ────────────────────────── IServiceBehavior Members ──────────────────────────
 
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase)
         {
@@ -28,21 +26,23 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
+            var objectFactory = serviceDescription.GetObjectFactory();
+            var authenticationHandler = objectFactory.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
+            var usernamePasswordValidator = objectFactory.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
+
             foreach (ChannelDispatcher dispatcher in 
                 serviceHostBase.ChannelDispatchers)
                 foreach (var endpoint in dispatcher.Endpoints)
                     endpoint.DispatchRuntime.MessageInspectors.Add(
                         new ServiceAuthenticationInspector(
-                            behavior.AuthenticationHandler,
-                            behavior.UsernamePasswordValidator,
+                            authenticationHandler,
+                            usernamePasswordValidator,
                             behavior.RequireSecureTransport,
                             behavior.Source));
         }
 
         public void Validate(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase) { }
         public void AddBindingParameters(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) { }
-
-        // ────────────────────────── IContractBehavior Members ──────────────────────────
 
         public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime)
         {
@@ -59,11 +59,15 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
+            var objectFactory = dispatchRuntime.ChannelDispatcher.Host.Description.GetObjectFactory();
+            var authenticationHandler = objectFactory.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
+            var usernamePasswordValidator = objectFactory.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
+
             foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(
                     new ServiceAuthenticationInspector(
-                        behavior.AuthenticationHandler,
-                        behavior.UsernamePasswordValidator,
+                        authenticationHandler,
+                        usernamePasswordValidator,
                         behavior.RequireSecureTransport,
                         behavior.Source));
         }

@@ -88,8 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\Specialized\NameValueCollectionExtensions.cs" />
+    <Compile Include="DependencyInjection\DefaultObjectFactory.cs" />
+    <Compile Include="DependencyInjection\IObjectFactory.cs" />
+    <Compile Include="DependencyInjection\IObjectFactoryExtensions.cs" />
     <Compile Include="Diagnostics\IWebLogHandler.cs" />
     <Compile Include="IdentityModel\Policy\IdentityAuthorizationPolicy.cs" />
+    <Compile Include="IdentityModel\Selectors\UserNamePasswordValidatorProxy.cs" />
     <Compile Include="IO\StreamExtensions.cs" />
     <Compile Include="Net\Http\BasicAuthentication.cs" />
     <Compile Include="Net\Http\RequestInformation.cs" />
@@ -107,13 +111,16 @@
     <Compile Include="ServiceModel\Configuration\BehaviorExtensionElementExtensions.cs" />
     <Compile Include="ServiceModel\Configuration\ConfigurationManager.cs" />
     <Compile Include="ServiceModel\Configuration\CustomBindingElementExtensions.cs" />
+    <Compile Include="ServiceModel\Configuration\DependencyInjection\BehaviorElement.cs" />
     <Compile Include="ServiceModel\Configuration\ErrorHandler\BehaviorElement.cs" />
-    <Compile Include="ServiceModel\Configuration\WebAuthentication\ConfigurationBehaviorElement.cs" />
-    <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\ConfigurationBehaviorElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebAuthentication\BehaviorElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\BehaviorElement.cs" />
     <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\FormatterElement.cs" />
     <Compile Include="ServiceModel\Configuration\WebDispatchFormatter\FormattersElement.cs" />
-    <Compile Include="ServiceModel\Configuration\WebErrorHandler\ConfigurationBehaviorElement.cs" />
+    <Compile Include="ServiceModel\Configuration\WebErrorHandler\BehaviorElement.cs" />
     <Compile Include="ServiceModel\Description\ContractDescriptionExtensions.cs" />
+    <Compile Include="ServiceModel\Description\DependencyInjectionAttribute.cs" />
+    <Compile Include="ServiceModel\Description\DependencyInjectionBehavior.cs" />
     <Compile Include="ServiceModel\Description\ErrorHandlerAttribute.cs" />
     <Compile Include="ServiceModel\Description\ErrorHandlerBehavior.cs" />
     <Compile Include="ServiceModel\Description\OperationAuthenticationAttribute.cs" />
@@ -135,6 +142,7 @@
     <Compile Include="ServiceModel\Description\WebErrorHandlerConfigurationAttribute.cs" />
     <Compile Include="ServiceModel\Description\WebErrorHandlerConfigurationBehavior.cs" />
     <Compile Include="ServiceModel\Description\WebHttpBehavior.cs" />
+    <Compile Include="ServiceModel\Dispatcher\DependencyInjectionInstanceProvider.cs" />
     <Compile Include="ServiceModel\Dispatcher\Formatters\DataContract.cs" />
     <Compile Include="ServiceModel\Dispatcher\Formatters\DataContractJson.cs" />
     <Compile Include="ServiceModel\Dispatcher\Formatters\FormUrlEncoded.cs" />

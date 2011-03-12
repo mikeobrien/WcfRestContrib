@@ -9,13 +9,9 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
 {
     public class BehaviorElement : BehaviorExtensionElement
     {
-        // ────────────────────────── BehaviorExtensionElement Overrides ──────────────────────────
-
         private const string ErrorHandlerTypeElement = "errorHandlerType";
         private const string UnhandledErrorMessageElement = "unhandledErrorMessage";
         private const string ReturnRawExceptionElement = "returnRawException";
-
-        // ────────────────────────── BehaviorExtensionElement Overrides ──────────────────────────
 
         public override Type BehaviorType
         {
@@ -39,8 +35,6 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
                 UnhandledErrorMessage,
                 ReturnRawException);
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         [ConfigurationProperty(ErrorHandlerTypeElement, IsRequired = true)]
         public string ErrorHandlerType

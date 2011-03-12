@@ -6,13 +6,8 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 {
     public class WebFormatterFactory
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
-        private readonly Dictionary<string, IWebFormatter> _formatters = 
-                    new Dictionary<string, IWebFormatter>();
+        private readonly Dictionary<string, IWebFormatter> _formatters = new Dictionary<string, IWebFormatter>();
         private readonly string _defaultContentType;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WebFormatterFactory(Dictionary<string, Type> formatters, string defaultContentType)
         {
@@ -24,8 +19,6 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             }
             _defaultContentType = defaultContentType;
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public IWebFormatter CreateFormatter(string contentType)
         {

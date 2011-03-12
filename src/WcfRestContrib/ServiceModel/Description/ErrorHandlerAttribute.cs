@@ -8,11 +8,7 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class ErrorHandlerAttribute : Attribute, IServiceBehavior, IContractBehavior
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         readonly ErrorHandlerBehavior _behavior;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public ErrorHandlerAttribute(Type errorHandler) : this(errorHandler, null, false) { }
 
@@ -27,8 +23,6 @@ namespace WcfRestContrib.ServiceModel.Description
             _behavior = new ErrorHandlerBehavior(errorHandler, unhandledErrorMessage, returnRawException);
         }
 
-        // ────────────────────────── IContractBehavior Members ──────────────────────────
-
         public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
         { _behavior.AddBindingParameters(contractDescription, endpoint, bindingParameters); }
 
@@ -40,8 +34,6 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint)
         { _behavior.Validate(contractDescription, endpoint); }
-
-        // ────────────────────────── IServiceBehavior Members ──────────────────────────
 
         public void AddBindingParameters(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         { _behavior.AddBindingParameters(serviceDescription, serviceHostBase, endpoints, bindingParameters); }

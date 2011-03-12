@@ -4,8 +4,6 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
 {
     public class FormatterElement : ConfigurationElement
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private const string MimeTypesElement = "mimeTypes";
         private const string TypeElement = "type";
 
@@ -13,16 +11,12 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
         private static readonly ConfigurationProperty _type;
         private static readonly ConfigurationProperty _mimeTypes;
 
-        // ────────────────────────── Constructors ──────────────────────────
-
         static FormatterElement()
         {
             _type = new ConfigurationProperty(TypeElement, typeof(string), null, null, new StringValidator(1), ConfigurationPropertyOptions.IsRequired);
             _mimeTypes = new ConfigurationProperty(MimeTypesElement, typeof(CommaDelimitedStringCollection), null, new CommaDelimitedStringCollectionConverter(), null, ConfigurationPropertyOptions.None);
             _properties = new ConfigurationPropertyCollection {_type, _mimeTypes};
         }
-
-        // ────────────────────────── Public Members ──────────────────────────
 
         public CommaDelimitedStringCollection MimeTypes
         {
@@ -33,8 +27,6 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebDispatchFormatter
         {
             get { return (string)this[_type]; }
         }
-
-        // ────────────────────────── Private Members ──────────────────────────
 
         protected override ConfigurationPropertyCollection Properties
         {

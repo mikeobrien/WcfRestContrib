@@ -5,16 +5,10 @@ namespace WcfRestContrib.ServiceModel.Channels
 {
     public class FormUrlEncodedWriter : NameValueWriter
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         readonly TextWriter _writer;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public FormUrlEncodedWriter(Stream stream) : base("&", "=", ".")
         { _writer = new StreamWriter(stream); }
-
-        // ────────────────────────── Implemented Members ──────────────────────────
 
         protected override string EncodeName(string name, int index)
         {

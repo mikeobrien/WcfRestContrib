@@ -6,14 +6,10 @@ namespace WcfRestContrib.Runtime.Serialization
 {
     public class WrappedDataContractSerializer : XmlObjectSerializer
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         private readonly DataContractSerializer _serializer;
         private readonly bool _verifyObjectName;
         private readonly Func<XmlReader, XmlReader> _createReader;
         private readonly Func<XmlWriter, XmlWriter> _createWriter;
-
-        // ────────────────────────── Constructors ──────────────────────────
 
         public WrappedDataContractSerializer(Type type,
             Func<XmlReader, XmlReader> createReader,
@@ -35,8 +31,6 @@ namespace WcfRestContrib.Runtime.Serialization
             _createReader = createReader;
             _createWriter = createWriter;
         }
-
-        // ────────────────────────── Implemented Members ──────────────────────────
 
         public override bool IsStartObject(XmlDictionaryReader reader)
         {

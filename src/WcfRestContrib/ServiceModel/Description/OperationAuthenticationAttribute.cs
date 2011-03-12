@@ -7,11 +7,7 @@ namespace WcfRestContrib.ServiceModel.Description
 {
     public class OperationAuthenticationAttribute : Attribute, IOperationBehavior 
     {
-        // ────────────────────────── Private Fields ──────────────────────────
-
         readonly OperationAuthenticationBehavior _behavior = new OperationAuthenticationBehavior();
-
-        // ────────────────────────── IOperationBehavior Members ──────────────────────────
 
         public void ApplyDispatchBehavior(OperationDescription operationDescription, DispatchOperation dispatchOperation)
         { _behavior.ApplyDispatchBehavior(operationDescription, dispatchOperation); }
