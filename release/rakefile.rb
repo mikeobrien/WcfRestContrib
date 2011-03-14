@@ -23,16 +23,8 @@ assemblyinfo :assemblyInfo => :initBuild do |asm|
     asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
 
-desc "Set assembly version in web.config"
-task :setAssemblyVersion => :assemblyInfo do
-    path = "src/NielsBohrLibrary/Web.config"
-    project = Common.ReadAllFileText(path)
-    project = project.gsub("WcfRestContrib, Version=1.0.0.0,", "WcfRestContrib, Version=#{ENV['GO_PIPELINE_LABEL']},")
-    Common.WriteAllFileText(path, project) 
-end
-
 desc "Builds the library."
-msbuild :buildLibrary => :setAssemblyVersion do |msb|
+msbuild :buildLibrary => :assemblyInfo do |msb|
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/WcfRestContrib/WcfRestContrib.csproj"
