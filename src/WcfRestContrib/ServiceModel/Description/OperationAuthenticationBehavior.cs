@@ -24,13 +24,11 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ConfigurationErrorsException(
                     "OperationAuthenticationConfigurationBehavior not applied to contract or service. This behavior is required to configure operation authentication.");
-            
-            var objectFactory = dispatchOperation.Parent.ChannelDispatcher.Host.Description.GetObjectFactory();
 
             dispatchOperation.Invoker = new OperationAuthenticationInvoker(
                 dispatchOperation.Invoker,
-                objectFactory.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler),
-                objectFactory.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator),
+                ServiceLocator.Current.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler),
+                ServiceLocator.Current.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator),
                 behavior.RequireSecureTransport,
                 behavior.Source);
         }

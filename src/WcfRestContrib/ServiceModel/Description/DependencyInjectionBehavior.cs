@@ -14,10 +14,8 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         public DependencyInjectionBehavior(Type type)
         {
-            ObjectFactory = (IObjectFactory)Activator.CreateInstance(type);
+            if (ServiceLocator.IsDefault()) ServiceLocator.Current = (IObjectFactory)Activator.CreateInstance(type);
         }
-
-        public IObjectFactory ObjectFactory { get; private set; }
 
         public void ApplyDispatchBehavior(
             ServiceDescription serviceDescription, 
@@ -26,7 +24,7 @@ namespace WcfRestContrib.ServiceModel.Description
             foreach (var endpoint in serviceHostBase.ChannelDispatchers.
                                                         OfType<ChannelDispatcher>().
                                                         SelectMany(dispatcher => dispatcher.Endpoints))
-                endpoint.DispatchRuntime.InstanceProvider = new DependencyInjectionInstanceProvider(ObjectFactory, serviceDescription.ServiceType);
+                endpoint.DispatchRuntime.InstanceProvider = new DependencyInjectionInstanceProvider(serviceDescription.ServiceType);
         }
 
         public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Description;
-using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
@@ -21,12 +20,6 @@ namespace WcfRestContrib.ServiceModel.Description
                 if (attribute != null) behavior = attributeMap(attribute);
             }
             return behavior;
-        }
-
-        public static IObjectFactory GetObjectFactory(this ServiceDescription service)
-        {
-            var behavior = service.FindBehavior<DependencyInjectionBehavior, DependencyInjectionAttribute>(x => x.BaseBehavior);
-            return behavior == null ? DefaultObjectFactory.Instance : behavior.ObjectFactory;
         }
 
         public static List<T> GetAttributes<T>(this ServiceDescription service) where T:Attribute

@@ -25,9 +25,7 @@ namespace WcfRestContrib.ServiceModel.Web
                 webException = (WebException)error;
             else
             {
-                var behavior =
-                        GetWebErrorHandlerConfiguration();
-
+                var behavior = GetWebErrorHandlerConfiguration();
                 string unhandledErrorMessage;
                 
                 if (behavior.ReturnRawException) unhandledErrorMessage = error.ToString();
@@ -114,7 +112,7 @@ namespace WcfRestContrib.ServiceModel.Web
 
         private static IWebLogHandler GetLogHandler(Type type)
         {
-            return OperationContext.Current.Host.Description.GetObjectFactory().Create<IWebLogHandler>(type);
+            return ServiceLocator.Current.Create<IWebLogHandler>(type);
         }
 
         private static string GenerateResponseText(string message)

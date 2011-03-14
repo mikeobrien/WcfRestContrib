@@ -26,9 +26,8 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
-            var objectFactory = serviceDescription.GetObjectFactory();
-            var authenticationHandler = objectFactory.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
-            var usernamePasswordValidator = objectFactory.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
+            var authenticationHandler = ServiceLocator.Current.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
+            var usernamePasswordValidator = ServiceLocator.Current.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
 
             foreach (ChannelDispatcher dispatcher in 
                 serviceHostBase.ChannelDispatchers)
@@ -59,9 +58,8 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
-            var objectFactory = dispatchRuntime.ChannelDispatcher.Host.Description.GetObjectFactory();
-            var authenticationHandler = objectFactory.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
-            var usernamePasswordValidator = objectFactory.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
+            var authenticationHandler = ServiceLocator.Current.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
+            var usernamePasswordValidator = ServiceLocator.Current.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
 
             foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(
