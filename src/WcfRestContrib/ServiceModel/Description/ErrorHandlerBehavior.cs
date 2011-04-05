@@ -30,7 +30,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
-            var errorHandler = ServiceLocator.Current.Create<IErrorHandler>(_errorHandler);
+            var errorHandler = DependencyResolver.Current.Create<IErrorHandler>(_errorHandler);
 
             foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers)
             {
@@ -48,7 +48,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) 
         {
-            var errorHandler = ServiceLocator.Current.Create<IErrorHandler>(_errorHandler);
+            var errorHandler = DependencyResolver.Current.Create<IErrorHandler>(_errorHandler);
 
             if (!dispatchRuntime.ChannelDispatcher.ErrorHandlers.Contains(errorHandler))
                 dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(errorHandler);

@@ -72,7 +72,9 @@
     <Content Include="Books.svc" />
     <Content Include="Content.svc" />
     <Content Include="README.TXT" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Books.svc.cs">

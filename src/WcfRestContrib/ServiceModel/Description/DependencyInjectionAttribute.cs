@@ -13,7 +13,7 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public DependencyInjectionAttribute(Type objectFactory)
         {
-            if (!objectFactory.CastableAs<IObjectFactory>())
+            if (!objectFactory.CastableAs<IDependencyResolver>())
                 throw new Exception("objectFactory must implement IObjectFactory.");
 
             _behavior = new DependencyInjectionBehavior(objectFactory);

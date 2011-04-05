@@ -88,10 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\Specialized\NameValueCollectionExtensions.cs" />
-    <Compile Include="DependencyInjection\DefaultObjectFactory.cs" />
-    <Compile Include="DependencyInjection\IObjectFactory.cs" />
-    <Compile Include="DependencyInjection\IObjectFactoryExtensions.cs" />
-    <Compile Include="DependencyInjection\ServiceLocator.cs" />
+    <Compile Include="DependencyInjection\DefaultDependencyResolver.cs" />
+    <Compile Include="DependencyInjection\IDependencyResolver.cs" />
+    <Compile Include="DependencyInjection\IDependencyResolverExtensions.cs" />
+    <Compile Include="DependencyInjection\DependencyResolver.cs" />
     <Compile Include="Diagnostics\IWebLogHandler.cs" />
     <Compile Include="IdentityModel\Policy\IdentityAuthorizationPolicy.cs" />
     <Compile Include="IdentityModel\Selectors\UserNamePasswordValidatorProxy.cs" />

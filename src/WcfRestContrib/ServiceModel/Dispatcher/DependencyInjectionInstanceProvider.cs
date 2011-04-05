@@ -20,7 +20,7 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 
         public object GetInstance(System.ServiceModel.InstanceContext instanceContext)
         {
-            return ServiceLocator.Current.Create<object>(_serviceType);
+            return DependencyResolver.Current.Create<object>(_serviceType);
         }
 
         public void ReleaseInstance(System.ServiceModel.InstanceContext instanceContext, object instance) { }

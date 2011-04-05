@@ -14,7 +14,7 @@ namespace WcfRestContrib.ServiceModel.Description
     {
         public DependencyInjectionBehavior(Type type)
         {
-            if (ServiceLocator.IsDefault()) ServiceLocator.Current = (IObjectFactory)Activator.CreateInstance(type);
+            if (DependencyResolver.IsDefault()) DependencyResolver.SetResolver((IDependencyResolver)Activator.CreateInstance(type));
         }
 
         public void ApplyDispatchBehavior(

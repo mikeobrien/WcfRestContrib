@@ -21,7 +21,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.DependencyInjection
             Type objectFactory;
             try
             {
-                objectFactory = ObjectFactoryType.GetType<IObjectFactory>();
+                objectFactory = ObjectFactoryType.GetType<IDependencyResolver>();
             }
             catch (Exception e)
             {

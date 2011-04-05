@@ -112,7 +112,7 @@ namespace WcfRestContrib.ServiceModel.Web
 
         private static IWebLogHandler GetLogHandler(Type type)
         {
-            return ServiceLocator.Current.Create<IWebLogHandler>(type);
+            return DependencyResolver.Current.Create<IWebLogHandler>(type);
         }
 
         private static string GenerateResponseText(string message)
