@@ -27,8 +27,8 @@ namespace WcfRestContrib.ServiceModel.Description
 
             dispatchOperation.Invoker = new OperationAuthenticationInvoker(
                 dispatchOperation.Invoker,
-                DependencyResolver.Current.Create<IWebAuthenticationHandler>(behavior.AuthenticationHandler),
-                DependencyResolver.Current.Create<UserNamePasswordValidator>(behavior.UsernamePasswordValidator),
+                DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>(behavior.AuthenticationHandler),
+                DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>(behavior.UsernamePasswordValidator),
                 behavior.RequireSecureTransport,
                 behavior.Source);
         }

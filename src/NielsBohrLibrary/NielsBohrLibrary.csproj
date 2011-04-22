@@ -92,7 +92,7 @@
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runtime\LogHandler.cs" />
-    <Compile Include="Runtime\ObjectFactory.cs" />
+    <Compile Include="Runtime\DependencyResolver.cs" />
     <Compile Include="Runtime\SecurityValidator.cs" />
   </ItemGroup>
   <ItemGroup>

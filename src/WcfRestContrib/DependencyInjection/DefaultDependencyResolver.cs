@@ -6,16 +6,18 @@ namespace WcfRestContrib.DependencyInjection
 {
     public class DefaultDependencyResolver : IDependencyResolver
     {
-        public static IDependencyResolver Instance = new DefaultDependencyResolver();
-
-        public object GetService(Type serviceType)
+        public object GetInfrastructureService(Type serviceType)
         {
             return Activator.CreateInstance(serviceType);
         }
 
-        public IEnumerable<object> GetServices(Type serviceType)
+        public object CreateOperationContainer() { return null; }
+
+        public object GetOperationService(object container, Type serviceType)
         {
-            return Enumerable.Empty<object>();
+            return Activator.CreateInstance(serviceType);
         }
+
+        public void ReleaseOperationContainer(object container) { }
     }
 }

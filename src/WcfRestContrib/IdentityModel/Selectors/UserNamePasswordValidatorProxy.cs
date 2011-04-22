@@ -7,7 +7,7 @@ namespace WcfRestContrib.IdentityModel.Selectors
     {
         public override void Validate(string userName, string password)
         {
-            DependencyResolver.Current.Create<UserNamePasswordValidator>(typeof(T)).Validate(userName, password);
+            DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>(typeof(T)).Validate(userName, password);
         }
     }
 }

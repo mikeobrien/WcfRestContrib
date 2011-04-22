@@ -5,7 +5,10 @@ namespace WcfRestContrib.DependencyInjection
 {
     public interface IDependencyResolver
     {
-        object GetService(Type serviceType);
-        IEnumerable<object> GetServices(Type serviceType);
+        object GetInfrastructureService(Type serviceType);
+
+        object CreateOperationContainer();
+        object GetOperationService(object container, Type serviceType);
+        void ReleaseOperationContainer(object container);
     }
 }
