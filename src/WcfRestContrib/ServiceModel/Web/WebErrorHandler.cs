@@ -3,8 +3,6 @@ using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
-using WcfRestContrib.DependencyInjection;
-using WcfRestContrib.Diagnostics;
 using WcfRestContrib.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Dispatcher;
 using System.Net.Mime;
@@ -50,12 +48,10 @@ namespace WcfRestContrib.ServiceModel.Web
             if (webDispatchFormatter != null)
             {
                 var behavior = GetWebErrorHandlerConfiguration();
-                IWebExceptionDataContract exceptionContract;
+                IWebExceptionDataContract exceptionContract = null;
                 
-                if (behavior != null && behavior.HasExceptionDataContract)
-                    exceptionContract = behavior.CreateExceptionDataContract();
-                else
-                    exceptionContract = new WebExceptionContract();
+                if (behavior != null) exceptionContract = behavior.CreateExceptionDataContract();
+                if (exceptionContract == null) exceptionContract = new WebExceptionContract();
 
                 exceptionContract.Init(webException);
 
@@ -90,29 +86,23 @@ namespace WcfRestContrib.ServiceModel.Web
         {
             var behavior = GetWebErrorHandlerConfiguration();
 
-            if (behavior != null && behavior.LogHandler != null)
-            {
-                RequestInformation info;
+            if (behavior == null || behavior.LogHandler == null) return;
 
-                if (OperationContext.Current.OutgoingMessageProperties.ContainsKey(
-                    ErrorHandlerBehavior.HttpRequestInformationProperty))
-                    info = (RequestInformation)OperationContext.Current.OutgoingMessageProperties[
-                        ErrorHandlerBehavior.HttpRequestInformationProperty];
-                else info = new RequestInformation();
+            RequestInformation info;
 
-                GetLogHandler(behavior.LogHandler).Write(error, info);
-            }
+            if (OperationContext.Current.OutgoingMessageProperties.ContainsKey(
+                ErrorHandlerBehavior.HttpRequestInformationProperty))
+                info = (RequestInformation)OperationContext.Current.OutgoingMessageProperties[
+                    ErrorHandlerBehavior.HttpRequestInformationProperty];
+            else info = new RequestInformation();
+
+            behavior.LogHandler.Write(error, info);
         }
 
         private static WebErrorHandlerConfigurationBehavior GetWebErrorHandlerConfiguration()
         {
             return OperationContext.Current.Host.Description.FindBehavior<WebErrorHandlerConfigurationBehavior, 
                                                                     WebErrorHandlerConfigurationAttribute>(x => x.BaseBehavior);
-        }
-
-        private static IWebLogHandler GetLogHandler(Type type)
-        {
-            return DependencyResolver.Current.GetInfrastructureService<IWebLogHandler>(type);
         }
 
         private static string GenerateResponseText(string message)

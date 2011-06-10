@@ -26,8 +26,8 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
-            var authenticationHandler = DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
-            var usernamePasswordValidator = DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
+            var authenticationHandler = behavior.AuthenticationHandler;
+            var usernamePasswordValidator = behavior.UsernamePasswordValidator;
 
             foreach (ChannelDispatcher dispatcher in 
                 serviceHostBase.ChannelDispatchers)
@@ -58,8 +58,8 @@ namespace WcfRestContrib.ServiceModel.Description
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
-            var authenticationHandler = DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>(behavior.AuthenticationHandler);
-            var usernamePasswordValidator = DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>(behavior.UsernamePasswordValidator);
+            var authenticationHandler = behavior.AuthenticationHandler;
+            var usernamePasswordValidator = behavior.UsernamePasswordValidator;
 
             foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(

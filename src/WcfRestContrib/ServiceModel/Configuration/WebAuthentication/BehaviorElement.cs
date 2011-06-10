@@ -22,25 +22,27 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
 
         protected override object CreateBehavior()
         {
-            Type operationAuthenticationHandler;
-            try
-            {
-                operationAuthenticationHandler = OperationAuthenticationHandlerTypeName.GetType<IWebAuthenticationHandler>();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(string.Format("Invalid authenticationHandlerType specified in webAuthentication behavior element. {0}", e));
-            }
+            Type operationAuthenticationHandler = null;
+            if (!string.IsNullOrEmpty(OperationAuthenticationHandlerTypeName))
+                try
+                {
+                    operationAuthenticationHandler = OperationAuthenticationHandlerTypeName.GetType<IWebAuthenticationHandler>();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(string.Format("Invalid authenticationHandlerType specified in webAuthentication behavior element. {0}", e));
+                }
 
-            Type usernamePasswordValidator;
-            try
-            {
-                usernamePasswordValidator = UsernamePasswordValidatorTypeName.GetType<UserNamePasswordValidator>();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(string.Format("Invalid usernamePasswordValidatorType specified in webAuthentication behavior element. {0}", e));
-            }
+            Type usernamePasswordValidator = null;
+            if (!string.IsNullOrEmpty(UsernamePasswordValidatorTypeName))
+                try
+                {
+                    usernamePasswordValidator = UsernamePasswordValidatorTypeName.GetType<UserNamePasswordValidator>();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(string.Format("Invalid usernamePasswordValidatorType specified in webAuthentication behavior element. {0}", e));
+                }
          
             return new WebAuthenticationConfigurationBehavior(
                 operationAuthenticationHandler,

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ServiceModel.Description;
+using WcfRestContrib.Diagnostics;
 using WcfRestContrib.ServiceModel.Web;
+using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
@@ -14,28 +16,24 @@ namespace WcfRestContrib.ServiceModel.Description
             bool returnRawException,
             Type exceptionDataContract)
         {
-            LogHandler = logHandler;
+            LogHandler = logHandler != null
+                            ? DependencyResolver.Current.GetInfrastructureService<IWebLogHandler>(logHandler)
+                            : DependencyResolver.Current.GetInfrastructureService<IWebLogHandler>();
+            
             UnhandledErrorMessage = unhandledErrorMessage;
             ReturnRawException = returnRawException;
             _exceptionDataContract = exceptionDataContract;
         }
 
-        public Type LogHandler { get; set; }
-        public Type ExceptionDataContract { get; set; }
+        public IWebLogHandler LogHandler { get; set; }
         public string UnhandledErrorMessage { get; set; }
         public bool ReturnRawException { get; set; }
-        public bool HasExceptionDataContract { get { return _exceptionDataContract != null; } }
 
         public IWebExceptionDataContract CreateExceptionDataContract()
         {
-            try
-            {
-                return (IWebExceptionDataContract)Activator.CreateInstance(_exceptionDataContract);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(string.Format("Unable to create web exception data contract {0}: {1}", _exceptionDataContract.Name, e.Message), e);
-            }
+            return _exceptionDataContract != null
+                        ? DependencyResolver.Current.GetInfrastructureService<IWebExceptionDataContract>(_exceptionDataContract)
+                        : DependencyResolver.Current.GetInfrastructureService<IWebExceptionDataContract>();
         }
 
         public void AddBindingParameters(ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, System.ServiceModel.Channels.BindingParameterCollection bindingParameters) { }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ServiceModel.Description;
+using WcfRestContrib.DependencyInjection;
 using WcfRestContrib.ServiceModel.Dispatcher;
 using System.IdentityModel.Selectors;
 
@@ -13,14 +14,20 @@ namespace WcfRestContrib.ServiceModel.Description
             bool requireSecureTransport,
             string source)
         {
-            AuthenticationHandler = authenticationHandler;
-            UsernamePasswordValidator = usernamePasswordValidator;
+            AuthenticationHandler = authenticationHandler != null
+                ? DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>(authenticationHandler)
+                : DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>();
+
+            UsernamePasswordValidator = usernamePasswordValidator != null
+                ? DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>(usernamePasswordValidator)
+                : DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>();
+
             Source = source;
             RequireSecureTransport = requireSecureTransport;
         }
 
-        public Type AuthenticationHandler { get; private set; }
-        public Type UsernamePasswordValidator { get; private set; }
+        public IWebAuthenticationHandler AuthenticationHandler { get; private set; }
+        public UserNamePasswordValidator UsernamePasswordValidator { get; private set; }
         public bool RequireSecureTransport { get; set; }
         public string Source { get; set; }
 

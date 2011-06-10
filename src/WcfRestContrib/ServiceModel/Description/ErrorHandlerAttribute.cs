@@ -11,13 +11,15 @@ namespace WcfRestContrib.ServiceModel.Description
         readonly ErrorHandlerBehavior _behavior;
 
         public ErrorHandlerAttribute(Type errorHandler) : this(errorHandler, null, false) { }
+        public ErrorHandlerAttribute(string unhandledErrorMessage, bool returnRawException) : 
+            this(null, unhandledErrorMessage, returnRawException) { }
 
         public ErrorHandlerAttribute(
             Type errorHandler, 
             string unhandledErrorMessage,
             bool returnRawException)
         {
-            if (!errorHandler.CastableAs<IErrorHandler>())
+            if (errorHandler != null && !errorHandler.CastableAs<IErrorHandler>())
                 throw new Exception("errorHandler must implement IErrorHandler.");
 
             _behavior = new ErrorHandlerBehavior(errorHandler, unhandledErrorMessage, returnRawException);

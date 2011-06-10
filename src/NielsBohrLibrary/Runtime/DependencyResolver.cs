@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using WcfRestContrib.DependencyInjection;
 
 namespace NielsBohrLibrary.Runtime
@@ -12,7 +10,7 @@ namespace NielsBohrLibrary.Runtime
         {
             // Insert your favorite DI tool here...
             Debug.WriteLine("GetInfrastructureService({0})", serviceType);
-            return Activator.CreateInstance(serviceType);
+            return CreateObject(serviceType);
         }
 
         public object CreateOperationContainer()
@@ -26,13 +24,19 @@ namespace NielsBohrLibrary.Runtime
         {
             // Insert your favorite DI tool here...
             Debug.WriteLine("GetOperationService({0}, {1})", container.GetHashCode(), serviceType);
-            return Activator.CreateInstance(serviceType);
+            return CreateObject(serviceType);
         }
 
         public void ReleaseOperationContainer(object container)
         {
             Debug.WriteLine("ReleaseOperationContainer({0})", container.GetHashCode());
             // Release your operation container
+        }
+
+        private static object CreateObject(Type type)
+        {
+            if (type.IsAbstract) return null;
+            return Activator.CreateInstance(type);
         }
     }
 }

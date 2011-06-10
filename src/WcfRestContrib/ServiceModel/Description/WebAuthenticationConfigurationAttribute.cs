@@ -12,15 +12,24 @@ namespace WcfRestContrib.ServiceModel.Description
         readonly WebAuthenticationConfigurationBehavior _behavior;
 
         public WebAuthenticationConfigurationAttribute(
+            bool requireSecureTransport,
+            string source) : this(null, null, requireSecureTransport, source) { }
+
+        public WebAuthenticationConfigurationAttribute(
+            Type authenticationHandler,
+            bool requireSecureTransport,
+            string source) : this(authenticationHandler, null, requireSecureTransport, source) { }
+
+        public WebAuthenticationConfigurationAttribute(
             Type authenticationHandler,
             Type usernamePasswordValidator,
             bool requireSecureTransport,
             string source)
         {
-            if (!authenticationHandler.CastableAs<IWebAuthenticationHandler>())
+            if (authenticationHandler != null && !authenticationHandler.CastableAs<IWebAuthenticationHandler>())
                 throw new Exception(string.Format("authenticationHandler {0} must implement IWebAuthenticationHandler.", authenticationHandler.Name));
 
-            if (!usernamePasswordValidator.CastableAs<UserNamePasswordValidator>())
+            if (usernamePasswordValidator != null && !usernamePasswordValidator.CastableAs<UserNamePasswordValidator>())
                 throw new Exception(string.Format("usernamePasswordValidator {0} must inherit from UserNamePasswordValidator.", usernamePasswordValidator.Name));
 
              _behavior = new WebAuthenticationConfigurationBehavior(

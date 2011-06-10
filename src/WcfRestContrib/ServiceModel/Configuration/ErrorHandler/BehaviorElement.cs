@@ -20,15 +20,17 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
 
         protected override object CreateBehavior()
         {
-            Type errorHandler;
-            try
-            {
-                errorHandler = ErrorHandlerType.GetType<IErrorHandler>();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(string.Format("Invalid errorHandlerType specified in errorHandler behavior element. {0}", e));
-            }
+            Type errorHandler = null;
+
+            if (!string.IsNullOrEmpty(ErrorHandlerType))
+                try
+                {
+                    errorHandler = ErrorHandlerType.GetType<IErrorHandler>();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(string.Format("Invalid errorHandlerType specified in errorHandler behavior element. {0}", e));
+                }
 
             return new ErrorHandlerBehavior(
                 errorHandler,

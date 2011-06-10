@@ -30,7 +30,8 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
-            var errorHandler = DependencyResolver.Current.GetInfrastructureService<IErrorHandler>(_errorHandler);
+            var errorHandler = GetErrorHandler();
+            if (errorHandler == null) return;
 
             foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers)
             {
@@ -48,20 +49,28 @@ namespace WcfRestContrib.ServiceModel.Description
 
         public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) 
         {
-            var errorHandler = DependencyResolver.Current.GetInfrastructureService<IErrorHandler>(_errorHandler);
+            var errorHandler = GetErrorHandler();
+            if (errorHandler == null) return;
 
             if (!dispatchRuntime.ChannelDispatcher.ErrorHandlers.Contains(errorHandler))
                 dispatchRuntime.ChannelDispatcher.ErrorHandlers.Add(errorHandler);
 
             foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints.
-                                Where(endpointDispatcher => endpointDispatcher.DispatchRuntime.MessageInspectors.
-                                    FirstOrDefault(i => i.GetType() == typeof (HttpRequestInformationInspector)) == null))
+                            Where(endpointDispatcher => endpointDispatcher.DispatchRuntime.MessageInspectors.
+                                FirstOrDefault(i => i.GetType() == typeof(HttpRequestInformationInspector)) == null))
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(new HttpRequestInformationInspector());
         }
         
         public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) { }
         public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime) { }
         public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint) { }
+
+        private IErrorHandler GetErrorHandler()
+        {
+            return _errorHandler != null
+                        ? DependencyResolver.Current.GetInfrastructureService<IErrorHandler>(_errorHandler)
+                        : DependencyResolver.Current.GetInfrastructureService<IErrorHandler>();
+        }
 
         private class HttpRequestInformationInspector : IDispatchMessageInspector   
         {
