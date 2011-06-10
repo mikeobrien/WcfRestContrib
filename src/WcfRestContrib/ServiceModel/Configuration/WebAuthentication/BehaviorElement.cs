@@ -51,7 +51,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
                 Source);
         }
 
-        [ConfigurationProperty(AuthHandlerTypeElement, IsRequired = true)]
+        [ConfigurationProperty(AuthHandlerTypeElement, IsRequired = false, DefaultValue = null)]
         public string OperationAuthenticationHandlerTypeName
         {
             get
@@ -60,7 +60,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.WebAuthentication
             { base[AuthHandlerTypeElement] = value; }
         }
 
-        [ConfigurationProperty(UsernamePasswordValidatorTypeElement, IsRequired = true)]
+        [ConfigurationProperty(UsernamePasswordValidatorTypeElement, IsRequired = false, DefaultValue = null)]
         public string UsernamePasswordValidatorTypeName
         {
             get

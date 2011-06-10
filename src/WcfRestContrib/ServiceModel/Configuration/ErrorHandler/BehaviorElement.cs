@@ -38,7 +38,7 @@ namespace WcfRestContrib.ServiceModel.Configuration.ErrorHandler
                 ReturnRawException);
         }
 
-        [ConfigurationProperty(ErrorHandlerTypeElement, IsRequired = true)]
+        [ConfigurationProperty(ErrorHandlerTypeElement, IsRequired = false, DefaultValue = null)]
         public string ErrorHandlerType
         {
             get { return (string) base[ErrorHandlerTypeElement]; }
