@@ -48,24 +48,21 @@ namespace WcfRestContrib.ServiceModel.Description
             var behavior = 
                 dispatchRuntime.ChannelDispatcher.Host.Description.FindBehavior
                         <WebAuthenticationConfigurationBehavior,
-                        WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
+                         WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
             
             if (behavior == null)
                 behavior = contractDescription.FindBehavior
                         <WebAuthenticationConfigurationBehavior,
-                        WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
+                         WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
 
             if (behavior == null)
                 throw new ServiceAuthenticationConfigurationMissingException();
 
-            var authenticationHandler = behavior.AuthenticationHandler;
-            var usernamePasswordValidator = behavior.UsernamePasswordValidator;
-
             foreach (var endpointDispatcher in dispatchRuntime.ChannelDispatcher.Endpoints)
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(
                     new ServiceAuthenticationInspector(
-                        authenticationHandler,
-                        usernamePasswordValidator,
+                        behavior.ThrowIfNull().AuthenticationHandler,
+                        behavior.ThrowIfNull().UsernamePasswordValidator,
                         behavior.RequireSecureTransport,
                         behavior.Source));
         }

@@ -16,10 +16,10 @@ namespace WcfRestContrib.ServiceModel.Description
             var behavior =
                 operationDescription.DeclaringContract.FindBehavior
                     <WebAuthenticationConfigurationBehavior,
-                    WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior) ??
+                     WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior) ??
                 dispatchOperation.Parent.ChannelDispatcher.Host.Description.FindBehavior
                     <WebAuthenticationConfigurationBehavior,
-                    WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
+                     WebAuthenticationConfigurationAttribute>(b => b.BaseBehavior);
 
             if (behavior == null)
                 throw new ConfigurationErrorsException(
@@ -27,8 +27,8 @@ namespace WcfRestContrib.ServiceModel.Description
 
             dispatchOperation.Invoker = new OperationAuthenticationInvoker(
                 dispatchOperation.Invoker,
-                behavior.AuthenticationHandler,
-                behavior.UsernamePasswordValidator,
+                behavior.ThrowIfNull().AuthenticationHandler,
+                behavior.ThrowIfNull().UsernamePasswordValidator,
                 behavior.RequireSecureTransport,
                 behavior.Source);
         }
