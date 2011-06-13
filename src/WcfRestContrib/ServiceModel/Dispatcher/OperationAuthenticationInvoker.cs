@@ -21,9 +21,9 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
             bool requiresTransportLayerSecurity,
             string source)
         {
-            _invoker = invoker;
-            _handler = handler;
-            _validator = validator;
+            _invoker = invoker.ThrowIfNull();
+            _handler = handler.ThrowIfNull();
+            _validator = validator.ThrowIfNull();
             _requiresTransportLayerSecurity = requiresTransportLayerSecurity;
             _source = source;
         }
@@ -33,14 +33,15 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
 
         public object Invoke(object instance, object[] inputs, out object[] outputs)
         {
-            OperationContext.Current.ReplacePrimaryIdentity(_handler.Authenticate(
-                WebOperationContext.Current.IncomingRequest,
-                WebOperationContext.Current.OutgoingResponse,
-                inputs,
-                _validator,
-                OperationContext.Current.HasTransportLayerSecurity(),
-                _requiresTransportLayerSecurity,
-                _source));
+            OperationContext.Current.ThrowIfNull().ReplacePrimaryIdentity(
+                _handler.Authenticate(
+                    WebOperationContext.Current.ThrowIfNull().IncomingRequest,
+                    WebOperationContext.Current.ThrowIfNull().OutgoingResponse,
+                    inputs,
+                    _validator,
+                    OperationContext.Current.ThrowIfNull().HasTransportLayerSecurity(),
+                    _requiresTransportLayerSecurity,
+                    _source));
 
             return _invoker.Invoke(instance, inputs, out outputs);
         }
