@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace WcfRestContrib.DependencyInjection
 {
@@ -17,6 +15,8 @@ namespace WcfRestContrib.DependencyInjection
         {
             return CreateInstance(serviceType);
         }
+
+        public void OperationError(object container, Exception exception) { }
 
         public void ReleaseOperationContainer(object container) { }
 

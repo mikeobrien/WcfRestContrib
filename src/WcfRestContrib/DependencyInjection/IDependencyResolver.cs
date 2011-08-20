@@ -8,6 +8,7 @@ namespace WcfRestContrib.DependencyInjection
 
         object CreateOperationContainer();
         object GetOperationService(object container, Type serviceType);
+        void OperationError(object container, Exception exception);
         void ReleaseOperationContainer(object container);
     }
 }

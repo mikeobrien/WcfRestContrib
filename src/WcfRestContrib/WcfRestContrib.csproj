@@ -153,6 +153,7 @@
     <Compile Include="ServiceModel\Dispatcher\IWebAuthenticationHandler.cs" />
     <Compile Include="ServiceModel\Dispatcher\IWebFormatter.cs" />
     <Compile Include="ServiceModel\Dispatcher\OperationAuthenticationInvoker.cs" />
+    <Compile Include="ServiceModel\Dispatcher\OperationContainer.cs" />
     <Compile Include="ServiceModel\Dispatcher\RedirectInspector.cs" />
     <Compile Include="ServiceModel\Dispatcher\ServiceAuthenticationInspector.cs" />
     <Compile Include="ServiceModel\Dispatcher\WebBasicAuthenticationHandler.cs" />

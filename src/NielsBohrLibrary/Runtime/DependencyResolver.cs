@@ -16,8 +16,9 @@ namespace NielsBohrLibrary.Runtime
         public object CreateOperationContainer()
         {
             // Return a container that will service the operation
-            Debug.WriteLine("CreateOperationContainer()");
-            return new object();
+            var container = new object();
+            Debug.WriteLine("{0} CreateOperationContainer()", container.GetHashCode());
+            return container;
         }
 
         public object GetOperationService(object container, Type serviceType)
@@ -25,6 +26,12 @@ namespace NielsBohrLibrary.Runtime
             // Insert your favorite DI tool here...
             Debug.WriteLine("GetOperationService({0}, {1})", container.GetHashCode(), serviceType);
             return CreateObject(serviceType);
+        }
+
+        public void OperationError(object container, Exception exception)
+        {
+            // Handle errors yo
+            Debug.WriteLine("OperationError({0}, {1}...)", container.GetHashCode(), exception.Message.Substring(0, 20));
         }
 
         public void ReleaseOperationContainer(object container)

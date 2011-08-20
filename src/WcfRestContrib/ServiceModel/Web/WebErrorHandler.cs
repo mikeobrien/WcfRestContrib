@@ -3,6 +3,7 @@ using System.ServiceModel;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Web;
+using WcfRestContrib.DependencyInjection;
 using WcfRestContrib.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Dispatcher;
 using System.Net.Mime;
@@ -74,6 +75,8 @@ namespace WcfRestContrib.ServiceModel.Web
             }
 
             fault.UpdateHttpProperty();
+
+            if (OperationContainer.Exists()) DependencyResolver.Current.OperationError(OperationContainer.GetCurrent(), error);
         }
 
         public bool HandleError(Exception error)
