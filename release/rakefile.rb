@@ -1,25 +1,23 @@
 require "albacore"
 require "release/robocopy"
 require "release/common"
-require "release/nuget"
 
-ReleasePath = "D:/Websites/public.mikeobrien.net/wwwroot/Releases/WcfRestContrib/#{ENV['GO_PIPELINE_LABEL']}"
-
-task :default => [:deploySample]
+reportsPath = "reports"
+version = ENV["BUILD_NUMBER"]
 
 desc "Inits the build"
 task :initBuild do
-	Common.EnsurePath("reports")
+	Common.EnsurePath(reportsPath)
 end
 
 desc "Generate assembly info."
 assemblyinfo :assemblyInfo => :initBuild do |asm|
-    asm.version = ENV["GO_PIPELINE_LABEL"] + ".0"
+    asm.version = version
     asm.company_name = "Ultraviolet Catastrophe"
     asm.product_name = "Wcf Rest Contrib"
     asm.title = "Wcf Rest Contrib"
     asm.description = "Goodies for Wcf Rest."
-    asm.copyright = "Copyright (c) 2010 Ultraviolet Catastrophe"
+    asm.copyright = "Copyright (c) 2011 Ultraviolet Catastrophe"
     asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
 
@@ -65,73 +63,53 @@ desc "NUnit Test Runner"
 nunit :unitTests => :buildInstaller do |nunit|
 	nunit.command = "lib/nunit/net-2.0/nunit-console.exe"
 	nunit.assemblies "src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll"
-	nunit.options "/xml=reports/TestResult.xml"
+	nunit.options "/xml=#{reportsPath}/TestResult.xml"
 end
 
-desc "Inits the deploy"
-task :initDeploy => :unitTests do
-    Common.EnsurePath(ReleasePath)
-end
+nugetApiKey = ENV["NUGET_API_KEY"]
+deployPath = "deploy"
 
-desc "Deploys the installer"
-task :deployInstaller => :initDeploy do
-	path = "src/Installer/bin/Release/"
-	File.rename("#{path}WcfRestContrib.msi", "#{ReleasePath}/WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.msi")
-end
-
-desc "Zips and eploys the application binaries."
-zip :deployBinaries => :deployInstaller do |zip|
-    zip.directories_to_zip "src/WcfRestContrib/bin/Release"
-    zip.output_file = "WcfRestContrib_#{ENV['GO_PIPELINE_LABEL']}.zip"
-    zip.output_path = ReleasePath
-end
-
-desc "Zips and eploys the application binaries."
-zip :deploySample => :deployBinaries do |zip|
-    zip.directories_to_zip "src/NielsBohrLibrary"
-    zip.output_file = "WcfRestContribSample_#{ENV['GO_PIPELINE_LABEL']}.zip"
-    zip.output_path = ReleasePath
-end
+packagePath = File.join(deployPath, "package")
+nuspecName = "wcfrestcontrib.nuspec"
+packageLibPath = File.join(packagePath, "lib")
+binPath = "src/WcfRestContrib/bin/Release"
 
 desc "Prep the package folder"
-task :prepPackage => :deploySample do
-	Common.DeleteDirectory("deploy")
-	Common.EnsurePath("deploy/package/lib")
-	Common.CopyFiles("src/WcfRestContrib/bin/Release/WcfRestContrib.dll", "deploy/package/lib")
-	Common.CopyFiles("src/WcfRestContrib/bin/Release/WcfRestContrib.pdb", "deploy/package/lib")
+task :prepPackage => :unitTests do
+	FileSystem.DeleteDirectory(deployPath)
+	
+	FileSystem.EnsurePath(packageLibPath)
+	FileSystem.CopyFiles(File.join(binPath, "WcfRestContrib.dll"), packageLibPath)
+	FileSystem.CopyFiles(File.join(binPath, "WcfRestContrib.pdb"), packageLibPath)
 end
 
 desc "Create the nuspec"
 nuspec :createSpec => :prepPackage do |nuspec|
    nuspec.id = "wcfrestcontrib"
-   nuspec.version = ENV["GO_PIPELINE_LABEL"]
+   nuspec.version = version
    nuspec.authors = "Mike O'Brien"
    nuspec.owners = "Mike O'Brien"
+   nuspec.title = "WCF REST Contrib"
    nuspec.description = "The WCF REST Contrib library adds functionality to the current WCF REST implementation."
    nuspec.summary = "The WCF REST Contrib library adds functionality to the current WCF REST implementation."
    nuspec.language = "en-US"
    nuspec.licenseUrl = "https://github.com/mikeobrien/WcfRestContrib/blob/master/LICENSE"
    nuspec.projectUrl = "https://github.com/mikeobrien/WcfRestContrib"
-   nuspec.working_directory = "deploy/package"
-   nuspec.output_file = "wcfrestcontrib.nuspec"
+   nuspec.iconUrl = "https://github.com/mikeobrien/HidLibrary/raw/master/misc/wcfrestcontrib.png"
+   nuspec.working_directory = packagePath
+   nuspec.output_file = nuspecName
    nuspec.tags = "wcf rest"
 end
 
 desc "Create the nuget package"
 nugetpack :createPackage => :createSpec do |nugetpack|
-   nugetpack.nuspec = "deploy/package/wcfrestcontrib.nuspec"
-   nugetpack.base_folder = "deploy/package"
-   nugetpack.output = "deploy"
+   nugetpack.nuspec = File.join(packagePath, nuspecName)
+   nugetpack.base_folder = packagePath
+   nugetpack.output = deployPath
 end
 
 desc "Push the nuget package"
-nugetpush :pushPackage => :createPackage do |nugetpush|
-   nugetpush.package = "deploy/wcfrestcontrib.#{ENV['GO_PIPELINE_LABEL']}.nupkg"
+nugetpush :pushPackage => :createPackage do |nuget|
+	nuget.apikey = nugetApiKey
+	nuget.package = File.join(deployPath, "wcfrestcontrib.#{version}.nupkg")
 end
-
-desc "Tag the current release"
-task :tagRelease do
-	result = system("git", "tag", "-a", "v#{ENV['GO_PIPELINE_LABEL']}", "-m", "release-v#{ENV['GO_PIPELINE_LABEL']}")
-	result = system("git", "push", "--tags")
-end
-
