@@ -1,14 +1,12 @@
 require "albacore"
 require "release/filesystem"
-require "release/robocopy"
-require "release/common"
 
 reportsPath = "reports"
 version = ENV["BUILD_NUMBER"]
 
 desc "Inits the build"
 task :initBuild do
-	Common.EnsurePath(reportsPath)
+	FileSystem.EnsurePath(reportsPath)
 end
 
 desc "Generate assembly info."
@@ -50,7 +48,7 @@ task :addSampleAssemblyReference => :buildSampleApp do
 	reference = "<Reference Include=\"WcfRestContrib\"><HintPath>bin\WcfRestContrib.dll</HintPath></Reference>"
     project = Common.ReadAllFileText(path)
     project = project.gsub(replace, reference)
-    Common.WriteAllFileText(path, project) 
+    FileSystem.WriteAllFileText(path, project) 
 end
 
 desc "Builds the installer."
