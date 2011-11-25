@@ -20,7 +20,7 @@ module FileSystem
 		end	
 	end
 
-	def Common.WriteAllFileText(path, text) 
+	def FileSystem.WriteAllFileText(path, text) 
 		File.open(path, 'w') do |file|  
 		  file.puts text
 		end 
