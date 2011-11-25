@@ -1,4 +1,5 @@
 require "albacore"
+require "release/filesystem"
 require "release/robocopy"
 require "release/common"
 
