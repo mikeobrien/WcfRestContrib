@@ -46,7 +46,7 @@ task :addSampleAssemblyReference => :buildSampleApp do
     path = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
 	replace = /<ProjectReference.*<\/ProjectReference>/m
 	reference = "<Reference Include=\"WcfRestContrib\"><HintPath>bin\WcfRestContrib.dll</HintPath></Reference>"
-    project = Common.ReadAllFileText(path)
+    project = FileSystem.ReadAllFileText(path)
     project = project.gsub(replace, reference)
     FileSystem.WriteAllFileText(path, project) 
 end

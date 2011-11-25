@@ -25,4 +25,13 @@ module FileSystem
 		  file.puts text
 		end 
 	end
+
+	def FileSystem.ReadAllFileText(path)
+	  data = ""
+	  file = File.open(path, "r") 
+	  file.each_line do |line|
+		data += line
+	  end
+	  return data
+	end
 end
