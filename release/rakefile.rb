@@ -1,15 +1,14 @@
 require "albacore"
-require "release/filesystem"
+require_relative "filesystem"
+require_relative "gallio-task"
 
 reportsPath = "reports"
 version = ENV["BUILD_NUMBER"]
 
-desc "Inits the build"
 task :initBuild do
 	FileSystem.EnsurePath(reportsPath)
 end
 
-desc "Generate assembly info."
 assemblyinfo :assemblyInfo => :initBuild do |asm|
     asm.version = version
     asm.company_name = "Ultraviolet Catastrophe"
@@ -20,28 +19,24 @@ assemblyinfo :assemblyInfo => :initBuild do |asm|
     asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
 
-desc "Builds the library."
 msbuild :buildLibrary => :assemblyInfo do |msb|
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/WcfRestContrib/WcfRestContrib.csproj"
 end
 
-desc "Builds the test project."
 msbuild :buildTestProject => :buildLibrary do |msb|
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/WcfRestContrib.Tests/WcfRestContrib.Tests.csproj"
 end
 
-desc "Builds the sample app."
 msbuild :buildSampleApp => :buildTestProject do |msb|
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
 end
 
-desc "Set assembly reference in the sample project."
 task :addSampleAssemblyReference => :buildSampleApp do
     path = "src/NielsBohrLibrary/NielsBohrLibrary.csproj"
 	replace = /<ProjectReference.*<\/ProjectReference>/m
@@ -51,18 +46,19 @@ task :addSampleAssemblyReference => :buildSampleApp do
     FileSystem.WriteAllFileText(path, project) 
 end
 
-desc "Builds the installer."
 msbuild :buildInstaller => :addSampleAssemblyReference do |msb|
     msb.properties :configuration => :Release
     msb.targets :Clean, :Build
     msb.solution = "src/Installer/Installer.wixproj"
 end
 
-desc "NUnit Test Runner"
-nunit :unitTests => :buildInstaller do |nunit|
-	nunit.command = "src/packages/NUnit.2.5.10.11092/Tools/nunit-console.exe"
-	nunit.assemblies "src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll"
-	nunit.options "/xml=#{reportsPath}/TestResult.xml"
+gallio :unitTests => :buildInstaller do |runner|
+	runner.echo_command_line = true
+	runner.add_test_assembly("src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll")
+	runner.verbosity = 'Normal'
+	runner.report_directory = reportsPath
+	runner.report_name_format = 'tests'
+	runner.add_report_type('Html')
 end
 
 nugetApiKey = ENV["NUGET_API_KEY"]
@@ -73,7 +69,6 @@ nuspecName = "wcfrestcontrib.nuspec"
 packageLibPath = File.join(packagePath, "lib")
 binPath = "src/WcfRestContrib/bin/Release"
 
-desc "Prep the package folder"
 task :prepPackage => :unitTests do
 	FileSystem.DeleteDirectory(deployPath)
 	
@@ -82,7 +77,6 @@ task :prepPackage => :unitTests do
 	FileSystem.CopyFiles(File.join(binPath, "WcfRestContrib.pdb"), packageLibPath)
 end
 
-desc "Create the nuspec"
 nuspec :createSpec => :prepPackage do |nuspec|
    nuspec.id = "wcfrestcontrib"
    nuspec.version = version
@@ -100,14 +94,12 @@ nuspec :createSpec => :prepPackage do |nuspec|
    nuspec.tags = "wcf rest"
 end
 
-desc "Create the nuget package"
 nugetpack :createPackage => :createSpec do |nugetpack|
    nugetpack.nuspec = File.join(packagePath, nuspecName)
    nugetpack.base_folder = packagePath
    nugetpack.output = deployPath
 end
 
-desc "Push the nuget package"
 nugetpush :pushPackage => :createPackage do |nuget|
 	nuget.apikey = nugetApiKey
 	nuget.package = File.join(deployPath, "wcfrestcontrib.#{version}.nupkg")
