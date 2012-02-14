@@ -23,7 +23,10 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         public IWebFormatter CreateFormatter(string contentType)
         {
             string resolvedContentType;
-            return CreateFormatter(new [] {contentType}, out resolvedContentType);
+            var contentTypes = new[] {contentType};
+            if (!String.IsNullOrEmpty(contentType))
+                contentTypes = contentType.Split(';');
+            return CreateFormatter(contentTypes, out resolvedContentType);
         }
 
         public IWebFormatter CreateFormatter(string[] contentTypes, out string resolvedContentType)
