@@ -8,7 +8,7 @@ using WcfRestContrib.ServiceModel.Web.Exceptions;
 
 namespace NielsBohrLibrary
 {
-    [ServiceConfiguration("Rest", true, TransferMode.Streamed, "HttpStreamedRest", "HttpsStreamedRest")]
+    [ServiceConfiguration("Rest", true, TransferMode.Streamed, InstanceContextMode.PerCall, ConcurrencyMode.Single, "HttpStreamedRest", "HttpsStreamedRest")]
     public class Content : IContentService
     {
         public void Upload(Stream bookContent, string isbn)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.ServiceModel;
 using System.ServiceModel.Web;
 using NielsBohrLibrary.Contracts;
 using NielsBohrLibrary.Domain;
@@ -8,7 +9,7 @@ using WcfRestContrib.ServiceModel.Web.Exceptions;
 
 namespace NielsBohrLibrary
 {
-    [ServiceConfiguration("Rest", true)]
+    [ServiceConfiguration("Rest", true, InstanceContextMode.PerCall)]
     public class Books : IBooksService
     {
         public Contracts.Books GetBooks()

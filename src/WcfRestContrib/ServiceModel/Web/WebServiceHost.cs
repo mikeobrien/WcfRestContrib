@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Description;
 
@@ -23,6 +24,13 @@ namespace WcfRestContrib.ServiceModel.Web
             // Load the service related items
             if (ServiceConfigurationAttribute != null)
             {
+                var behavior = Description.Behaviors.Find<ServiceBehaviorAttribute>();
+                if (behavior != null)
+                {
+                    behavior.ConcurrencyMode = ServiceConfigurationAttribute.ConcurrencyMode;
+                    behavior.InstanceContextMode = ServiceConfigurationAttribute.InstanceContextMode;
+                }
+
                 this.ReplaceBehaviorOnAllEndpoints(
                     typeof (System.ServiceModel.Description.WebHttpBehavior),
                     new WebHttpBehavior(

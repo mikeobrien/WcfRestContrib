@@ -5,7 +5,7 @@ using WcfRestContrib.Net.Http;
 
 namespace NielsBohrLibrary.Contracts
 {
-    [ServiceContract]
+    [ServiceContract()]
     //[ServiceAuthentication]
     public interface IBooksService
     {
