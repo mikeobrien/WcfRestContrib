@@ -2,7 +2,6 @@
 using System.ServiceModel.Description;
 using WcfRestContrib.DependencyInjection;
 using WcfRestContrib.ServiceModel.Dispatcher;
-using System.IdentityModel.Selectors;
 
 namespace WcfRestContrib.ServiceModel.Description
 {

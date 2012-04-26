@@ -22,7 +22,7 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
         {
             _invoker = invoker.ThrowIfNull();
             _handler = handler.ThrowIfNull();
-            _validatorType = validatorType.ThrowIfNull();
+            _validatorType = validatorType;
             _requiresTransportLayerSecurity = requiresTransportLayerSecurity;
             _source = source;
         }
