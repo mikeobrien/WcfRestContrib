@@ -18,16 +18,14 @@ namespace WcfRestContrib.ServiceModel.Description
                 ? DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>(authenticationHandler)
                 : DependencyResolver.Current.GetInfrastructureService<IWebAuthenticationHandler>().ThrowIfNull();
 
-            UsernamePasswordValidator = usernamePasswordValidator != null
-                ? DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>(usernamePasswordValidator)
-                : DependencyResolver.Current.GetInfrastructureService<UserNamePasswordValidator>().ThrowIfNull();
+            UsernamePasswordValidatorType = usernamePasswordValidator;
 
             Source = source;
             RequireSecureTransport = requireSecureTransport;
         }
 
         public IWebAuthenticationHandler AuthenticationHandler { get; private set; }
-        public UserNamePasswordValidator UsernamePasswordValidator { get; private set; }
+        public Type UsernamePasswordValidatorType { get; private set; }
         public bool RequireSecureTransport { get; set; }
         public string Source { get; set; }
 

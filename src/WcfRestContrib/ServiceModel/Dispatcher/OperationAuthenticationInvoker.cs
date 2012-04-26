@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
-using System.IdentityModel.Selectors;
 using System.ServiceModel;
 
 namespace WcfRestContrib.ServiceModel.Dispatcher
@@ -10,20 +9,20 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
     {
         private readonly IOperationInvoker _invoker;
         private readonly IWebAuthenticationHandler _handler;
-        private readonly UserNamePasswordValidator _validator;
+        private readonly Type _validatorType;
         private readonly bool _requiresTransportLayerSecurity;
         private readonly string _source;
 
         public OperationAuthenticationInvoker(
             IOperationInvoker invoker,
             IWebAuthenticationHandler handler,
-            UserNamePasswordValidator validator,
+            Type validatorType,
             bool requiresTransportLayerSecurity,
             string source)
         {
             _invoker = invoker.ThrowIfNull();
             _handler = handler.ThrowIfNull();
-            _validator = validator.ThrowIfNull();
+            _validatorType = validatorType.ThrowIfNull();
             _requiresTransportLayerSecurity = requiresTransportLayerSecurity;
             _source = source;
         }
@@ -38,7 +37,7 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                     WebOperationContext.Current.ThrowIfNull().IncomingRequest,
                     WebOperationContext.Current.ThrowIfNull().OutgoingResponse,
                     inputs,
-                    _validator,
+                    _validatorType,
                     OperationContext.Current.ThrowIfNull().HasTransportLayerSecurity(),
                     _requiresTransportLayerSecurity,
                     _source));

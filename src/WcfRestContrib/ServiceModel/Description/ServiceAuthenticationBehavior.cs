@@ -27,7 +27,7 @@ namespace WcfRestContrib.ServiceModel.Description
                 throw new ServiceAuthenticationConfigurationMissingException();
 
             var authenticationHandler = behavior.AuthenticationHandler;
-            var usernamePasswordValidator = behavior.UsernamePasswordValidator;
+            var usernamePasswordValidator = behavior.UsernamePasswordValidatorType;
 
             foreach (ChannelDispatcher dispatcher in 
                 serviceHostBase.ChannelDispatchers)
@@ -62,7 +62,7 @@ namespace WcfRestContrib.ServiceModel.Description
                 endpointDispatcher.DispatchRuntime.MessageInspectors.Add(
                     new ServiceAuthenticationInspector(
                         behavior.ThrowIfNull().AuthenticationHandler,
-                        behavior.ThrowIfNull().UsernamePasswordValidator,
+                        behavior.UsernamePasswordValidatorType,
                         behavior.RequireSecureTransport,
                         behavior.Source));
         }

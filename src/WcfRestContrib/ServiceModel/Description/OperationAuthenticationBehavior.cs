@@ -1,10 +1,8 @@
 ﻿using System.Configuration;
-using System.IdentityModel.Selectors;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Dispatcher;
-using WcfRestContrib.DependencyInjection;
 
 namespace WcfRestContrib.ServiceModel.Description
 {
@@ -28,7 +26,7 @@ namespace WcfRestContrib.ServiceModel.Description
             dispatchOperation.Invoker = new OperationAuthenticationInvoker(
                 dispatchOperation.Invoker,
                 behavior.ThrowIfNull().AuthenticationHandler,
-                behavior.ThrowIfNull().UsernamePasswordValidator,
+                behavior.UsernamePasswordValidatorType,
                 behavior.RequireSecureTransport,
                 behavior.Source);
         }

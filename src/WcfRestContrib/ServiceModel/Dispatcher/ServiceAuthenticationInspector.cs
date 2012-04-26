@@ -2,7 +2,6 @@
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.ServiceModel.Channels;
-using System.IdentityModel.Selectors;
 using System.ServiceModel;
 
 namespace WcfRestContrib.ServiceModel.Dispatcher
@@ -10,18 +9,18 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
     public class ServiceAuthenticationInspector : Attribute, IDispatchMessageInspector 
     {
         private readonly IWebAuthenticationHandler _handler;
-        private readonly UserNamePasswordValidator _validator;
+        private readonly Type _validatorType;
         private readonly bool _requiresTransportLayerSecurity;
         private readonly string _source;
 
         public ServiceAuthenticationInspector(
             IWebAuthenticationHandler handler,
-            UserNamePasswordValidator validator,
+            Type validatorType,
             bool requiresTransportLayerSecurity,
             string source)
         {
             _handler = handler;
-            _validator = validator;
+            _validatorType = validatorType;
             _requiresTransportLayerSecurity = requiresTransportLayerSecurity;
             _source = source;
         }
@@ -32,7 +31,7 @@ namespace WcfRestContrib.ServiceModel.Dispatcher
                 WebOperationContext.Current.IncomingRequest,
                 WebOperationContext.Current.OutgoingResponse,
                 new object[] {},
-                _validator,
+                _validatorType,
                 OperationContext.Current.HasTransportLayerSecurity(),
                 _requiresTransportLayerSecurity,
                 _source));
