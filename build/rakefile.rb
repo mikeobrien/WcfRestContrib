@@ -105,5 +105,5 @@ end
 
 nugetpush :pushPackage => :createPackage do |nuget|
 	nuget.apikey = nugetApiKey
-	nuget.package = File.join(deployPath, "wcfrestcontrib.#{version}.nupkg")
+	nuget.package = File.join(deployPath, "wcfrestcontrib.#{version}.nupkg").gsub('/', '\\')
 end
