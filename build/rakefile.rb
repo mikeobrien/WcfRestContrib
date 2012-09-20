@@ -18,7 +18,7 @@ assemblyinfo :assemblyInfo => :initBuild do |asm|
     asm.product_name = "Wcf Rest Contrib"
     asm.title = "Wcf Rest Contrib"
     asm.description = "Goodies for Wcf Rest."
-    asm.copyright = "Copyright (c) 2011 Ultraviolet Catastrophe"
+    asm.copyright = "Copyright (c) #{Time.now.year} Ultraviolet Catastrophe"
     asm.output_file = "src/WcfRestContrib/Properties/AssemblyInfo.cs"
 end
 
