@@ -21,8 +21,8 @@ namespace WcfRestContrib.ServiceModel.Web
         public ServiceConfigurationAttribute(string behaviorConfiguration, bool customErrorHandler) :
             this(behaviorConfiguration, customErrorHandler, TransferMode.Buffered, InstanceContextMode.PerSession, ConcurrencyMode.Single, null) { }
 
-        public ServiceConfigurationAttribute(string behaviorConfiguration, bool customErrorHandler, InstanceContextMode instanceContextMode) :
-            this(behaviorConfiguration, customErrorHandler, TransferMode.Buffered, instanceContextMode, ConcurrencyMode.Single, null) { }
+        public ServiceConfigurationAttribute(string behaviorConfiguration, bool customErrorHandler, InstanceContextMode instanceContextMode, params string[] bindingConfiguration) :
+            this(behaviorConfiguration, customErrorHandler, TransferMode.Buffered, instanceContextMode, ConcurrencyMode.Single, bindingConfiguration) { }
 
         public ServiceConfigurationAttribute(string behaviorConfiguration, bool customErrorHandler, params string[] bindingConfiguration) :
             this(behaviorConfiguration, customErrorHandler, TransferMode.Buffered, InstanceContextMode.PerSession, ConcurrencyMode.Single, bindingConfiguration) { }
@@ -54,7 +54,7 @@ namespace WcfRestContrib.ServiceModel.Web
         public ConcurrencyMode ConcurrencyMode { get; set; }
         public bool CustomErrorHandler { get; private set; }
         public TransferMode TransferMode { get; private set; }
-        public string[] BindingConfiguration { get; private set;}
-        public string BehaviorConfiguration { get; private set;}
+        public string[] BindingConfiguration { get; private set; }
+        public string BehaviorConfiguration { get; private set; }
     }
 }

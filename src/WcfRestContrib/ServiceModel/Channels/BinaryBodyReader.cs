@@ -11,6 +11,7 @@ namespace WcfRestContrib.ServiceModel.Channels
         {
             reader.ReadStartElement(BinaryElementName);
             _data = reader.ReadContentAsBase64();
+            if (reader.NodeType == XmlNodeType.Text) reader.Read();
             reader.ReadEndElement();
         }
         
