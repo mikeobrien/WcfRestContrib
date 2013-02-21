@@ -6,7 +6,7 @@ namespace WcfRestContrib.Xml
     {
         public static void SortAlphabetically<T>(this XmlDocument document) where T : XmlNode
         {
-            document.FirstChild.SortAlphabetically<T>(true);
+            document.DocumentElement.SortAlphabetically<T>(true);
         }
     }
 }
