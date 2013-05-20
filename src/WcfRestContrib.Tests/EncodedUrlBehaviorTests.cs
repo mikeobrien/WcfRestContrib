@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using NUnit.Framework;
@@ -18,6 +19,12 @@ namespace WcfRestContrib.Tests
             {
                 return value;
             }
+        }
+
+        [Test]
+        public void should()
+        {
+            throw new Exception();
         }
 
         [Test]
