@@ -7,7 +7,7 @@ using Should;
 namespace WcfRestContrib.Tests
 {
     [TestFixture]
-    public class EncodedUrlBehaviorTests
+    public class EncodedUrlBehaviorTests{{}}
     {
         [ServiceContract]
         public class Service
