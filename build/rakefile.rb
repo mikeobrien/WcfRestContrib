@@ -57,7 +57,7 @@ end
 
 gallio :unitTests => :buildInstaller do |runner|
 	runner.echo_command_line = true
-	runner.add_test_assembly("src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll2")
+	runner.add_test_assembly("src/WcfRestContrib.Tests/bin/Release/WcfRestContrib.Tests.dll")
 	runner.verbosity = 'Normal'
 	runner.report_directory = reportsPath
 	runner.report_name_format = 'tests'
