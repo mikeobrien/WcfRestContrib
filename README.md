@@ -1,7 +1,7 @@
 Wcf Rest Contrib
 =============
 
-[![Nuget](http://img.shields.io/nuget/v/WcfRestContrib.svg?style=flat)](http://www.nuget.org/packages/WcfRestContrib/) [![Nuget downloads](http://img.shields.io/nuget/dt/WcfRestContrib.svg?style=flat)](http://www.nuget.org/packages/WcfRestContrib/)
+[![Nuget](http://img.shields.io/nuget/v/WcfRestContrib.svg?style=flat)](http://www.nuget.org/packages/WcfRestContrib/)
 
 The WCF REST Contrib library adds functionality to the current WCF REST implementation.
 
