@@ -11,8 +11,7 @@ namespace NielsBohrLibrary.Contracts
     {
         [WebGet(UriTemplate = "/")]
         [WebDispatchFormatter]
-        [OperationContract]
-        [OperationAuthentication]
+        [OperationContract]     
         Books GetBooks();
 
         [WebGet(UriTemplate = "/breakme")]

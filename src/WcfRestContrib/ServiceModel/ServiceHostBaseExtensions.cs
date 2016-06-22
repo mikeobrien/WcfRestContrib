@@ -6,6 +6,7 @@ using System.ServiceModel.Description;
 using WcfRestContrib.ServiceModel.Configuration;
 using System.ServiceModel.Channels;
 using WcfRestContrib.ServiceModel.Description;
+using WebHttpBehavior = System.ServiceModel.Description.WebHttpBehavior;
 
 namespace WcfRestContrib.ServiceModel
 {
@@ -125,7 +126,7 @@ namespace WcfRestContrib.ServiceModel
 
         public static void AddBehaviorOnAllEndpoints(
             this ServiceHostBase serviceHost,
-            IEndpointBehavior behavior)
+            WebHttpBehavior behavior)
         {
             ReplaceBehaviorOnAllEndpoints(
                 serviceHost,
@@ -136,17 +137,22 @@ namespace WcfRestContrib.ServiceModel
         public static void ReplaceBehaviorOnAllEndpoints(
             this ServiceHostBase serviceHost, 
             Type replaceType,
-            IEndpointBehavior behavior)
+            WebHttpBehavior behavior)
         {
             foreach (var endpoint in serviceHost.Description.Endpoints)
             {
                 if (replaceType != null)
                 {
                     var exisitingBehavior = endpoint.Behaviors.FirstOrDefault(
-                        b => b.GetType() == replaceType);
+                        b => b.GetType() == replaceType) as WebHttpBehavior;
+
                     if (exisitingBehavior != null)
+                    {
                         endpoint.Behaviors.Remove(exisitingBehavior);
+                        behavior.HelpEnabled = exisitingBehavior.HelpEnabled;
+                    }                        
                 }
+
                 endpoint.Behaviors.Add(behavior);
             }
         }
